@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public float gravity = -9.81f;
     public float jumpHeight = 3f;
 
+    public float wallRunLength = 10f;
     #region Speeds
     public float speed;
     public float walkSpeed;
@@ -37,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        WallRunning();
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         VelocityReset();
@@ -96,4 +98,45 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
+
+    void WallRunning()
+    {
+        RaycastHit hitLeft;
+        Debug.DrawRay(transform.position, -transform.right * 1f, Color.green, 0.5f);
+    
+        if (Physics.Raycast(transform.position, -transform.right, out hitLeft, 1f)) 
+        {
+            Debug.DrawRay(transform.position, hitLeft.point);
+            if (hitLeft.transform.CompareTag("Wall"))
+            {
+                float LeftHeightClimbed = 0;
+
+                LeftHeightClimbed += transform.position.y;
+                Debug.Log(LeftHeightClimbed);
+                Debug.Log("Hit Wall Left");
+                velocity.y = (LeftHeightClimbed = -0.1f * Mathf.Pow((wallRunLength + -4.5f), 2) + 2);
+                Debug.Log(velocity.y);
+            }
+        }
+
+        RaycastHit hitRight;
+        Debug.DrawRay(transform.position, transform.right * 1f, Color.red, 0.5f);
+
+        if (Physics.Raycast(transform.position, transform.right, out hitRight, 1f))
+        {
+            Debug.DrawRay(transform.position, hitRight.point);
+            if (hitRight.transform.CompareTag("Wall"))
+            {
+                float LeftHeightClimbed = 0;
+
+                LeftHeightClimbed += transform.position.y;
+
+                Debug.Log("Hit Wall Left");
+                velocity.y = (LeftHeightClimbed = -0.1f * Mathf.Pow((wallRunLength + -4.5f), 2) + 2);
+                Debug.Log(velocity.y);
+            }
+        }
+    }
+
+
 }
