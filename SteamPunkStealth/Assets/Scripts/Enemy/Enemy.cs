@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour {
 
@@ -18,9 +19,11 @@ public class Enemy : MonoBehaviour {
     public bool noticedPlayer;
 
     public bool alarmedByPlayer;
-	
 
-	void Awake () 
+    NavMeshAgent enemyAgent;
+
+
+    void Awake () 
 	{
 		ui = GetComponent<EnemyUI>();
 	}
@@ -30,7 +33,8 @@ public class Enemy : MonoBehaviour {
 	void Start()
 	{
 		_player = GameObject.FindGameObjectWithTag("Player");
-	}
+        enemyAgent = GetComponent<NavMeshAgent>();
+    }
 
 	void Update()
 	{
@@ -39,6 +43,7 @@ public class Enemy : MonoBehaviour {
             Vector3 direction = (_player.transform.position - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * LookRoationSpeed);
+            enemyAgent.SetDestination(_player.transform.position);
         }
     }
 	  	
