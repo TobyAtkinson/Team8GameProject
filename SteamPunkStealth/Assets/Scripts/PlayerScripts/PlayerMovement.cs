@@ -19,10 +19,9 @@ public class PlayerMovement : MonoBehaviour
     public float speed;
     public float walkSpeed;
     public float sprintSpeed;
-    public float airSpeed;
     #endregion 
 
-
+    public AnimationCurve WallRunArc;
 
     public Transform groundCheck;
     public float groundDistance = 0.4f;
@@ -79,11 +78,6 @@ public class PlayerMovement : MonoBehaviour
 
     void SpeedChanges()
     {
-        if (!isGrounded)
-        {
-            speed = airSpeed;
-        }
-
         if (isGrounded)
         {
             if (Input.GetKey(KeyCode.LeftShift))
@@ -107,15 +101,9 @@ public class PlayerMovement : MonoBehaviour
         if (Physics.Raycast(transform.position, -transform.right, out hitLeft, 1f)) 
         {
             Debug.DrawRay(transform.position, hitLeft.point);
-            if (hitLeft.transform.CompareTag("Wall"))
+            if (hitLeft.transform.CompareTag("Climbable") && Input.GetKey(KeyCode.W))
             {
-                float LeftHeightClimbed = 0;
-
-                LeftHeightClimbed += transform.position.y;
-                Debug.Log(LeftHeightClimbed);
-                Debug.Log("Hit Wall Left");
-                velocity.y = (LeftHeightClimbed = -0.1f * Mathf.Pow((wallRunLength + -4.5f), 2) + 2);
-                Debug.Log(velocity.y);
+                velocity.y = 0;
             }
         }
 
@@ -125,15 +113,21 @@ public class PlayerMovement : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.right, out hitRight, 1f))
         {
             Debug.DrawRay(transform.position, hitRight.point);
-            if (hitRight.transform.CompareTag("Wall"))
+            if (hitRight.transform.CompareTag("Climbable") && Input.GetKey(KeyCode.W))
             {
-                float LeftHeightClimbed = 0;
+                velocity.y = 0;
+            }
+        }
 
-                LeftHeightClimbed += transform.position.y;
+        RaycastHit hitForward;
+        Debug.DrawRay(transform.position - new Vector3(0, 1, 0), transform.forward * 1f, Color.blue, 0.5f);
 
-                Debug.Log("Hit Wall Left");
-                velocity.y = (LeftHeightClimbed = -0.1f * Mathf.Pow((wallRunLength + -4.5f), 2) + 2);
-                Debug.Log(velocity.y);
+        if (Physics.Raycast(transform.position - new Vector3 (0, 1, 0), transform.forward, out hitForward, 1f))
+        {
+            Debug.DrawRay(transform.position, hitForward.point);
+            if (hitForward.transform.CompareTag("Climbable"))
+            {
+                velocity.y = 6;
             }
         }
     }

@@ -97,10 +97,16 @@ MonoBehaviour:
   Controller: {fileID: 5714540846847991191}
   gravity: -9.81
   jumpHeight: 3
+  wallRunLength: 10
   speed: 0
-  walkSpeed: 8
-  sprintSpeed: 12
-  airSpeed: 4
+  walkSpeed: 4
+  sprintSpeed: 8
+  WallRunArc:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   groundCheck: {fileID: 5714540846742362223}
   groundDistance: 0.4
   groundMask:

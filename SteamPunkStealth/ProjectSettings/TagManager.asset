@@ -4,7 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Wall
+  - Climbable
   layers:
   - Default
   - TransparentFX
@@ -14,9 +14,9 @@ TagManager:
   - UI
   - 
   - 
-  - PostProcessing
-  - NoNavMesh
-  - Ground
+  - 
+  - 
+  - 
   - 
   - 
   - 
