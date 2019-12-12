@@ -6,13 +6,26 @@ public class PlayerActions : MonoBehaviour
 {
     public bool isThrown;
     public GameObject PlayerCam;
-    public GameObject TeleportDiskInstance;
-    public GameObject TeleportDisk;
+    public Transform DiskSpawnPoint;
+    public GameObject TeleportDiskPrefab;
+    GameObject TeleportDiskInstance;
     public Vector3 TeleportPosition;
     public GameObject Player;
+    Rigidbody TDIrigidbody;
+    Collider TDIcollider;
+    public Transform TDItransform;
+    Renderer TDIrenderer;
     void Start()
     {
+        TeleportDiskInstance = Instantiate(TeleportDiskPrefab, Player.transform.position, Player.transform.rotation);
+       
+        TDIrigidbody = TeleportDiskInstance.GetComponent<Rigidbody>();
+        TDIcollider = TeleportDiskInstance.GetComponent<MeshCollider>();
+        TDIrenderer = TeleportDiskInstance.GetComponent<MeshRenderer>();
+        TDItransform = TeleportDiskInstance.GetComponent<Transform>(); 
         
+        TDIcollider.enabled = false;
+        TDIrenderer.enabled = false;
     }
 
     void Update()
@@ -20,8 +33,6 @@ public class PlayerActions : MonoBehaviour
         ThrowTeleport();
 
         TeleportToDisk();
-
-        TeleportPosition = TeleportDisk.transform.position;
     }
 
     void ThrowTeleport()
@@ -30,8 +41,11 @@ public class PlayerActions : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && !isThrown)
         {
             Debug.Log("Throw Teleport Disk");
-            TeleportDisk = Instantiate(TeleportDiskInstance, PlayerCam.transform.position, PlayerCam.transform.localRotation);
-            TeleportDisk.GetComponent<Rigidbody>().AddForce(Vector3.forward * 1000);
+            TDIcollider.enabled = true;
+            TDIrenderer.enabled = true;
+            TDItransform.position = DiskSpawnPoint.position;
+            TDItransform.rotation = DiskSpawnPoint.rotation;
+            TDIrigidbody.AddForce(TDItransform.forward * 1000);
             isThrown = true;
         }
     }
@@ -41,8 +55,10 @@ public class PlayerActions : MonoBehaviour
         if (Input.GetMouseButtonDown(1) && isThrown)
         {
             Debug.Log("Teleport");
-            Player.transform.SetPositionAndRotation(TeleportDisk.transform.position, Player.transform.rotation);
-            Object.Destroy(TeleportDisk);
+
+            TDIcollider.enabled = false; 
+            TDIrenderer.enabled = false;
+            Player.transform.SetPositionAndRotation(TeleportDiskInstance.transform.position, Player.transform.rotation);
             isThrown = false;
         }
     }

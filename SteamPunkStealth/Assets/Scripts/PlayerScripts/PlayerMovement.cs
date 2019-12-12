@@ -142,10 +142,7 @@ public class PlayerMovement : MonoBehaviour
             Debug.DrawRay(transform.position, hitForward.point);
             if (hitForward.transform.CompareTag("Climbable"))
             {
-                if (speed == sprintSpeed)
-                {
-                    velocity.y = 0;
-                }
+                velocity.y = 6; 
             }
             else 
             {
