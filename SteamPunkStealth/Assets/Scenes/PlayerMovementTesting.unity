@@ -1546,6 +1546,7 @@ MonoBehaviour:
   speed: 0
   walkSpeed: 4
   sprintSpeed: 8
+  crouchSpeed: 2
   WallRunArc:
     serializedVersion: 2
     m_Curve: []

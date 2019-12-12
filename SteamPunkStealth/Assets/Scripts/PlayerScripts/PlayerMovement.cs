@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     public float speed;
     public float walkSpeed;
     public float sprintSpeed;
+    public float crouchSpeed;
     #endregion 
 
     public AnimationCurve WallRunArc;
@@ -41,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         VelocityReset();
-
+        Crouch();
         SpeedChanges();
 
         x = Input.GetAxis("Horizontal");
@@ -85,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
                 speed = sprintSpeed;
             }
 
-            else
+            else if (!Input.GetKey(KeyCode.LeftControl))
             {
                 speed = walkSpeed;
             }
@@ -103,7 +104,14 @@ public class PlayerMovement : MonoBehaviour
             Debug.DrawRay(transform.position, hitLeft.point);
             if (hitLeft.transform.CompareTag("Climbable") && Input.GetKey(KeyCode.W))
             {
-                velocity.y = 0;
+                if (speed == sprintSpeed)
+                {
+                    velocity.y = 0;
+                }
+            }
+            else
+            {
+                return;
             }
         }
 
@@ -115,7 +123,14 @@ public class PlayerMovement : MonoBehaviour
             Debug.DrawRay(transform.position, hitRight.point);
             if (hitRight.transform.CompareTag("Climbable") && Input.GetKey(KeyCode.W))
             {
-                velocity.y = 0;
+                if (speed == sprintSpeed) 
+                { 
+                    velocity.y = 0; 
+                }
+            }
+            else 
+            {
+                return;
             }
         }
 
@@ -127,10 +142,30 @@ public class PlayerMovement : MonoBehaviour
             Debug.DrawRay(transform.position, hitForward.point);
             if (hitForward.transform.CompareTag("Climbable"))
             {
-                velocity.y = 6;
+                if (speed == sprintSpeed)
+                {
+                    velocity.y = 0;
+                }
+            }
+            else 
+            {
+                return;
             }
         }
     }
 
+    void Crouch() 
+    {
+        if (Input.GetKeyDown(KeyCode.LeftControl) && isGrounded) 
+        {
+            speed = crouchSpeed;
+            transform.localScale = transform.localScale / 2;
+        }
 
+        if (Input.GetKeyUp(KeyCode.LeftControl) && isGrounded)
+        {
+            speed = walkSpeed;
+            transform.localScale = transform.localScale * 2;
+        }
+    }
 }

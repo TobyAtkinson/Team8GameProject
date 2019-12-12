@@ -22,16 +22,15 @@ public class PlayerActions : MonoBehaviour
         TeleportToDisk();
 
         TeleportPosition = TeleportDisk.transform.position;
-
-        Player.transform.position = TeleportPosition;
     }
 
     void ThrowTeleport()
     {
+        Debug.DrawRay(PlayerCam.transform.position, PlayerCam.transform.forward, Color.black, 1f);
         if (Input.GetMouseButtonDown(0) && !isThrown)
         {
             Debug.Log("Throw Teleport Disk");
-            TeleportDisk = Instantiate(TeleportDiskInstance, PlayerCam.transform.position, PlayerCam.transform.rotation);
+            TeleportDisk = Instantiate(TeleportDiskInstance, PlayerCam.transform.position, PlayerCam.transform.localRotation);
             TeleportDisk.GetComponent<Rigidbody>().AddForce(Vector3.forward * 1000);
             isThrown = true;
         }
@@ -43,6 +42,8 @@ public class PlayerActions : MonoBehaviour
         {
             Debug.Log("Teleport");
             Player.transform.SetPositionAndRotation(TeleportDisk.transform.position, Player.transform.rotation);
+            Object.Destroy(TeleportDisk);
+            isThrown = false;
         }
     }
 }
