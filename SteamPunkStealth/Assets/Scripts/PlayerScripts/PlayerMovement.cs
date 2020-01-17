@@ -15,13 +15,14 @@ public class PlayerMovement : MonoBehaviour
     public float jumpHeight = 3f;
 
     public float wallRunLength = 10f;
+    public bool isWallRunningUp;
     #region Speeds
     public float speed;
     public float walkSpeed;
     public float sprintSpeed;
     public float crouchSpeed;
     #endregion 
-
+    Vector3 move;
     public AnimationCurve WallRunArc;
 
     public Transform groundCheck;
@@ -29,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask groundMask;
 
     Vector3 velocity;
-    bool isGrounded;
+    public bool isGrounded;
 
     void Start()
     {
@@ -48,10 +49,12 @@ public class PlayerMovement : MonoBehaviour
         x = Input.GetAxis("Horizontal");
         z = Input.GetAxis("Vertical");
 
-
-        Vector3 move = transform.right * x + transform.forward * z;
-
-        Controller.Move(move * speed * Time.deltaTime);
+        if (isWallRunningUp == false) 
+        {
+            move = transform.right * x + transform.forward * z;
+            Controller.Move(move * speed * Time.deltaTime);
+        }
+        
 
         Jump();
 
@@ -137,17 +140,22 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit hitForward;
         Debug.DrawRay(transform.position - new Vector3(0, 1, 0), transform.forward * 1f, Color.blue, 0.5f);
 
-        if (Physics.Raycast(transform.position - new Vector3 (0, 1, 0), transform.forward, out hitForward, 1f))
+        if (Physics.Raycast(transform.position - new Vector3(0, 1, 0), transform.forward, out hitForward, 1f))
         {
             Debug.DrawRay(transform.position, hitForward.point);
-            if (hitForward.transform.CompareTag("Climbable"))
+            if (hitForward.transform.CompareTag("Climbable") && Input.GetKey(KeyCode.W))
             {
-                velocity.y = 6; 
+                isWallRunningUp = true;
+                velocity.y = 3;
             }
-            else 
+            else
             {
-                return;
             }
+        }
+
+        else 
+        {
+            isWallRunningUp = false;
         }
     }
 

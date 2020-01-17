@@ -15,15 +15,15 @@ public class PlayerActions : MonoBehaviour
     Collider TDIcollider;
     public Transform TDItransform;
     Renderer TDIrenderer;
+    public int throwForce;
     void Start()
     {
         TeleportDiskInstance = Instantiate(TeleportDiskPrefab, Player.transform.position, Player.transform.rotation);
-       
+        // TDI stands for Teleport Disk Instance
         TDIrigidbody = TeleportDiskInstance.GetComponent<Rigidbody>();
         TDIcollider = TeleportDiskInstance.GetComponent<MeshCollider>();
         TDIrenderer = TeleportDiskInstance.GetComponent<MeshRenderer>();
         TDItransform = TeleportDiskInstance.GetComponent<Transform>(); 
-        
         TDIcollider.enabled = false;
         TDIrenderer.enabled = false;
     }
@@ -45,8 +45,9 @@ public class PlayerActions : MonoBehaviour
             TDIrenderer.enabled = true;
             TDItransform.position = DiskSpawnPoint.position;
             TDItransform.rotation = DiskSpawnPoint.rotation;
-            TDIrigidbody.AddForce(TDItransform.forward * 1000);
+            TDIrigidbody.AddForce(TDItransform.forward * throwForce);
             isThrown = true;
+            TeleportDiskInstance.GetComponent<TeleportDiskController>().isFlying = true;
         }
     }
 
@@ -56,9 +57,9 @@ public class PlayerActions : MonoBehaviour
         {
             Debug.Log("Teleport");
 
-            TDIcollider.enabled = false; 
             TDIrenderer.enabled = false;
             Player.transform.SetPositionAndRotation(TeleportDiskInstance.transform.position, Player.transform.rotation);
+            TDIcollider.enabled = false; 
             isThrown = false;
         }
     }

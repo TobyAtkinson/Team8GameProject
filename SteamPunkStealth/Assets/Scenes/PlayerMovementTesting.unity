@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 20605256}
   - component: {fileID: 20605255}
   - component: {fileID: 20605254}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -281,7 +281,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 163960737}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Enviroment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -355,7 +355,7 @@ GameObject:
   - component: {fileID: 418098928}
   - component: {fileID: 418098927}
   - component: {fileID: 418098926}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -444,7 +444,7 @@ GameObject:
   m_Component:
   - component: {fileID: 619216233}
   - component: {fileID: 619216234}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: WallRunning
   m_TagString: Climbable
   m_Icon: {fileID: 0}
@@ -490,7 +490,7 @@ GameObject:
   - component: {fileID: 813651465}
   - component: {fileID: 813651464}
   - component: {fileID: 813651463}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -581,7 +581,7 @@ GameObject:
   - component: {fileID: 862176688}
   - component: {fileID: 862176687}
   - component: {fileID: 862176686}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Cube (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -672,7 +672,7 @@ GameObject:
   - component: {fileID: 958736435}
   - component: {fileID: 958736434}
   - component: {fileID: 958736433}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Cube (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -763,7 +763,7 @@ GameObject:
   - component: {fileID: 1293950476}
   - component: {fileID: 1293950475}
   - component: {fileID: 1293950474}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -855,7 +855,7 @@ GameObject:
   - component: {fileID: 1376078417}
   - component: {fileID: 1376078416}
   - component: {fileID: 1376078415}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Cube (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -946,7 +946,7 @@ GameObject:
   - component: {fileID: 1672359146}
   - component: {fileID: 1672359145}
   - component: {fileID: 1672359144}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Cube (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1037,7 +1037,7 @@ GameObject:
   - component: {fileID: 1736346300}
   - component: {fileID: 1736346299}
   - component: {fileID: 1736346298}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Cube (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1128,7 +1128,7 @@ GameObject:
   - component: {fileID: 2128108875}
   - component: {fileID: 2128108874}
   - component: {fileID: 2128108873}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1220,7 +1220,7 @@ GameObject:
   - component: {fileID: 2139450232}
   - component: {fileID: 2139450231}
   - component: {fileID: 2139450230}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1574,6 +1574,7 @@ MonoBehaviour:
   gravity: -9.81
   jumpHeight: 3
   wallRunLength: 10
+  isWallRunningUp: 0
   speed: 0
   walkSpeed: 4
   sprintSpeed: 8
@@ -1588,7 +1589,8 @@ MonoBehaviour:
   groundDistance: 0.4
   groundMask:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 512
+  isGrounded: 0
 --- !u!114 &3694262224087685944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1609,3 +1611,4 @@ MonoBehaviour:
   TeleportPosition: {x: 0, y: 0, z: 0}
   Player: {fileID: 3694262224087685940}
   TDItransform: {fileID: 0}
+  throwForce: 100
