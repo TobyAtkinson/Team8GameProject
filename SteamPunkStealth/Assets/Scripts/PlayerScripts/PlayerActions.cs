@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerActions : MonoBehaviour
 {
+
+    #region Teleport Disk Variables
     public bool isThrown;
     public GameObject PlayerCam;
     public Transform DiskSpawnPoint;
@@ -16,8 +18,12 @@ public class PlayerActions : MonoBehaviour
     public Transform TDItransform;
     Renderer TDIrenderer;
     public int throwForce;
+    #endregion
+
+
     void Start()
     {
+        #region Teleport Disk Component Assignments
         TeleportDiskInstance = Instantiate(TeleportDiskPrefab, Player.transform.position, Player.transform.rotation);
         // TDI stands for Teleport Disk Instance
         TDIrigidbody = TeleportDiskInstance.GetComponent<Rigidbody>();
@@ -26,15 +32,16 @@ public class PlayerActions : MonoBehaviour
         TDItransform = TeleportDiskInstance.GetComponent<Transform>(); 
         TDIcollider.enabled = false;
         TDIrenderer.enabled = false;
+        #endregion
     }
 
     void Update()
     {
         ThrowTeleport();
-
         TeleportToDisk();
     }
 
+    #region Teleport Disk Functions
     void ThrowTeleport()
     {
         Debug.DrawRay(PlayerCam.transform.position, PlayerCam.transform.forward, Color.black, 1f);
@@ -63,4 +70,6 @@ public class PlayerActions : MonoBehaviour
             isThrown = false;
         }
     }
+    #endregion
 }
+  
