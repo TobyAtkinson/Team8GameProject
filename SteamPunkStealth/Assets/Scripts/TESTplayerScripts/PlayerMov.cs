@@ -10,7 +10,7 @@ public class PlayerMov : MonoBehaviour
     public float gravity = -21f;
     public float jumpHeight = 3f;
     public Transform groundCheck;
-
+   
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
     bool isGrounded;
@@ -44,5 +44,10 @@ public class PlayerMov : MonoBehaviour
         velocity.y = velocity.y + gravity * Time.deltaTime;
 
         controller.Move(velocity * Time.deltaTime);
+
+        
+        
     }
+
+    
 }
