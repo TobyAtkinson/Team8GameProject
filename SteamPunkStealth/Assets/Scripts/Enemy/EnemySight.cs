@@ -67,12 +67,50 @@ public class EnemySight : MonoBehaviour
 			isPlayerInViewCollison = true;
 			StartCoroutine(RayCastForPlayer());
 		}     
+        
+    }
+    void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Enemy")
+        {
+            // Saw another guard
+            if (enemy.alarmedByPlayer == false)
+            {
+                // If guard is chasing player
+                Enemy otherGuardScript = other.GetComponent<Enemy>();
+                bool isOtherGaurdAlerted = otherGuardScript.AnotherGuardHasSeen();
+                if (isOtherGaurdAlerted == true)
+                {
+                    enemy.AlertedToPlayer(player);
+                }
+            }
+
+            //Enemy.
+        }
+        else if (other.gameObject.tag == "Gadget")
+        {
+            if (enemy.alarmedByPlayer == false)
+                StartCoroutine(RayCastForSuspicosObject(other.gameObject));
+        }
     }
 
-	IEnumerator RayCastForPlayer()
-	{
-		while (isPlayerInViewCollison == true)
-		{
+        IEnumerator RayCastForSuspicosObject(GameObject target)
+    {
+        yield return new WaitForSeconds(0.05f);
+        RaycastHit targetInfo;
+        if (Physics.Raycast(transform.position, target.transform.position - transform.transform.position, out targetInfo))
+        {
+            if (targetInfo.collider.tag == "Gadget")
+            {
+                print("BIG GADGET SEEN");
+                enemy.AlertedToPlayer(player);
+            }
+        }
+    }
+    IEnumerator RayCastForPlayer()
+    {
+		    while (isPlayerInViewCollison == true)
+		    {
 			RaycastHit hitInfo;
 			if(Physics.Raycast(transform.position, player.transform.position - transform.transform.position, out hitInfo))
 			{

@@ -46,6 +46,18 @@ public class Enemy : MonoBehaviour {
             enemyAgent.SetDestination(_player.transform.position);
         }
     }
+
+    public bool AnotherGuardHasSeen()
+    {
+        if(alarmedByPlayer)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 	  	
 	
 	public void PlayerNoticed(PlayerMovement player)
@@ -80,8 +92,13 @@ public class Enemy : MonoBehaviour {
         alarmedByPlayer = false;
 		this.player = player;
 		if (ui != null)
-			ui.NoticedPlayer();
-	}
+        {
+            ui.NoticedPlayer();
+            //enemyAgent.SetDestination(this.gameObject.transform.position);
+        }
+			
+
+    }
 
 	/*
 
