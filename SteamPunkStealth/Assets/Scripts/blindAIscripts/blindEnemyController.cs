@@ -15,6 +15,7 @@ public class blindEnemyController : MonoBehaviour
     Transform wall;
     int radius;
     int timer = 0;
+    Vector3 lastPosition;
     
 
     // Start is called before the first frame update
@@ -37,33 +38,54 @@ public class blindEnemyController : MonoBehaviour
     {
         float distance = Vector3.Distance(target.position, transform.position);
 
-        playerCrouching();
-        if (timer % 100 == 0)
-        {
-            idleRoam();
-        }
+        
+        playerCrouching(distance, lookRadius, lastPosition);
+
+        roam();
 
         if (distance <= lookRadius)
             agent.SetDestination(target.position);
 
-        if(distance <= agent.stoppingDistance)
-        {
-            facePlayer();
-        }
+
+
         timer++;
     }
 
-    void playerCrouching()
+    void playerCrouching(float distance, float lookRadius, Vector3 lastPosition)
     {
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C) && distance <= lookRadius)
         {
+           
+            agent.SetDestination(target.position);
             agent.isStopped = true;
+           
+            Quaternion lookAround = Quaternion.LookRotation(new Vector3(transform.position.x, 0, transform.position.z));
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookAround, Time.deltaTime * 3f);
+       
+
 
         }
-        if (Input.GetKeyUp(KeyCode.C))
+        if (distance <= lookRadius && Input.GetKeyUp(KeyCode.C))
+        {
+
+
+            agent.isStopped = false;
+            agent.SetDestination(target.position);
+
+
+
+
+
+        }
+         if (distance > lookRadius)
         {
             agent.isStopped = false;
+
+            roam();
+
         }
+
+
     }
 
     void facePlayer()
@@ -76,16 +98,8 @@ public class blindEnemyController : MonoBehaviour
 
     void idleRoam()
     {
-        /*
-                if (wall.position != location)
-                {
-                    MathUtilities.Random(ref location, min, max);
-                    lookRoam(location);
-
-                    agent.SetDestination(location);
-
-                }
-                */
+       
+              
 
         
         radius = Random.Range(1, 15);
@@ -102,10 +116,46 @@ public class blindEnemyController : MonoBehaviour
 
     void lookRoam(ref Vector3 randomDirection)
     {
-     //   MathUtilities.Random(ref location, min, max);
-     //  Vector3  roamDirection = (randomDirection - transform.position).normalized;
+     
         Quaternion lookRotationRoam = Quaternion.LookRotation(new Vector3(randomDirection.x, 0, randomDirection.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotationRoam, Time.deltaTime * 7f);
+    }
+
+    void searchForPlayer(float distance)
+    {
+        if (Input.GetKeyDown(KeyCode.C) == true)
+        {
+            agent.isStopped = true;
+           
+            Quaternion lookAround = Quaternion.LookRotation(new Vector3(transform.position.x, 0, transform.position.z));
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookAround, Time.deltaTime * 3f);
+            
+        }
+       else if ( distance <= lookRadius && Input.GetButtonUp("c")==true )
+        {
+
+
+                agent.isStopped = false;
+                agent.SetDestination(target.position);
+
+
+
+           
+           
+        }
+        else if (distance > lookRadius)
+        {
+            roam();
+
+        }
+    }
+
+    void roam()
+    {
+        if (timer % 100 == 0)
+        {
+            idleRoam();
+        }
     }
 
     private void OnDrawGizmosSelected()
