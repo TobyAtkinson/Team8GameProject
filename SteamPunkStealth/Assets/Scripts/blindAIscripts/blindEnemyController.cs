@@ -38,7 +38,7 @@ public class blindEnemyController : MonoBehaviour
         float distance = Vector3.Distance(target.position, transform.position);
 
         playerCrouching();
-        if (timer % 75 == 0)
+        if (timer % 100 == 0)
         {
             idleRoam();
         }
