@@ -6,9 +6,9 @@ public class PlayerMovement : MonoBehaviour
 {
     float x;
     float z;
-
+    Rigidbody playerRB;
     public CharacterController Controller;
-
+    Vector3 inputVector;
 
 
     public float gravity = -9.81f;
@@ -35,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         speed = walkSpeed;
+        playerRB = GetComponent<Rigidbody>();
     }
     // Update is called once per frame
     void Update()
@@ -51,8 +52,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (isWallRunningUp == false) 
         {
-            move = transform.right * x + transform.forward * z;
-            Controller.Move(move * speed * Time.deltaTime);
+            inputVector = new Vector3((x * speed), 0, (z * speed));
+            playerRB.AddForce(inputVector, ForceMode.Force); 
         }
         
 
