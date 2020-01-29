@@ -41,9 +41,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         WallRunning();
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-
-        VelocityReset();
+        isGroundedCheck();
         Crouch();
         SpeedChanges();
 
@@ -67,18 +65,32 @@ public class PlayerMovement : MonoBehaviour
         Controller.Move(velocity * Time.deltaTime);
     }
 
-    void VelocityReset()
+
+    void isGroundedCheck() 
     {
-        if (isGrounded && velocity.y < 0)
+        
+        
+        RaycastHit hitDown;
+        Debug.DrawRay(transform.position - new Vector3(0,1,0), -transform.up * 0.3f, Color.magenta, 0.3f);
+        if (Physics.Raycast(transform.position - new Vector3(0, 1, 0), -transform.up, out hitDown, 0.3f, groundMask))
         {
-            velocity.y = -2f;
+            isGrounded = true;
+        }
+        else 
+        {
+            isGrounded = false;
         }
     }
-
+    
+    
+    
+    
     void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) == true && isGrounded == true) 
         {
+            Debug.Log("Jump");
+
             velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
         }
     }
