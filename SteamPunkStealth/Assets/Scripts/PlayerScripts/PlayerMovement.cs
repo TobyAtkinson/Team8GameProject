@@ -52,8 +52,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (isWallRunningUp == false) 
         {
-            inputVector = new Vector3((x * speed), 0, (z * speed));
-            playerRB.AddForce(inputVector, ForceMode.Force); 
+            inputVector = new Vector3(x, 0, z);
+            inputVector = inputVector.normalized;
+            Vector3 velocity = inputVector * speed;
+            velocity = transform.TransformDirection(velocity);
+            Controller.Move(velocity * Time.deltaTime);
         }
         
 
@@ -149,8 +152,9 @@ public class PlayerMovement : MonoBehaviour
                 isWallRunningUp = true;
                 velocity.y = 3;
             }
-            else
+            else 
             {
+                isWallRunningUp = false;
             }
         }
 
@@ -158,6 +162,8 @@ public class PlayerMovement : MonoBehaviour
         {
             isWallRunningUp = false;
         }
+
+
     }
 
     void Crouch() 
