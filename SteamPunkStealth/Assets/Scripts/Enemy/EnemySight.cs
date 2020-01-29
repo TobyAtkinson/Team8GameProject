@@ -27,13 +27,16 @@ public class EnemySight : MonoBehaviour
 
 	private PlayerMovement player;
 
-	private bool isPlayerInViewCollison = false;
+    [SerializeField]
+    private bool isPlayerInViewCollison = false;
 
 	private bool isPlayerInRayCastSight = false;
 
 	private bool enemyIsLookingAtPlayer = false;
 	
 	private Coroutine reaction;
+
+    private bool isRaycastingForPlayer;
 
 	void Awake()
 	{
@@ -56,25 +59,33 @@ public class EnemySight : MonoBehaviour
 	
 	void OnTriggerEnter(Collider other) 
 	{
-		if(other.gameObject.tag == "Player")
-		{
-			player = other.gameObject.GetComponent<PlayerMovement>();
-			 if (player == null)
-			 {
-				 Debug.LogError("Player doesn't have a player script!");
-			 }
-
-			isPlayerInViewCollison = true;
-			StartCoroutine(RayCastForPlayer());
-		}     
         
+
     }
+
     void OnTriggerStay(Collider other)
     {
+        if (other.gameObject.tag == "Player")
+        {
+            player = other.gameObject.GetComponent<PlayerMovement>();
+            if (player == null)
+            {
+                Debug.LogError("player doesnt have player script");
+            }
+
+            isPlayerInViewCollison = true;
+
+            if (!isRaycastingForPlayer)
+            {
+                isRaycastingForPlayer = true;
+                StartCoroutine(RayCastForPlayer());
+            }
+
+        }
         if (other.gameObject.tag == "Enemy")
         {
             // Saw another guard
-            if (enemy.alarmedByPlayer == false)
+            if (enemy.currentAlarmState != Enemy.enemyState.AlarmedbyPlayer)
             {
                 // If guard is chasing player
                 Enemy otherGuardScript = other.GetComponent<Enemy>();
@@ -87,9 +98,9 @@ public class EnemySight : MonoBehaviour
 
             //Enemy.
         }
-        else if (other.gameObject.tag == "Gadget")
+        if (other.gameObject.tag == "Gadget")
         {
-            if (enemy.alarmedByPlayer == false)
+            if (enemy.currentAlarmState != Enemy.enemyState.AlarmedbyPlayer)
                 StartCoroutine(RayCastForSuspicosObject(other.gameObject));
         }
     }
@@ -102,15 +113,17 @@ public class EnemySight : MonoBehaviour
         {
             if (targetInfo.collider.tag == "Gadget")
             {
-                print("BIG GADGET SEEN");
+                //print("BIG GADGET SEEN");
                 enemy.AlertedToPlayer(player);
             }
+
+
         }
     }
     IEnumerator RayCastForPlayer()
     {
-		    while (isPlayerInViewCollison == true)
-		    {
+		while (isPlayerInViewCollison == true || enemy.currentAlarmState == Enemy.enemyState.AlarmedbyPlayer)
+		{
 			RaycastHit hitInfo;
 			if(Physics.Raycast(transform.position, player.transform.position - transform.transform.position, out hitInfo))
 			{
@@ -132,19 +145,25 @@ public class EnemySight : MonoBehaviour
 				else
 				{
 					
-					if(enemyIsLookingAtPlayer)
+					if(enemy.currentAlarmState == Enemy.enemyState.AlarmedbyPlayer)
 					{
 						Debug.Log("Enemy lost player will search");
-						enemy.EnemyLostPlayer(player);
-						enemyIsLookingAtPlayer = false;
+                        StartCoroutine(GiveUpDelay());
+						//enemy.EnemyLostPlayer(player);
+                        //isPlayerInViewCollison = false;
 					}
-					isPlayerInRayCastSight = false;
+                    else if(enemy.currentAlarmState == Enemy.enemyState.NoticedPlayer)
+                    {
+                       
+                        //isPlayerInViewCollison = false;
+                    }
+                    isPlayerInRayCastSight = false;
 				}
 			}
 
 			yield return rcastDelay;
 		}
-
+        isRaycastingForPlayer = false;
 		isPlayerInRayCastSight = false;
 	}
 
@@ -160,21 +179,37 @@ public class EnemySight : MonoBehaviour
 
 		if(isPlayerInRayCastSight == false)
 		{
-			Debug.Log("enemy saw nothing");
-			enemy.EnemyDidntSeePlayer(player);
-		}
+            Debug.Log("Enemy did not notice player will return to patrol");
+            enemy.EnemyDidntSeePlayer(player);
+        }
 		else
 		{
-			enemyIsLookingAtPlayer = true;
 			Debug.Log("enemy HAS seen player");
 			enemy.AlertedToPlayer(player);
 		}
 
 		reaction = null;
 	}
-	
 
-	void OnTriggerExit(Collider other) 
+    IEnumerator GiveUpDelay()
+    {
+        yield return new WaitForSeconds(3.0f);
+        RaycastHit hitInfo;
+        if (Physics.Raycast(transform.position, player.transform.position - transform.transform.position, out hitInfo))
+        {
+            if (hitInfo.collider.tag == "Player")
+            {
+                //keep up search
+            }
+            else
+            {
+                enemy.EnemyLostPlayer(player);
+            }
+
+        }
+    }
+
+    void OnTriggerExit(Collider other) 
 	{
 		if(other.gameObject.tag == "Player")
 		{

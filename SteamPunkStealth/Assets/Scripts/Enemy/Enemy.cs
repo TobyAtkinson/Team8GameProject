@@ -5,6 +5,18 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour {
 
+    public enum enemyState 
+    {
+        Stationary, // Enemy standing still
+        Patrolling, // Enemy moving from point to point
+        Chasing, // Enemy moving towards player
+        GoingTowardsLastSeen, // Enemy is going towards where the player was seen last
+        NotAlarmed, // Sight - Enemy has not seen anything
+        NoticedPlayer, // Sight - Enemy is yellow alarmed noticed player but not reacted
+        AlarmedbyPlayer, // Sight - Enemy is red alarmed looking at player
+        Lostplayer // Sight -Enemy was red alarmed but now nolonger sees player
+            }
+
 	private PlayerMovement player;
 
 	private EnemyUI ui;
@@ -15,13 +27,17 @@ public class Enemy : MonoBehaviour {
 	[SerializeField]
 	private float LookRoationSpeed = 3.5f;
 
-
-    public bool noticedPlayer;
-
-    public bool alarmedByPlayer;
-
     NavMeshAgent enemyAgent;
 
+    [SerializeField]
+    public enemyState currentMovementState = enemyState.Stationary;
+
+    [SerializeField]
+    public enemyState currentAlarmState = enemyState.NotAlarmed;
+
+    public GameObject lookTowardsHere;
+
+    public GameObject gaurdPoint;
 
     void Awake () 
 	{
@@ -34,22 +50,60 @@ public class Enemy : MonoBehaviour {
 	{
 		_player = GameObject.FindGameObjectWithTag("Player");
         enemyAgent = GetComponent<NavMeshAgent>();
+
+        currentAlarmState = enemyState.NotAlarmed;
+        currentMovementState = enemyState.Stationary;
     }
 
 	void Update()
 	{
-        if(alarmedByPlayer)
+        if(currentAlarmState == enemyState.NoticedPlayer && currentMovementState == Enemy.enemyState.Stationary)
         {
+            // Enemy should be yellow arrow, glancing towards player
             Vector3 direction = (_player.transform.position - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * LookRoationSpeed);
-            enemyAgent.SetDestination(_player.transform.position);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * (LookRoationSpeed * 0.5f));
         }
+        else if(currentAlarmState == enemyState.AlarmedbyPlayer && currentMovementState == Enemy.enemyState.Chasing)
+        {
+            enemyAgent.SetDestination(_player.transform.position);
+            Debug.Log("going towards player");
+        }
+        else if (currentAlarmState == enemyState.NotAlarmed && currentMovementState == Enemy.enemyState.Stationary)
+        {
+            if (lookTowardsHere != null)
+            {
+                Vector3 direction = (lookTowardsHere.transform.position - transform.position).normalized;
+                Quaternion lookRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * LookRoationSpeed);
+            }
+        }
+        else if (currentAlarmState == enemyState.NotAlarmed && currentMovementState == Enemy.enemyState.Patrolling)
+        {
+            if (gaurdPoint != null)
+            {
+                Debug.Log("going towards patrol point");
+                enemyAgent.SetDestination(gaurdPoint.transform.position);
+            }
+        }
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        if(other.gameObject.tag == "Gaurdpoint")
+        {
+            if (currentAlarmState == enemyState.NotAlarmed)
+            {
+                gameObject.GetComponent<NavMeshAgent>().enabled = false;
+                currentMovementState = enemyState.Stationary;
+            }
+        }
+
     }
 
     public bool AnotherGuardHasSeen()
     {
-        if(alarmedByPlayer)
+        if(currentAlarmState == enemyState.AlarmedbyPlayer)
         {
             return true;
         }
@@ -63,7 +117,7 @@ public class Enemy : MonoBehaviour {
 	public void PlayerNoticed(PlayerMovement player)
 	{
 		this.player = player;
-
+        currentAlarmState = enemyState.NoticedPlayer;
 		if (ui != null)
 			ui.NoticedPlayer();
 	}
@@ -72,7 +126,9 @@ public class Enemy : MonoBehaviour {
 	{
 		this.player = player;
 
-        alarmedByPlayer = true;
+        gameObject.GetComponent<NavMeshAgent>().enabled = true;
+        currentAlarmState = enemyState.AlarmedbyPlayer;
+        currentMovementState = enemyState.Chasing;
 		if (ui != null)
 			ui.AlarmedByPlayer();
 
@@ -82,25 +138,50 @@ public class Enemy : MonoBehaviour {
 	public void EnemyDidntSeePlayer(PlayerMovement player)
 	{
 		this.player = player;
+        currentAlarmState = enemyState.NotAlarmed;
 
-		if (ui != null)
-			ui.EnemyDidntSeePlayer();
+        if (ui != null)
+            StartCoroutine(YellowAlarmOffDelay());
+
+
 	}
 
+ 
 	public void EnemyLostPlayer(PlayerMovement player)
 	{
-        alarmedByPlayer = false;
+        currentAlarmState = enemyState.NotAlarmed;
+        currentMovementState = enemyState.Patrolling;
 		this.player = player;
 		if (ui != null)
         {
-            ui.NoticedPlayer();
-            //enemyAgent.SetDestination(this.gameObject.transform.position);
+            ui.EnemyDidntSeePlayer();
+            //ui.NoticedPlayer();
         }
-			
-
     }
 
-	/*
+    /*
+    public void EnemyGivingUpSearch(PlayerMovement player)
+    {
+        currentAlarmState = enemyState.NotAlarmed;
+        currentMovementState = enemyState.Stationary;
+        this.player = player;
+        if (ui != null)
+        {
+            ui.EnemyDidntSeePlayer();
+            //ui.NoticedPlayer();
+        }
+    }
+
+    */
+
+
+    IEnumerator YellowAlarmOffDelay()
+    {
+        yield return new WaitForSeconds(0.2f);
+        ui.EnemyDidntSeePlayer();
+    }
+
+    /*
 
 		private GameObject PlayerGO;
 
