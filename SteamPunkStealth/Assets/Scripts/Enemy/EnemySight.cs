@@ -30,34 +30,37 @@ public class EnemySight : MonoBehaviour
     [SerializeField]
     private bool isPlayerInViewCollison = false;
 
-	private bool isPlayerInRayCastSight = false;
-
 	private bool enemyIsLookingAtPlayer = false;
 	
 	private Coroutine reaction;
 
     private bool isRaycastingForPlayer;
 
+    public float alertProgress = 0;
+
 	void Awake()
 	{
 		Debug.Assert(enemy != null, "Enemy class is null.");
 		rcastDelay = new WaitForSeconds(raycastDelay);
 	}
-
-	void OnDrawGizmos()
+    #region Gizmo
+    void OnDrawGizmos()
 	{
 		if(isPlayerInViewCollison == true)
 		{
-			if (isPlayerInRayCastSight == true)
-				Gizmos.color = Color.green;
-			else
 				Gizmos.color = Color.red;
 
 			Gizmos.DrawRay (transform.position, player.transform.position - transform.position);
 		}
 	}
-	
-	void OnTriggerEnter(Collider other) 
+
+    void Update()
+    {
+       Debug.Log(alertProgress);
+       
+    }
+    #endregion
+    void OnTriggerEnter(Collider other) 
 	{
         
 
@@ -72,9 +75,7 @@ public class EnemySight : MonoBehaviour
             {
                 Debug.LogError("player doesnt have player script");
             }
-
             isPlayerInViewCollison = true;
-
             if (!isRaycastingForPlayer)
             {
                 isRaycastingForPlayer = true;
@@ -82,6 +83,7 @@ public class EnemySight : MonoBehaviour
             }
 
         }
+        #region Enemy and Gadget detection
         if (other.gameObject.tag == "Enemy")
         {
             // Saw another guard
@@ -103,9 +105,10 @@ public class EnemySight : MonoBehaviour
             if (enemy.currentAlarmState != Enemy.enemyState.AlarmedbyPlayer)
                 StartCoroutine(RayCastForSuspicosObject(other.gameObject));
         }
+        #endregion
     }
 
-        IEnumerator RayCastForSuspicosObject(GameObject target)
+    IEnumerator RayCastForSuspicosObject(GameObject target)
     {
         yield return new WaitForSeconds(0.05f);
         RaycastHit targetInfo;
@@ -119,96 +122,184 @@ public class EnemySight : MonoBehaviour
 
 
         }
-    }
+    } 
     IEnumerator RayCastForPlayer()
     {
 		while (isPlayerInViewCollison == true || enemy.currentAlarmState == Enemy.enemyState.AlarmedbyPlayer)
-		{
+        {
 			RaycastHit hitInfo;
 			if(Physics.Raycast(transform.position, player.transform.position - transform.transform.position, out hitInfo))
 			{
 				if(hitInfo.collider.tag == "Player")
 				{
-					if (isPlayerInRayCastSight == false)
+					if(enemy.currentAlarmState != Enemy.enemyState.AlarmedbyPlayer)
 					{
-						// First time the enemy spots the player.
-						if (reaction == null)
-						{
-							//Debug.Log("Player has caught an enemies eye.");
-							reaction = StartCoroutine(ReactionToPlayer());
-						}
-					}
+                        enemy.PlayerNoticed(player);
+                        float amountToAddOnDistance;
+                        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
-					isPlayerInRayCastSight = true;
-					//Debug.Log(Vector3.Distance(transform.position, player.transform.position));
+                        if (distanceToPlayer < 6f)
+                        {
+                            amountToAddOnDistance = 70f;
+                           // Debug.Log("70");
+                        }
+                        else if (distanceToPlayer < 10f)
+                        {
+                            amountToAddOnDistance = 30f;
+                            //Debug.Log("30");
+                        }
+                        else if (distanceToPlayer < 15f)
+                        {
+                            amountToAddOnDistance = 20f;
+                           // Debug.Log("20");
+                        }
+                        else if (distanceToPlayer < 19f)
+                        {
+                            amountToAddOnDistance = 14f;
+                            //Debug.Log("14");
+                        }
+                        else
+                        {
+                            amountToAddOnDistance = 5f;
+                           // Debug.Log("8");
+                        }
+                        
+                        alertProgress += amountToAddOnDistance;
+                        //Debug.Log(alertProgress);
+                        if(alertProgress >= 100)
+                        {
+                            enemy.AlertedToPlayer(player);
+                        }
+					}
+                    else
+                    {
+                        alertProgress = 100f;
+                    }
 				}
 				else
-				{
-					
+				{				
 					if(enemy.currentAlarmState == Enemy.enemyState.AlarmedbyPlayer)
 					{
 						Debug.Log("Enemy lost player will search");
-                        StartCoroutine(GiveUpDelay());
-						//enemy.EnemyLostPlayer(player);
-                        //isPlayerInViewCollison = false;
-					}
+                        alertProgress -= 4;
+                        if (alertProgress < 0)
+                        {
+                            alertProgress = 0;
+                            enemy.EnemyLostPlayer(player);
+                        }
+                    }
                     else if(enemy.currentAlarmState == Enemy.enemyState.NoticedPlayer)
                     {
-                       
+                        alertProgress -= 4;
+                        if(alertProgress < 0)
+                        {
+                            alertProgress = 0;
+                            enemy.EnemyDidntSeePlayer(player);
+                        }
                         //isPlayerInViewCollison = false;
                     }
-                    isPlayerInRayCastSight = false;
+                    
 				}
 			}
-
-			yield return rcastDelay;
+            
+            yield return rcastDelay;
 		}
         isRaycastingForPlayer = false;
-		isPlayerInRayCastSight = false;
-	}
+        alertProgress = 0;
+        enemy.EnemyDidntSeePlayer(player);
+    }
 
+
+  
+    float AmountToAddOnDistance()
+    {
+        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+
+        if(distanceToPlayer < 2f)
+        {
+            return 70f;
+        }
+        else if(distanceToPlayer < 6f)
+        {
+            return 30f;
+        }
+        else if(distanceToPlayer < 10f)
+        {
+            return 10f;
+        }
+        else
+        {
+            return 3f;
+        }
+
+    }
+    /*
+  
 	IEnumerator ReactionToPlayer()
 	{
+
 		float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-		float reactionTime = (distanceToPlayer/noticeTimePerMetre) * (distanceToPlayer/noticeTimeScaler);
+		float reactionTime = (distanceToPlayer/noticeTimePerMetre) / (distanceToPlayer/noticeTimeScaler);
 		reactionTime = Mathf.Clamp(reactionTime, MinimunReactionTime, MaximunReactionTime);
-		print("Enemy will  notice player in " + reactionTime + " seconds");
+		print(reactionTime );
 		enemy.PlayerNoticed(player);
 
 		yield return new WaitForSeconds(reactionTime);
 
-		if(isPlayerInRayCastSight == false)
+		if()
 		{
-            Debug.Log("Enemy did not notice player will return to patrol");
+            //Debug.Log("Enemy did not notice player will return to patrol");
             enemy.EnemyDidntSeePlayer(player);
         }
 		else
 		{
 			Debug.Log("enemy HAS seen player");
 			enemy.AlertedToPlayer(player);
+            alertProgress = 100;
 		}
 
 		reaction = null;
 	}
+    */
 
+        /*
     IEnumerator GiveUpDelay()
     {
-        yield return new WaitForSeconds(3.0f);
+       
         RaycastHit hitInfo;
         if (Physics.Raycast(transform.position, player.transform.position - transform.transform.position, out hitInfo))
         {
             if (hitInfo.collider.tag == "Player")
             {
-                //keep up search
+                //keep up chase
+               // alertProgress = 100;
             }
             else
             {
-                enemy.EnemyLostPlayer(player);
+                //alertProgress -= 5;
+               // Debug.Log(alertProgress);
+                if(alertProgress <= 0)
+                {
+                    enemy.EnemyLostPlayer(player);
+                }
+                float dist = Vector3.Distance(player.transform.position, transform.position);
+                //Debug.Log(dist);
+                if (dist > 10.0f)
+                {
+                    //enemy.EnemyLostPlayer(player);
+                    // player is far away and out of sight
+                }
+                else
+                {
+                    // keep up chase
+                }
+                
             }
 
         }
+        yield return new WaitForSeconds(0f);
     }
-
+    */
     void OnTriggerExit(Collider other) 
 	{
 		if(other.gameObject.tag == "Player")

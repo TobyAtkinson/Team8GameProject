@@ -67,7 +67,7 @@ public class Enemy : MonoBehaviour {
         else if(currentAlarmState == enemyState.AlarmedbyPlayer && currentMovementState == Enemy.enemyState.Chasing)
         {
             enemyAgent.SetDestination(_player.transform.position);
-            Debug.Log("going towards player");
+            //Debug.Log("going towards player");
         }
         else if (currentAlarmState == enemyState.NotAlarmed && currentMovementState == Enemy.enemyState.Stationary)
         {
@@ -82,9 +82,14 @@ public class Enemy : MonoBehaviour {
         {
             if (gaurdPoint != null)
             {
-                Debug.Log("going towards patrol point");
+                //Debug.Log("going towards patrol point");
                 enemyAgent.SetDestination(gaurdPoint.transform.position);
             }
+        }
+
+        if(currentAlarmState == enemyState.NotAlarmed && currentMovementState == enemyState.Chasing)
+        {
+            currentMovementState = enemyState.Patrolling;
         }
     }
 
@@ -177,8 +182,9 @@ public class Enemy : MonoBehaviour {
 
     IEnumerator YellowAlarmOffDelay()
     {
-        yield return new WaitForSeconds(0.2f);
+        
         ui.EnemyDidntSeePlayer();
+        yield return new WaitForSeconds(0.2f);
     }
 
     /*
