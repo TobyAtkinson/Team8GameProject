@@ -20,7 +20,8 @@ public class PlayerActions : MonoBehaviour
     public int throwForce;
     #endregion
 
-
+    public GameObject shockGadgetRange;
+    public GameObject enemyToShock;
     void Start()
     {
         #region Teleport Disk Component Assignments
@@ -39,6 +40,7 @@ public class PlayerActions : MonoBehaviour
     {
         ThrowTeleport();
         TeleportToDisk();
+        ShockEnemy();
     }
 
     #region Teleport Disk Functions
@@ -71,5 +73,15 @@ public class PlayerActions : MonoBehaviour
         }
     }
     #endregion
+
+
+    void ShockEnemy() 
+    {
+        if (Input.GetKeyDown(KeyCode.Q) == true && shockGadgetRange.GetComponent<StoreEnemyShock>().enemyDectected == true) 
+        {
+            enemyToShock = shockGadgetRange.GetComponent<StoreEnemyShock>().storedEnemy;
+            enemyToShock.GetComponent<ShockGadgetReceiver>().Shock();
+        }
+    }
 }
   

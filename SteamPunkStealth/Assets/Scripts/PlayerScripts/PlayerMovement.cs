@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float wallRunLength = 10f;
     public bool isWallRunningUp;
+    public bool isWallRunningSide;
     #region Speeds
     public float speed;
     public float walkSpeed;
@@ -24,11 +25,10 @@ public class PlayerMovement : MonoBehaviour
     #endregion 
     Vector3 move;
     public AnimationCurve WallRunArc;
-
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
-
+    public GameObject playerCam;
     Vector3 velocity;
     public bool isGrounded;
 
@@ -56,9 +56,12 @@ public class PlayerMovement : MonoBehaviour
             velocity = transform.TransformDirection(velocity);
             Controller.Move(velocity * Time.deltaTime);
         }
-        
 
-        Jump();
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded == true)
+        {
+            Jump();
+        }
+      
 
         velocity.y += gravity * Time.deltaTime;
 
@@ -73,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
         {
             isGrounded = true;
         }
-        else 
+        else if (!isWallRunningSide)
         {
             isGrounded = false;
         }
@@ -82,10 +85,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded == true)
-        {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
-        }
+        velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);     
     }
 
 
@@ -116,9 +116,16 @@ public class PlayerMovement : MonoBehaviour
             Debug.DrawRay(transform.position, hitLeft.point);
             if (hitLeft.transform.CompareTag("Climbable") && Input.GetKey(KeyCode.W))
             {
-                if (speed == sprintSpeed)
+                isGrounded = true;
+                if (Input.GetKey(KeyCode.Space) && isGrounded == true)
+                {
+                    Jump();
+                }
+
+                else if (speed == sprintSpeed)
                 {
                     velocity.y = 0;
+                    isWallRunningSide = true;
                 }
             }
             else
@@ -126,6 +133,12 @@ public class PlayerMovement : MonoBehaviour
                 return;
             }
         }
+
+        else
+        {
+            isWallRunningSide = false;
+        }
+
 
         RaycastHit hitRight;
         Debug.DrawRay(transform.position, transform.right * 1f, Color.red, 0.5f);
@@ -135,15 +148,28 @@ public class PlayerMovement : MonoBehaviour
             Debug.DrawRay(transform.position, hitRight.point);
             if (hitRight.transform.CompareTag("Climbable") && Input.GetKey(KeyCode.W))
             {
-                if (speed == sprintSpeed) 
-                { 
-                    velocity.y = 0; 
+                isGrounded = true;
+                if (Input.GetKey(KeyCode.Space) && isGrounded == true)
+                {
+                    Jump();
                 }
+
+                else if (speed == sprintSpeed)
+                {
+                    velocity.y = 0;
+                    isWallRunningSide = true;
+                }
+
             }
-            else 
+            else
             {
                 return;
             }
+        }
+
+        else 
+        {
+            isWallRunningSide = false;
         }
 
         RaycastHit hitForward;
@@ -155,6 +181,7 @@ public class PlayerMovement : MonoBehaviour
             if (hitForward.transform.CompareTag("Climbable") && Input.GetKey(KeyCode.W))
             {
                 isWallRunningUp = true;
+                isGrounded = true;
                 velocity.y = 3;
             }
             else

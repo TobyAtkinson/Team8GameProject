@@ -5,7 +5,6 @@ TagManager:
   serializedVersion: 2
   tags:
   - Climbable
-  - Ground
   - Enemy
   - Gadget
   - Gaurdpoint
@@ -18,7 +17,7 @@ TagManager:
   - UI
   - 
   - 
-  - Ground
+  - 
   - Enviroment
   - Enemy
   - walkable
