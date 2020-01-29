@@ -41,7 +41,9 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         WallRunning();
-        isGroundedCheck();
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
+        VelocityReset();
         Crouch();
         SpeedChanges();
 
@@ -50,11 +52,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (isWallRunningUp == false) 
         {
-            inputVector = new Vector3(x, 0, z);
-            inputVector = inputVector.normalized;
-            Vector3 velocity = inputVector * speed;
-            velocity = transform.TransformDirection(velocity);
-            Controller.Move(velocity * Time.deltaTime);
+            inputVector = new Vector3((x * speed), 0, (z * speed));
+            playerRB.AddForce(inputVector, ForceMode.Force); 
         }
         
 
@@ -65,32 +64,18 @@ public class PlayerMovement : MonoBehaviour
         Controller.Move(velocity * Time.deltaTime);
     }
 
-
-    void isGroundedCheck() 
+    void VelocityReset()
     {
-        
-        
-        RaycastHit hitDown;
-        Debug.DrawRay(transform.position - new Vector3(0,1,0), -transform.up * 0.3f, Color.magenta, 0.3f);
-        if (Physics.Raycast(transform.position - new Vector3(0, 1, 0), -transform.up, out hitDown, 0.3f, groundMask))
+        if (isGrounded && velocity.y < 0)
         {
-            isGrounded = true;
-        }
-        else 
-        {
-            isGrounded = false;
+            velocity.y = -2f;
         }
     }
-    
-    
-    
-    
+
     void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) == true && isGrounded == true) 
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            Debug.Log("Jump");
-
             velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
         }
     }
@@ -164,9 +149,8 @@ public class PlayerMovement : MonoBehaviour
                 isWallRunningUp = true;
                 velocity.y = 3;
             }
-            else 
+            else
             {
-                isWallRunningUp = false;
             }
         }
 
@@ -174,8 +158,6 @@ public class PlayerMovement : MonoBehaviour
         {
             isWallRunningUp = false;
         }
-
-
     }
 
     void Crouch() 
