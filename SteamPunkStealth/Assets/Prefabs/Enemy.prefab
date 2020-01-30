@@ -125,6 +125,7 @@ MonoBehaviour:
   currentAlarmState: 4
   lookTowardsHere: {fileID: 0}
   gaurdPoint: {fileID: 0}
+  wherePlayerLastSeen: {x: 0, y: 0, z: 0}
 --- !u!114 &3058822232610949865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -445,8 +446,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4654450902881449505}
   m_LocalRotation: {x: -0.50000006, y: -0.49999997, z: -0.50000006, w: 0.49999997}
-  m_LocalPosition: {x: 0, y: 0.78, z: -1.482}
-  m_LocalScale: {x: 1056.965, y: 1837.3501, z: 415.57986}
+  m_LocalPosition: {x: -0, y: 0.78, z: -0.36}
+  m_LocalScale: {x: 1192.8906, y: 1126.8285, z: 415.57986}
   m_Children: []
   m_Father: {fileID: 3164786891981139715}
   m_RootOrder: 0
@@ -515,6 +516,8 @@ MonoBehaviour:
   MinimunReactionTime: 0.4
   MaximunReactionTime: 3.5
   isPlayerInViewCollison: 0
+  alertProgress: 0
+  wherePlayerWasLastSeen: {x: 0, y: 0, z: 0}
 --- !u!64 &4654450902881449519
 MeshCollider:
   m_ObjectHideFlags: 0

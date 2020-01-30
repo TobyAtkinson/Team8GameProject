@@ -97,7 +97,8 @@ public class EnemySight : MonoBehaviour
                 if (isOtherGaurdAlerted == true)
                 {
                     alertProgress = 100f;
-                    wherePlayerWasLastSeen = player.transform.position;
+                    GameObject tempPlayer = GameObject.FindWithTag("Player");
+                    wherePlayerWasLastSeen = tempPlayer.transform.position;
                     enemy.wherePlayerLastSeen = wherePlayerWasLastSeen;
                     enemy.AlertedToPlayer(player);
                 }
