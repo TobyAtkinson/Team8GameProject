@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject playerCam;
     Vector3 velocity;
     public bool isGrounded;
-
+    public bool isCrouched;
     void Start()
     {
         speed = walkSpeed;
@@ -70,16 +70,41 @@ public class PlayerMovement : MonoBehaviour
 
     void isGroundCheck() 
     {
-        RaycastHit hitDown;
-        Debug.DrawRay(transform.position - new Vector3(0,1,0), -transform.up * 0.3f, Color.magenta, 0.3f);
-        if (Physics.Raycast(transform.position - new Vector3(0, 1, 0), -transform.up, out hitDown, 0.3f, groundMask))
+
+        if (!isCrouched) 
         {
-            isGrounded = true;
+            RaycastHit hitDown;
+            Debug.DrawRay(transform.position - new Vector3(0,1,0), -transform.up * 0.3f, Color.magenta, 0.3f);
+            if (Physics.Raycast(transform.position - new Vector3(0, 1, 0), -transform.up, out hitDown, 0.3f, groundMask))
+            {
+                isGrounded = true;
+            }
+            else if (!isWallRunningSide)
+            {
+                isGrounded = false;
+            }
+
         }
-        else if (!isWallRunningSide)
+        
+   
+        if (isCrouched) 
         {
-            isGrounded = false;
+            RaycastHit hitDown;
+            Debug.DrawRay(transform.position - new Vector3(0, 0.3f, 0), -transform.up * 0.3f, Color.magenta, 0.3f);
+            if (Physics.Raycast(transform.position - new Vector3(0, 0.3f, 0), -transform.up, out hitDown, 0.3f, groundMask))
+            {
+                isGrounded = true;
+            }
+            else if (!isWallRunningSide)
+            {
+                isGrounded = false;
+            }
         }
+        
+
+
+
+
     }
 
 
@@ -199,12 +224,15 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftControl) && isGrounded) 
         {
+            isCrouched = true;
             speed = crouchSpeed;
             transform.localScale = transform.localScale / 2;
         }
 
         if (Input.GetKeyUp(KeyCode.LeftControl) && isGrounded)
         {
+            Debug.Log("UnCrouch");
+            isCrouched = false;
             speed = walkSpeed;
             transform.localScale = transform.localScale * 2;
         }
