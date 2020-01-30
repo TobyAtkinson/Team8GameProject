@@ -39,6 +39,8 @@ public class Enemy : MonoBehaviour {
 
     public GameObject gaurdPoint;
 
+    public Vector3 wherePlayerLastSeen;
+
     void Awake () 
 	{
 		ui = GetComponent<EnemyUI>();
@@ -60,13 +62,13 @@ public class Enemy : MonoBehaviour {
         if(currentAlarmState == enemyState.NoticedPlayer && currentMovementState == Enemy.enemyState.Stationary)
         {
             // Enemy should be yellow arrow, glancing towards player
-            Vector3 direction = (_player.transform.position - transform.position).normalized;
+            Vector3 direction = (wherePlayerLastSeen - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * (LookRoationSpeed * 0.5f));
         }
         else if(currentAlarmState == enemyState.AlarmedbyPlayer && currentMovementState == Enemy.enemyState.Chasing)
         {
-            enemyAgent.SetDestination(_player.transform.position);
+            enemyAgent.SetDestination(wherePlayerLastSeen);
             //Debug.Log("going towards player");
         }
         else if (currentAlarmState == enemyState.NotAlarmed && currentMovementState == Enemy.enemyState.Stationary)
@@ -119,9 +121,10 @@ public class Enemy : MonoBehaviour {
     }
 	  	
 	
-	public void PlayerNoticed(PlayerMovement player)
+	public void PlayerNoticed(PlayerMovement player, Vector3 whereToLook)
 	{
 		this.player = player;
+        wherePlayerLastSeen = whereToLook;
         currentAlarmState = enemyState.NoticedPlayer;
 		if (ui != null)
 			ui.NoticedPlayer();

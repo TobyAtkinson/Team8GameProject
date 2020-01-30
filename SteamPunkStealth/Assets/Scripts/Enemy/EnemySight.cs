@@ -38,6 +38,8 @@ public class EnemySight : MonoBehaviour
 
     public float alertProgress = 0;
 
+    public Vector3 wherePlayerWasLastSeen;
+
 	void Awake()
 	{
 		Debug.Assert(enemy != null, "Enemy class is null.");
@@ -56,7 +58,7 @@ public class EnemySight : MonoBehaviour
 
     void Update()
     {
-       Debug.Log(alertProgress);
+       //Debug.Log(alertProgress);
        
     }
     #endregion
@@ -94,6 +96,9 @@ public class EnemySight : MonoBehaviour
                 bool isOtherGaurdAlerted = otherGuardScript.AnotherGuardHasSeen();
                 if (isOtherGaurdAlerted == true)
                 {
+                    alertProgress = 100f;
+                    wherePlayerWasLastSeen = player.transform.position;
+                    enemy.wherePlayerLastSeen = wherePlayerWasLastSeen;
                     enemy.AlertedToPlayer(player);
                 }
             }
@@ -116,7 +121,9 @@ public class EnemySight : MonoBehaviour
         {
             if (targetInfo.collider.tag == "Gadget")
             {
-                //print("BIG GADGET SEEN");
+                alertProgress = 100f;
+                wherePlayerWasLastSeen = target.transform.position;
+                enemy.wherePlayerLastSeen = wherePlayerWasLastSeen;
                 enemy.AlertedToPlayer(player);
             }
 
@@ -134,9 +141,14 @@ public class EnemySight : MonoBehaviour
 				{
 					if(enemy.currentAlarmState != Enemy.enemyState.AlarmedbyPlayer)
 					{
-                        enemy.PlayerNoticed(player);
+                        Debug.Log("enemy noticed player");
+                        wherePlayerWasLastSeen = player.transform.position;
+                        enemy.PlayerNoticed(player, wherePlayerWasLastSeen);
                         float amountToAddOnDistance;
-                        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+                        float distanceToPlayer = Vector3.Distance(enemy.gameObject.transform.position, player.transform.position);
+                        //Debug.Log(distanceToPlayer);
+
+
 
                         if (distanceToPlayer < 6f)
                         {
@@ -174,6 +186,9 @@ public class EnemySight : MonoBehaviour
                     else
                     {
                         alertProgress = 100f;
+                        wherePlayerWasLastSeen = player.transform.position;
+                        enemy.wherePlayerLastSeen = wherePlayerWasLastSeen;
+                        
                     }
 				}
 				else
@@ -181,7 +196,7 @@ public class EnemySight : MonoBehaviour
 					if(enemy.currentAlarmState == Enemy.enemyState.AlarmedbyPlayer)
 					{
 						Debug.Log("Enemy lost player will search");
-                        alertProgress -= 4;
+                        alertProgress -= 1f;
                         if (alertProgress < 0)
                         {
                             alertProgress = 0;
@@ -190,7 +205,7 @@ public class EnemySight : MonoBehaviour
                     }
                     else if(enemy.currentAlarmState == Enemy.enemyState.NoticedPlayer)
                     {
-                        alertProgress -= 4;
+                        alertProgress -= 2.5f;
                         if(alertProgress < 0)
                         {
                             alertProgress = 0;
@@ -205,8 +220,23 @@ public class EnemySight : MonoBehaviour
             yield return rcastDelay;
 		}
         isRaycastingForPlayer = false;
-        alertProgress = 0;
-        enemy.EnemyDidntSeePlayer(player);
+        StartCoroutine(DelayWhilePlayerGone());
+    }
+
+    IEnumerator DelayWhilePlayerGone()
+    {
+        while(isPlayerInViewCollison == false)
+        {
+            alertProgress -= 2;
+            if (alertProgress < 0)
+            {
+                alertProgress = 0;
+                enemy.EnemyDidntSeePlayer(player);
+                break;
+            }
+            yield return rcastDelay;
+        }
+        
     }
 
 
