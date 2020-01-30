@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    #region Variables
     float x;
     float z;
     Rigidbody playerRB;
@@ -32,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
     Vector3 velocity;
     public bool isGrounded;
     public bool isCrouched;
+    #endregion
     void Start()
     {
         speed = walkSpeed;
