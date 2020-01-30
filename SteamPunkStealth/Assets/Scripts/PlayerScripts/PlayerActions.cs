@@ -25,8 +25,15 @@ public class PlayerActions : MonoBehaviour
     public GameObject shockGadgetRange;
     public GameObject enemyToShock;
     #endregion
-
-
+    public GameObject arrowPrefab;
+    public GameObject arrowSpawnPoint;
+    GameObject Arrow;
+    Rigidbody arrowRB;
+    public float drawSpeed;
+    public float maxDraw;
+    public float arrowVelocity;
+    public float CurrrentDraw;
+    public float extraArrowForce;
     void Start()
     {
         #region Teleport Disk Component Assignments
@@ -43,9 +50,16 @@ public class PlayerActions : MonoBehaviour
 
     void Update()
     {
+        
+        
+        
+        
         TeleportCountdown();
         ThrowTeleport();
         TeleportToDisk();
+
+        DrawBow();
+        
         ShockEnemy();
     }
 
@@ -105,5 +119,37 @@ public class PlayerActions : MonoBehaviour
     }
     #endregion
 
+    void DrawBow() 
+    {
+        if (Input.GetMouseButtonDown(0)) 
+        {
+            Arrow = GameObject.Instantiate(arrowPrefab, arrowSpawnPoint.transform.position, arrowSpawnPoint.transform.rotation);
+            Arrow.transform.parent = arrowSpawnPoint.transform;
+            arrowRB = Arrow.GetComponent<Rigidbody>();
+            arrowRB.useGravity = false;
+        }
+        
+        if (Input.GetMouseButton(0)) 
+        {
+            if (CurrrentDraw <= maxDraw) 
+            {
+                CurrrentDraw = CurrrentDraw += (Time.deltaTime * drawSpeed);
+                
+            }
+        }
 
+        if (Input.GetMouseButtonUp(0)) 
+        {
+            arrowVelocity = CurrrentDraw;
+            Arrow.transform.parent = null;
+            FireArrow();
+            CurrrentDraw = 0;
+        }
+    }
+
+    void FireArrow() 
+    {
+        arrowRB.AddForce(arrowSpawnPoint.transform.up * (CurrrentDraw * extraArrowForce));
+        arrowRB.useGravity = true;
+    }
 }

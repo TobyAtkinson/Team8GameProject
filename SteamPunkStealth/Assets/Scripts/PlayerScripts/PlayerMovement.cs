@@ -118,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
 
     void SpeedChanges()
     {
-        if (isGrounded)
+        if (isGrounded && !isCrouched)
         {
             if (Input.GetKey(KeyCode.LeftShift))
             {
