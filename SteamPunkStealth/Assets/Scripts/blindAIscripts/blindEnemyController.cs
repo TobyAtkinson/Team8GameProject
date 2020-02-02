@@ -12,17 +12,19 @@ public class blindEnemyController : MonoBehaviour
     Vector3 location;
     Vector3 min;
     Vector3 max;
-    Transform wall;
+    int rate;
     int radius;
     int timer = 0;
+    int searchTimer = 0;
     Vector3 lastPosition;
+    bool clear = true;
     
 
     // Start is called before the first frame update
     void Start()
     {
         target = PlayerManager.instance.player.transform;
-        wall = PlayerManager.instance.wall.transform;
+       
         agent = GetComponent<NavMeshAgent>();
         min.x = 1;
         min.y = 0;
@@ -30,6 +32,7 @@ public class blindEnemyController : MonoBehaviour
         max.x = 25;
         max.y = 0;
         max.z = 25;
+        rate = 1;
 
     }
 
@@ -39,39 +42,60 @@ public class blindEnemyController : MonoBehaviour
         float distance = Vector3.Distance(target.position, transform.position);
 
         
-        playerCrouching(distance, lookRadius, lastPosition);
+        playerCrouching(distance, lookRadius);
 
-        roam();
 
-        if (distance <= lookRadius)
+        if (rate == 1)
+        {
+            roam();
+        }
+
+        /*if (distance <= lookRadius)
             agent.SetDestination(target.position);
-
+*/
 
 
         timer++;
+        
     }
 
-    void playerCrouching(float distance, float lookRadius, Vector3 lastPosition)
+    void playerCrouching(float distance, float lookRadius)
     {
         if (Input.GetKeyDown(KeyCode.C) && distance <= lookRadius)
         {
-           
-            agent.SetDestination(target.position);
-            agent.isStopped = true;
-           
-            Quaternion lookAround = Quaternion.LookRotation(new Vector3(transform.position.x, 0, transform.position.z));
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookAround, Time.deltaTime * 3f);
-       
+            
+            if (clear == true)
+            {
+                lastPosition = target.position;
+                rate = 0;
+                
+                agent.SetDestination(lastPosition);
+            }
 
+            if (transform.position == lastPosition && clear == true)
+            {
+                agent.isStopped = true;
+                clear = false;
+                Debug.Log("enemy stops");
+                searchTimer++;
+                if (searchTimer % 10 == 0)
+                {
+                    agent.isStopped = false;
+                    rate = 1;
+                    roam();
+                    
+                }
+
+            }
 
         }
-        if (distance <= lookRadius && Input.GetKeyUp(KeyCode.C))
+         if (distance <= lookRadius && Input.GetKeyUp(KeyCode.C))
         {
 
-
+            rate = 1;
             agent.isStopped = false;
             agent.SetDestination(target.position);
-
+            clear = true;
 
 
 
@@ -79,11 +103,18 @@ public class blindEnemyController : MonoBehaviour
         }
          if (distance > lookRadius)
         {
+            rate = 1;
             agent.isStopped = false;
-
+            clear = true;
             roam();
 
         }
+
+         if (distance <= lookRadius && rate == 1 && clear == true)
+        {
+            agent.SetDestination(target.position);
+        }
+
 
 
     }
@@ -123,31 +154,14 @@ public class blindEnemyController : MonoBehaviour
 
     void searchForPlayer(float distance)
     {
-        if (Input.GetKeyDown(KeyCode.C) == true)
-        {
-            agent.isStopped = true;
-           
-            Quaternion lookAround = Quaternion.LookRotation(new Vector3(transform.position.x, 0, transform.position.z));
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookAround, Time.deltaTime * 3f);
-            
-        }
-       else if ( distance <= lookRadius && Input.GetButtonUp("c")==true )
-        {
-
-
-                agent.isStopped = false;
-                agent.SetDestination(target.position);
-
-
-
-           
-           
-        }
-        else if (distance > lookRadius)
-        {
-            roam();
-
-        }
+        radius = Random.Range(1, 5);
+        Vector3 randomDirection = Random.insideUnitSphere * radius;
+        lookRoam(ref randomDirection);
+        randomDirection += transform.position;
+        NavMeshHit hit;
+        NavMesh.SamplePosition(randomDirection, out hit, radius, 1);
+        Vector3 finalPos = hit.position;
+        agent.SetDestination(finalPos);
     }
 
     void roam()
