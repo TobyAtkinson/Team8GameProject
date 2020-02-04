@@ -71,7 +71,7 @@ public class PlayerActions : MonoBehaviour
 
         if (!isThrown) 
         {
-            thrownTime = 0.5f;
+            thrownTime = 0.4f;
         }
     }
     
