@@ -25,6 +25,7 @@ public class PlayerActions : MonoBehaviour
     public GameObject shockGadgetRange;
     public GameObject enemyToShock;
     #endregion
+    #region Bow Variables
     public GameObject arrowPrefab;
     public GameObject arrowSpawnPoint;
     GameObject Arrow;
@@ -34,6 +35,7 @@ public class PlayerActions : MonoBehaviour
     public float arrowVelocity;
     public float CurrrentDraw;
     public float extraArrowForce;
+    #endregion
     void Start()
     {
         #region Teleport Disk Component Assignments
@@ -49,11 +51,7 @@ public class PlayerActions : MonoBehaviour
     }
 
     void Update()
-    {
-        
-        
-        
-        
+    {      
         TeleportCountdown();
         ThrowTeleport();
         TeleportToDisk();
@@ -97,12 +95,13 @@ public class PlayerActions : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && isThrown && thrownTime <= 0)
         {
-            Debug.Log("Teleport");
+            Debug.Log("Teleport" + TeleportDiskInstance.transform.position);
 
             TDIrenderer.enabled = false;
             Player.transform.SetPositionAndRotation(TeleportDiskInstance.transform.position, Player.transform.rotation);
             TDIcollider.enabled = false; 
             isThrown = false;
+            Debug.Log(Player.transform.position);
         }
     }
     #endregion
@@ -119,6 +118,7 @@ public class PlayerActions : MonoBehaviour
     }
     #endregion
 
+    #region Bow Functions
     void DrawBow() 
     {
         if (Input.GetMouseButtonDown(0)) 
@@ -152,4 +152,5 @@ public class PlayerActions : MonoBehaviour
         arrowRB.AddForce(arrowSpawnPoint.transform.up * (CurrrentDraw * extraArrowForce));
         arrowRB.useGravity = true;
     }
+    #endregion
 }
