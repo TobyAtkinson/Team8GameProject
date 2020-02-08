@@ -75,7 +75,7 @@ public class EnemySight : MonoBehaviour
             player = other.gameObject.GetComponent<PlayerMovement>();
             if (player == null)
             {
-                Debug.LogError("player doesnt have player script");
+                //Debug.LogError("player doesnt have player script");
             }
             isPlayerInViewCollison = true;
             if (!isRaycastingForPlayer)
@@ -142,7 +142,7 @@ public class EnemySight : MonoBehaviour
 				{
 					if(enemy.currentAlarmState != Enemy.enemyState.AlarmedbyPlayer)
 					{
-                        Debug.Log("enemy noticed player");
+                        //Debug.Log("enemy noticed player");
                         wherePlayerWasLastSeen = player.transform.position;
                         enemy.PlayerNoticed(player, wherePlayerWasLastSeen);
                         float amountToAddOnDistance;
@@ -196,7 +196,7 @@ public class EnemySight : MonoBehaviour
 				{				
 					if(enemy.currentAlarmState == Enemy.enemyState.AlarmedbyPlayer)
 					{
-						Debug.Log("Enemy lost player will search");
+						//Debug.Log("Enemy lost player will search");
                         alertProgress -= 1f;
                         if (alertProgress < 0)
                         {

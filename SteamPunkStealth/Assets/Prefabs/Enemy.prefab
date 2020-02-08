@@ -119,13 +119,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9d98c3781b302648bed69516dbd3888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PatrollingEnemy: 1
   _player: {fileID: 0}
   LookRoationSpeed: 1.5
   currentMovementState: 0
   currentAlarmState: 4
-  lookTowardsHere: {fileID: 0}
-  gaurdPoint: {fileID: 0}
   wherePlayerLastSeen: {x: 0, y: 0, z: 0}
+  gaurdPoint: {fileID: 0}
+  gaurdPoint2: {fileID: 0}
+  patrolDelay: 8
 --- !u!114 &3058822232610949865
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -16,6 +16,9 @@ public class Enemy : MonoBehaviour {
         AlarmedbyPlayer, // Sight - Enemy is red alarmed looking at player
         Lostplayer // Sight -Enemy was red alarmed but now nolonger sees player
             }
+    [Header("Variables to not edit")]
+    [SerializeField]
+    private bool PatrollingEnemy;
 
 	private PlayerMovement player;
 
@@ -35,11 +38,25 @@ public class Enemy : MonoBehaviour {
     [SerializeField]
     public enemyState currentAlarmState = enemyState.NotAlarmed;
 
-    public GameObject lookTowardsHere;
+    private Transform lookTowardsHere;
 
-    public GameObject gaurdPoint;
+    private Transform lookTowardsHere2;
 
     public Vector3 wherePlayerLastSeen;
+
+    [Header("Variables you can customize")]
+    public GameObject gaurdPoint;
+
+    public GameObject gaurdPoint2;
+
+    private GameObject currentPoint;
+
+    private int currentGuardPointToGo = 1;
+
+    [SerializeField]
+    private int patrolDelay = 3;
+
+    
 
     void Awake () 
 	{
@@ -52,6 +69,28 @@ public class Enemy : MonoBehaviour {
 	{
 		_player = GameObject.FindGameObjectWithTag("Player");
         enemyAgent = GetComponent<NavMeshAgent>();
+
+        if (gaurdPoint != null)
+        {
+            lookTowardsHere = gaurdPoint.transform.GetChild(0);
+            currentPoint = gaurdPoint;
+            enemyAgent.SetDestination(currentPoint.transform.position);
+        }
+        else
+        {
+            Debug.LogError("Guard does not have 1st patrol point set!");
+        }
+
+        if(PatrollingEnemy == true && gaurdPoint2 != null)
+        {
+            lookTowardsHere2 = gaurdPoint2.transform.GetChild(0);
+            StartCoroutine(NextPatrolPointDelay());
+        }
+        else if(PatrollingEnemy == true && gaurdPoint2 == null)
+        {
+            Debug.LogError("Guard is supposed to patrol but 2nd guard point is not set!");
+        }
+
 
         currentAlarmState = enemyState.NotAlarmed;
         currentMovementState = enemyState.Stationary;
@@ -73,9 +112,15 @@ public class Enemy : MonoBehaviour {
         }
         else if (currentAlarmState == enemyState.NotAlarmed && currentMovementState == Enemy.enemyState.Stationary)
         {
-            if (lookTowardsHere != null)
+            if (currentGuardPointToGo == 1)
             {
-                Vector3 direction = (lookTowardsHere.transform.position - transform.position).normalized;
+                Vector3 direction = (lookTowardsHere.position - transform.position).normalized;
+                Quaternion lookRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * LookRoationSpeed);
+            }
+            else
+            {
+                Vector3 direction = (lookTowardsHere2.position - transform.position).normalized;
                 Quaternion lookRotation = Quaternion.LookRotation(direction);
                 transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * LookRoationSpeed);
             }
@@ -85,7 +130,7 @@ public class Enemy : MonoBehaviour {
             if (gaurdPoint != null)
             {
                 //Debug.Log("going towards patrol point");
-                enemyAgent.SetDestination(gaurdPoint.transform.position);
+                enemyAgent.SetDestination(currentPoint.transform.position);
             }
         }
 
@@ -97,7 +142,7 @@ public class Enemy : MonoBehaviour {
 
     void OnTriggerStay(Collider other)
     {
-        if(other.gameObject.tag == "Gaurdpoint")
+        if(other.gameObject == currentPoint)
         {
             if (currentAlarmState == enemyState.NotAlarmed)
             {
@@ -105,6 +150,7 @@ public class Enemy : MonoBehaviour {
                 currentMovementState = enemyState.Stationary;
             }
         }
+
 
     }
 
@@ -167,6 +213,44 @@ public class Enemy : MonoBehaviour {
         }
     }
 
+    IEnumerator YellowAlarmOffDelay()
+    {
+        ui.EnemyDidntSeePlayer();
+        yield return new WaitForSeconds(0.2f);
+    }
+
+    IEnumerator NextPatrolPointDelay()
+    {
+        while(true)
+        {
+            if(currentAlarmState == enemyState.NotAlarmed)
+            {
+                if (currentGuardPointToGo == 1)
+                {
+                    currentGuardPointToGo = 2;
+                    currentPoint = gaurdPoint2;
+                    gameObject.GetComponent<NavMeshAgent>().enabled = true;
+                    currentMovementState = enemyState.Patrolling;
+                }
+                else
+                {
+                    currentGuardPointToGo = 1;
+                    currentPoint = gaurdPoint;
+                    gameObject.GetComponent<NavMeshAgent>().enabled = true;
+                    currentMovementState = enemyState.Patrolling;
+                }
+                
+            }
+            
+            yield return new WaitForSeconds(patrolDelay);
+        }
+        
+    }
+
+
+
+
+
     /*
     public void EnemyGivingUpSearch(PlayerMovement player)
     {
@@ -180,17 +264,7 @@ public class Enemy : MonoBehaviour {
         }
     }
 
-    */
-
-
-    IEnumerator YellowAlarmOffDelay()
-    {
-        
-        ui.EnemyDidntSeePlayer();
-        yield return new WaitForSeconds(0.2f);
-    }
-
-    /*
+  
 
 		private GameObject PlayerGO;
 
@@ -289,9 +363,9 @@ public class Enemy : MonoBehaviour {
 	 */
 }
 
-	
 
-	
-	 
+
+
+
 
 

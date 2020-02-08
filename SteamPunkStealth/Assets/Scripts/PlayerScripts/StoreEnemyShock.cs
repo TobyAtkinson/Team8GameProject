@@ -21,7 +21,7 @@ public class StoreEnemyShock : MonoBehaviour
 
     void OnTriggerEnter(Collider col) 
     {
-        Debug.Log("Shock Collision");
+        //Debug.Log("Shock Collision");
         
         if (col.gameObject.tag == "Enemy") 
         {
