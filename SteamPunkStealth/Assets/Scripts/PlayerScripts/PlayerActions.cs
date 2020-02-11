@@ -36,6 +36,10 @@ public class PlayerActions : MonoBehaviour
     public float CurrrentDraw;
     public float extraArrowForce;
     #endregion
+    #region Goggles Variables 
+    public GameObject PlayerFieldOfView;
+    public bool gogglesActive;
+    #endregion
     void Start()
     {
         #region Teleport Disk Component Assignments
@@ -153,4 +157,21 @@ public class PlayerActions : MonoBehaviour
         arrowRB.useGravity = true;
     }
     #endregion
+
+    #region Goggle Functions
+    void GoggleToggle() 
+    {
+        if (Input.GetKeyDown(KeyCode.G) && !gogglesActive) 
+        {
+            PlayerFieldOfView.SetActive (true);
+            gogglesActive = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.G) && gogglesActive)
+        {
+            PlayerFieldOfView.SetActive(false);
+            gogglesActive = false;
+        }
+    }
+    #endregion 
 }
