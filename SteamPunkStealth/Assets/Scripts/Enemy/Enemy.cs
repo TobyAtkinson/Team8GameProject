@@ -143,7 +143,7 @@ public class Enemy : MonoBehaviour {
             anim.SetBool("isWalking", false);
             walkSpear.SetActive(false);
             idleStunnedSpear.SetActive(true);
-            attackKickSpear.SetActive(false);
+           
             
         }
         else if(currentAlarmState == enemyState.AlarmedbyPlayer && currentMovementState == Enemy.enemyState.Chasing)
@@ -152,7 +152,7 @@ public class Enemy : MonoBehaviour {
             anim.SetBool("isWalking", true);
             
             idleStunnedSpear.SetActive(false);
-            attackKickSpear.SetActive(false);
+            
             dist = Vector3.Distance(player.transform.position, transform.position);
 
             if (dist <= 3.4f)
@@ -162,13 +162,13 @@ public class Enemy : MonoBehaviour {
                 Quaternion lookRotation = Quaternion.LookRotation(direction);
                 transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * (LookRoationSpeed * 6f));
                 anim.SetBool("inRange", true);
-                ReadySpear.SetActive(true);
                 walkSpear.SetActive(false);
 
-                /*
+               
                 if(currentCombatState == enemyState.Ready)
                 {
-                    if(dist >= 2.0f)
+                    ReadySpear.SetActive(true);
+                    if (dist >= 2.0f)
                     {
                         // attack
                         currentCombatState = enemyState.Atacking;
@@ -181,9 +181,9 @@ public class Enemy : MonoBehaviour {
                         StartCoroutine(Kick());
                     }
                 }
-                */
+                
             }
-            else
+            else if(currentCombatState == enemyState.Ready)
             {
                 enemyAgent.speed = walkSpeed;
                 anim.SetBool("inRange", false);
@@ -202,7 +202,7 @@ public class Enemy : MonoBehaviour {
                 anim.SetBool("isWalking", false);
                 walkSpear.SetActive(false);
                 idleStunnedSpear.SetActive(true);
-                attackKickSpear.SetActive(false);
+           
             }
             else
             {
@@ -212,7 +212,7 @@ public class Enemy : MonoBehaviour {
                 anim.SetBool("isWalking", false);
                 walkSpear.SetActive(false);
                 idleStunnedSpear.SetActive(true);
-                attackKickSpear.SetActive(false);
+               
             }
         }
         else if (currentAlarmState == enemyState.NotAlarmed && currentMovementState == Enemy.enemyState.Patrolling)
@@ -224,7 +224,7 @@ public class Enemy : MonoBehaviour {
                 anim.SetBool("isWalking", true);
                 walkSpear.SetActive(true);
                 idleStunnedSpear.SetActive(false);
-                attackKickSpear.SetActive(false);
+                
                 
             }
         }
@@ -237,24 +237,29 @@ public class Enemy : MonoBehaviour {
 
     IEnumerator Attack()
     {
-        
+        ReadySpear.SetActive(false);
+        attackKickSpear.SetActive(true);
         Debug.Log("Attack");
         anim.SetBool("isAttacking", true);
-        yield return new WaitForSeconds(4.0f);
+        anim.SetTrigger("attack");
+        yield return new WaitForSeconds(2.2f);
 
-
+        attackKickSpear.SetActive(false);
         anim.SetBool("isAttacking", false);
         currentCombatState = enemyState.Ready;
+       
     }
 
     IEnumerator Kick()
     {
-        
+        attackKickSpear.SetActive(true);
+        ReadySpear.SetActive(false);
         Debug.Log("Kick");
         anim.SetBool("isKicking", true);
-        yield return new WaitForSeconds(4.0f);
+        anim.SetTrigger("kick");
+        yield return new WaitForSeconds(2.0f);
 
-
+        attackKickSpear.SetActive(false);
         anim.SetBool("isKicking", false);
         currentCombatState = enemyState.Ready;
     }
