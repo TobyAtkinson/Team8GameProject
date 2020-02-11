@@ -165,6 +165,7 @@ public class Enemy : MonoBehaviour {
                 ReadySpear.SetActive(true);
                 walkSpear.SetActive(false);
 
+                /*
                 if(currentCombatState == enemyState.Ready)
                 {
                     if(dist >= 2.0f)
@@ -180,6 +181,7 @@ public class Enemy : MonoBehaviour {
                         StartCoroutine(Kick());
                     }
                 }
+                */
             }
             else
             {
