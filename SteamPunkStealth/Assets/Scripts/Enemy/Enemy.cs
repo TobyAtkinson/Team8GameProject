@@ -66,8 +66,7 @@ public class Enemy : MonoBehaviour {
     [SerializeField]
     public enemyState currentAlarmState = enemyState.NotAlarmed;
 
-    [SerializeField]
-    public enemyState currentCombatState = enemyState.Ready;
+    
 
     private Transform lookTowardsHere;
 
@@ -75,8 +74,26 @@ public class Enemy : MonoBehaviour {
 
     public Vector3 wherePlayerLastSeen;
 
+    [Header("Combat Variables")]
+
+    [SerializeField]
+    public enemyState currentCombatState = enemyState.Ready;
+
+    [SerializeField]
+    private float maxiumunHealth;
+
+    [SerializeField]
+    private float currentHealth;
+
+    [SerializeField]
+    private bool isDead;
+
+    private BoxCollider spearKillCollider;
+
     [Header("Variables you can customize")]
     public GameObject gaurdPoint;
+
+
 
     public GameObject gaurdPoint2;
 
@@ -98,6 +115,7 @@ public class Enemy : MonoBehaviour {
         _player = GameObject.FindGameObjectWithTag("Player");
         enemyAgent = GetComponent<NavMeshAgent>();
         enemyAgent.speed = walkSpeed;
+        spearKillCollider = attackKickSpear.GetComponent<BoxCollider>();
 
         if (gaurdPoint != null)
         {
@@ -128,11 +146,24 @@ public class Enemy : MonoBehaviour {
         currentAlarmState = enemyState.NotAlarmed;
         currentMovementState = enemyState.Stationary;
         currentCombatState = enemyState.Ready;
+        currentHealth = maxiumunHealth;
     }
 
-	void Update()
+    public void TakeDamage(float damageAmount)
+    {
+        currentHealth -= damageAmount;
+        if (currentHealth <= 0 && !isDead)
+        {
+            isDead = true;
+        }
+    }
+
+    void Update()
 	{
-        
+        if(isDead == true)
+        {
+            Debug.LogWarning("Guard dead");
+        }
         
         if (currentAlarmState == enemyState.NoticedPlayer && currentMovementState == Enemy.enemyState.Stationary)
         {
@@ -142,9 +173,7 @@ public class Enemy : MonoBehaviour {
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * (LookRoationSpeed * 0.5f));
             anim.SetBool("isWalking", false);
             walkSpear.SetActive(false);
-            idleStunnedSpear.SetActive(true);
-           
-            
+            idleStunnedSpear.SetActive(true); 
         }
         else if(currentAlarmState == enemyState.AlarmedbyPlayer && currentMovementState == Enemy.enemyState.Chasing)
         {
@@ -242,11 +271,18 @@ public class Enemy : MonoBehaviour {
         Debug.Log("Attack");
         anim.SetBool("isAttacking", true);
         anim.SetTrigger("attack");
-        yield return new WaitForSeconds(2.2f);
+        yield return new WaitForSeconds(0.60f);
+        spearKillCollider.enabled = true;
+        yield return new WaitForSeconds(0.50f);
+        attackKickSpear.GetComponent<BoxCollider>().enabled = false;
+        yield return new WaitForSeconds(0.65f);
 
         attackKickSpear.SetActive(false);
         anim.SetBool("isAttacking", false);
         currentCombatState = enemyState.Ready;
+
+        // 0.75 is when box collider should be on
+        // 1.75 overall
        
     }
 
@@ -262,6 +298,15 @@ public class Enemy : MonoBehaviour {
         attackKickSpear.SetActive(false);
         anim.SetBool("isKicking", false);
         currentCombatState = enemyState.Ready;
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "PlayerSword")
+        {
+            other.enabled = false;
+            TakeDamage(50);
+        }
     }
 
     void OnTriggerStay(Collider other)

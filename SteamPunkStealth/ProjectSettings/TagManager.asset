@@ -8,6 +8,9 @@ TagManager:
   - Enemy
   - Gadget
   - Gaurdpoint
+  - Ground
+  - GuardSpear
+  - PlayerSword
   layers:
   - Default
   - TransparentFX
