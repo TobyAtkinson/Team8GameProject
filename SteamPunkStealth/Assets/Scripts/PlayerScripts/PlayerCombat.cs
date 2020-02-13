@@ -4,9 +4,22 @@ using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject sword;
 
-    public GameObject sword;
     private Animator swordAnim;
+
+    [SerializeField]
+    private float maxiumunHealth;
+
+    [SerializeField]
+    private float currentHealth;
+
+    [SerializeField]
+    private bool isDead;
+
+    private BoxCollider swordKillCollider;
+
 
     public enum swordState
     {
@@ -20,14 +33,44 @@ public class PlayerCombat : MonoBehaviour
 
     public swordState currentSwordState = swordState.Idle;
 
+    void Awake()
+    {
+        swordKillCollider = sword.GetComponent<BoxCollider>();
+    }
+
     void Start()
     {
+        currentHealth = maxiumunHealth;
         swordAnim = sword.GetComponent<Animator>();
     }
 
+    public void TakeDamage(float damageAmount)
+    {
+        currentHealth -= damageAmount;
+        if (currentHealth <= 0 && !isDead)
+        {
+            isDead = true;
+        }
+
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "GuardSpear")
+        {
+            other.enabled = false;
+            TakeDamage(50);
+        }
+    }
 
     void Update()
     {
+        if (isDead == true)
+        {
+            Debug.LogError("Player dead");
+        }
+
+
         if (Input.GetMouseButton(0))
         {
             if(currentSwordState == swordState.Idle)
@@ -47,6 +90,7 @@ public class PlayerCombat : MonoBehaviour
                 //start second swing
                 currentSwordState = swordState.SecondSwing;
                 windowForSecondSwing = false;
+                swordKillCollider.enabled = false;
                 StartCoroutine(SecondSwing());
             }
             else
@@ -69,14 +113,16 @@ public class PlayerCombat : MonoBehaviour
     IEnumerator FirstSwing()
     {
         swordAnim.Play("SwordAttack1");
-        yield return new WaitForSeconds(0.25f);
-        // Activate kill barrier
         yield return new WaitForSeconds(0.15f);
+        // Activate kill barrier
+        swordKillCollider.enabled = true;
+        yield return new WaitForSeconds(0.25f);
         windowForSecondSwing = true;
         if(currentSwordState == swordState.FirstSwing)
         {
             yield return new WaitForSeconds(0.15f);
             // Deactive kill barrier
+            swordKillCollider.enabled = false;
             yield return new WaitForSeconds(0.15f);
             windowForSecondSwing = false;
             yield return new WaitForSeconds(0.15f);
@@ -95,9 +141,11 @@ public class PlayerCombat : MonoBehaviour
         windowForSecondSwing = false;
         yield return new WaitForSeconds(0.25f);
         // Activate kill barrier
+        swordKillCollider.enabled = true;
         windowForSecondSwing = false;
         yield return new WaitForSeconds(0.30f);
         // Deactive kill barrier
+        swordKillCollider.enabled = false;
         windowForSecondSwing = false;
         yield return new WaitForSeconds(0.3f);
         windowForSecondSwing = false;

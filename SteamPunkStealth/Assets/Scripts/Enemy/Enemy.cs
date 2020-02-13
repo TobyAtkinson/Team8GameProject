@@ -14,13 +14,41 @@ public class Enemy : MonoBehaviour {
         NotAlarmed, // Sight - Enemy has not seen anything
         NoticedPlayer, // Sight - Enemy is yellow alarmed noticed player but not reacted
         AlarmedbyPlayer, // Sight - Enemy is red alarmed looking at player
-        Lostplayer // Sight -Enemy was red alarmed but now nolonger sees player
-            }
+        Lostplayer, // Sight -Enemy was red alarmed but now no longer sees player
+        Atacking, // Combat - Enemy is swinging at player
+        Kicking, // Combat - Enemy is kicking player as he is too close
+        Stunned, // Combat - Enemy was parried by player
+        Ready // Combat - Currently still
+
+    }
     [Header("Variables to not edit")]
+
     [SerializeField]
     private bool PatrollingEnemy;
 
 	private PlayerMovement player;
+
+
+
+
+    [SerializeField]
+    private GameObject body;
+
+    [SerializeField]
+    private GameObject attackKickSpear;
+
+    [SerializeField]
+    private GameObject idleStunnedSpear;
+
+    [SerializeField]
+    private GameObject walkSpear;
+
+    [SerializeField]
+    private GameObject ReadySpear;
+
+    private Animator anim;
+
+    private float dist;
 
 	private EnemyUI ui;
 
@@ -38,14 +66,34 @@ public class Enemy : MonoBehaviour {
     [SerializeField]
     public enemyState currentAlarmState = enemyState.NotAlarmed;
 
+    
+
     private Transform lookTowardsHere;
 
     private Transform lookTowardsHere2;
 
     public Vector3 wherePlayerLastSeen;
 
+    [Header("Combat Variables")]
+
+    [SerializeField]
+    public enemyState currentCombatState = enemyState.Ready;
+
+    [SerializeField]
+    private float maxiumunHealth;
+
+    [SerializeField]
+    private float currentHealth;
+
+    [SerializeField]
+    private bool isDead;
+
+    private BoxCollider spearKillCollider;
+
     [Header("Variables you can customize")]
     public GameObject gaurdPoint;
+
+
 
     public GameObject gaurdPoint2;
 
@@ -56,19 +104,18 @@ public class Enemy : MonoBehaviour {
     [SerializeField]
     private int patrolDelay = 3;
 
+    [SerializeField]
+    private float walkSpeed;
     
 
     void Awake () 
 	{
 		ui = GetComponent<EnemyUI>();
-	}
-	
-
-	
-	void Start()
-	{
-		_player = GameObject.FindGameObjectWithTag("Player");
+        anim = body.GetComponent<Animator>();
+        _player = GameObject.FindGameObjectWithTag("Player");
         enemyAgent = GetComponent<NavMeshAgent>();
+        enemyAgent.speed = walkSpeed;
+        spearKillCollider = attackKickSpear.GetComponent<BoxCollider>();
 
         if (gaurdPoint != null)
         {
@@ -81,34 +128,98 @@ public class Enemy : MonoBehaviour {
             Debug.LogError("Guard does not have 1st patrol point set!");
         }
 
-        if(PatrollingEnemy == true && gaurdPoint2 != null)
+        if (PatrollingEnemy == true && gaurdPoint2 != null)
         {
             lookTowardsHere2 = gaurdPoint2.transform.GetChild(0);
             StartCoroutine(NextPatrolPointDelay());
         }
-        else if(PatrollingEnemy == true && gaurdPoint2 == null)
+        else if (PatrollingEnemy == true && gaurdPoint2 == null)
         {
             Debug.LogError("Guard is supposed to patrol but 2nd guard point is not set!");
         }
+    }
+	
 
-
+	
+	void Start()
+	{
         currentAlarmState = enemyState.NotAlarmed;
         currentMovementState = enemyState.Stationary;
+        currentCombatState = enemyState.Ready;
+        currentHealth = maxiumunHealth;
     }
 
-	void Update()
+    public void TakeDamage(float damageAmount)
+    {
+        currentHealth -= damageAmount;
+        if (currentHealth <= 0 && !isDead)
+        {
+            isDead = true;
+        }
+    }
+
+    void Update()
 	{
-        if(currentAlarmState == enemyState.NoticedPlayer && currentMovementState == Enemy.enemyState.Stationary)
+        if(isDead == true)
+        {
+            Debug.LogWarning("Guard dead");
+        }
+        
+        if (currentAlarmState == enemyState.NoticedPlayer && currentMovementState == Enemy.enemyState.Stationary)
         {
             // Enemy should be yellow arrow, glancing towards player
             Vector3 direction = (wherePlayerLastSeen - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * (LookRoationSpeed * 0.5f));
+            anim.SetBool("isWalking", false);
+            walkSpear.SetActive(false);
+            idleStunnedSpear.SetActive(true); 
         }
         else if(currentAlarmState == enemyState.AlarmedbyPlayer && currentMovementState == Enemy.enemyState.Chasing)
         {
             enemyAgent.SetDestination(wherePlayerLastSeen);
-            //Debug.Log("going towards player");
+            anim.SetBool("isWalking", true);
+            
+            idleStunnedSpear.SetActive(false);
+            
+            dist = Vector3.Distance(player.transform.position, transform.position);
+
+            if (dist <= 3.4f)
+            {
+                enemyAgent.speed = 0;
+                Vector3 direction = (wherePlayerLastSeen - transform.position).normalized;
+                Quaternion lookRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * (LookRoationSpeed * 6f));
+                anim.SetBool("inRange", true);
+                walkSpear.SetActive(false);
+
+               
+                if(currentCombatState == enemyState.Ready)
+                {
+                    ReadySpear.SetActive(true);
+                    if (dist >= 2.0f)
+                    {
+                        // attack
+                        currentCombatState = enemyState.Atacking;
+                        StartCoroutine(Attack());
+                    }
+                    else
+                    {
+                        // kick
+                        currentCombatState = enemyState.Kicking;
+                        StartCoroutine(Kick());
+                    }
+                }
+                
+            }
+            else if(currentCombatState == enemyState.Ready)
+            {
+                enemyAgent.speed = walkSpeed;
+                anim.SetBool("inRange", false);
+                ReadySpear.SetActive(false);
+                walkSpear.SetActive(true);
+            }
+            
         }
         else if (currentAlarmState == enemyState.NotAlarmed && currentMovementState == Enemy.enemyState.Stationary)
         {
@@ -117,12 +228,20 @@ public class Enemy : MonoBehaviour {
                 Vector3 direction = (lookTowardsHere.position - transform.position).normalized;
                 Quaternion lookRotation = Quaternion.LookRotation(direction);
                 transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * LookRoationSpeed);
+                anim.SetBool("isWalking", false);
+                walkSpear.SetActive(false);
+                idleStunnedSpear.SetActive(true);
+           
             }
             else
             {
                 Vector3 direction = (lookTowardsHere2.position - transform.position).normalized;
                 Quaternion lookRotation = Quaternion.LookRotation(direction);
                 transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * LookRoationSpeed);
+                anim.SetBool("isWalking", false);
+                walkSpear.SetActive(false);
+                idleStunnedSpear.SetActive(true);
+               
             }
         }
         else if (currentAlarmState == enemyState.NotAlarmed && currentMovementState == Enemy.enemyState.Patrolling)
@@ -131,12 +250,62 @@ public class Enemy : MonoBehaviour {
             {
                 //Debug.Log("going towards patrol point");
                 enemyAgent.SetDestination(currentPoint.transform.position);
+                anim.SetBool("isWalking", true);
+                walkSpear.SetActive(true);
+                idleStunnedSpear.SetActive(false);
+                
+                
             }
         }
 
         if(currentAlarmState == enemyState.NotAlarmed && currentMovementState == enemyState.Chasing)
         {
             currentMovementState = enemyState.Patrolling;
+        }
+    }
+
+    IEnumerator Attack()
+    {
+        ReadySpear.SetActive(false);
+        attackKickSpear.SetActive(true);
+        Debug.Log("Attack");
+        anim.SetBool("isAttacking", true);
+        anim.SetTrigger("attack");
+        yield return new WaitForSeconds(0.60f);
+        spearKillCollider.enabled = true;
+        yield return new WaitForSeconds(0.50f);
+        attackKickSpear.GetComponent<BoxCollider>().enabled = false;
+        yield return new WaitForSeconds(0.65f);
+
+        attackKickSpear.SetActive(false);
+        anim.SetBool("isAttacking", false);
+        currentCombatState = enemyState.Ready;
+
+        // 0.75 is when box collider should be on
+        // 1.75 overall
+       
+    }
+
+    IEnumerator Kick()
+    {
+        attackKickSpear.SetActive(true);
+        ReadySpear.SetActive(false);
+        Debug.Log("Kick");
+        anim.SetBool("isKicking", true);
+        anim.SetTrigger("kick");
+        yield return new WaitForSeconds(2.0f);
+
+        attackKickSpear.SetActive(false);
+        anim.SetBool("isKicking", false);
+        currentCombatState = enemyState.Ready;
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "PlayerSword")
+        {
+            other.enabled = false;
+            TakeDamage(50);
         }
     }
 
@@ -150,8 +319,6 @@ public class Enemy : MonoBehaviour {
                 currentMovementState = enemyState.Stationary;
             }
         }
-
-
     }
 
     public bool AnotherGuardHasSeen()
