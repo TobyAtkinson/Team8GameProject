@@ -46,6 +46,7 @@ public class blindEnemyController : MonoBehaviour
         
         playerCrouching(distance, lookRadius);
 
+        attackPlayer();
 
         if (rate == 1)
         {
@@ -160,6 +161,15 @@ public class blindEnemyController : MonoBehaviour
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 7f);
 
+    }
+
+    void attackPlayer()
+    {
+
+        if ((Vector3.Distance(transform.position, target.position) <= 2.5f  && done == false) ||     (Vector3.Distance(transform.position, target.position) <= 1.7f && done))
+        {
+            Debug.Log("Attacks player.");
+        }
     }
 
 
