@@ -22,6 +22,12 @@ public class PlayerCombat : MonoBehaviour
 
     public bool isBlocking;
 
+    [SerializeField]
+    private ParticleSystem spark1;
+
+    [SerializeField]
+    private ParticleSystem spark2;
+
 
     public enum swordState
     {
@@ -66,6 +72,8 @@ public class PlayerCombat : MonoBehaviour
 
                 Enemy enemyScript = other.transform.root.GetComponent<Enemy>();
                 enemyScript.Parried();
+                spark1.Play();
+                spark2.Play();
 
 
             }
