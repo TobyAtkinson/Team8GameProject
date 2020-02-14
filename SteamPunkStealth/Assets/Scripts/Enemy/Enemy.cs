@@ -74,6 +74,12 @@ public class Enemy : MonoBehaviour {
 
     public Vector3 wherePlayerLastSeen;
 
+    [SerializeField]
+    private SpriteRenderer exclemationMarkUI;
+
+    [SerializeField]
+    private GameObject stunnedUI;
+
     [Header("Combat Variables")]
 
     [SerializeField]
@@ -165,7 +171,7 @@ public class Enemy : MonoBehaviour {
             Debug.LogWarning("Guard dead");
         }
         
-        if (currentAlarmState == enemyState.NoticedPlayer && currentMovementState == Enemy.enemyState.Stationary)
+        if (currentAlarmState == enemyState.NoticedPlayer && currentMovementState == Enemy.enemyState.Stationary && currentCombatState != enemyState.Stunned)
         {
             // Enemy should be yellow arrow, glancing towards player
             Vector3 direction = (wherePlayerLastSeen - transform.position).normalized;
@@ -175,7 +181,7 @@ public class Enemy : MonoBehaviour {
             walkSpear.SetActive(false);
             idleStunnedSpear.SetActive(true); 
         }
-        else if(currentAlarmState == enemyState.AlarmedbyPlayer && currentMovementState == Enemy.enemyState.Chasing)
+        else if(currentAlarmState == enemyState.AlarmedbyPlayer && currentMovementState == Enemy.enemyState.Chasing && currentCombatState != enemyState.Stunned)
         {
             enemyAgent.SetDestination(wherePlayerLastSeen);
             anim.SetBool("isWalking", true);
@@ -221,7 +227,7 @@ public class Enemy : MonoBehaviour {
             }
             
         }
-        else if (currentAlarmState == enemyState.NotAlarmed && currentMovementState == Enemy.enemyState.Stationary)
+        else if (currentAlarmState == enemyState.NotAlarmed && currentMovementState == Enemy.enemyState.Stationary && currentCombatState != enemyState.Stunned)
         {
             if (currentGuardPointToGo == 1)
             {
@@ -258,7 +264,7 @@ public class Enemy : MonoBehaviour {
             }
         }
 
-        if(currentAlarmState == enemyState.NotAlarmed && currentMovementState == enemyState.Chasing)
+        if(currentAlarmState == enemyState.NotAlarmed && currentMovementState == enemyState.Chasing && currentCombatState != enemyState.Stunned)
         {
             currentMovementState = enemyState.Patrolling;
         }
@@ -273,19 +279,54 @@ public class Enemy : MonoBehaviour {
         anim.SetTrigger("attack");
         yield return new WaitForSeconds(0.60f);
         spearKillCollider.enabled = true;
-        yield return new WaitForSeconds(0.50f);
-        attackKickSpear.GetComponent<BoxCollider>().enabled = false;
-        yield return new WaitForSeconds(0.65f);
+        if(currentCombatState != enemyState.Stunned)
+        {
+            yield return new WaitForSeconds(0.50f);
+            spearKillCollider.enabled = false;
+            yield return new WaitForSeconds(0.65f);
 
-        attackKickSpear.SetActive(false);
-        anim.SetBool("isAttacking", false);
-        currentCombatState = enemyState.Ready;
+            attackKickSpear.SetActive(false);
+            anim.SetBool("isAttacking", false);
+            if (currentCombatState != enemyState.Stunned)
+            {
+                currentCombatState = enemyState.Ready;
+            }
+        }
+
+        
 
         // 0.75 is when box collider should be on
         // 1.75 overall
        
     }
 
+    public void Parried()
+    {
+        currentCombatState = enemyState.Stunned;
+        spearKillCollider.enabled = false;
+        attackKickSpear.SetActive(false);
+        anim.SetBool("isStunned", true);
+        anim.SetBool("isAttacking", false);
+        //anim.SetTrigger("stun");
+        idleStunnedSpear.SetActive(true);
+        exclemationMarkUI.enabled = false;
+        stunnedUI.SetActive(true);
+        StartCoroutine(Stunned());
+        
+    }
+
+    IEnumerator Stunned()
+    {
+        Debug.Log("Stunned");
+
+        yield return new WaitForSeconds(4.0f);
+        exclemationMarkUI.enabled = true;
+        idleStunnedSpear.SetActive(false);
+        stunnedUI.SetActive(false);
+        currentCombatState = enemyState.Ready;
+        anim.SetBool("isStunned", false);
+    }
+        
     IEnumerator Kick()
     {
         attackKickSpear.SetActive(true);
@@ -293,7 +334,7 @@ public class Enemy : MonoBehaviour {
         Debug.Log("Kick");
         anim.SetBool("isKicking", true);
         anim.SetTrigger("kick");
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.2f);
 
         attackKickSpear.SetActive(false);
         anim.SetBool("isKicking", false);
