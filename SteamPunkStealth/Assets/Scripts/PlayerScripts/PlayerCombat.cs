@@ -20,6 +20,8 @@ public class PlayerCombat : MonoBehaviour
 
     private BoxCollider swordKillCollider;
 
+    public bool isBlocking;
+
 
     public enum swordState
     {
@@ -59,7 +61,20 @@ public class PlayerCombat : MonoBehaviour
         if (other.gameObject.tag == "GuardSpear")
         {
             other.enabled = false;
-            TakeDamage(50);
+            if(isBlocking)
+            {
+
+                Enemy enemyScript = other.transform.root.GetComponent<Enemy>();
+                enemyScript.Parried();
+
+
+            }
+            else
+            {
+                TakeDamage(50);
+            }
+
+            
         }
     }
 
@@ -158,11 +173,18 @@ public class PlayerCombat : MonoBehaviour
     IEnumerator Block()
     {
         swordAnim.Play("SwordBlock");
+        
+        //yield return new WaitForSeconds(0.10f);
         // Activate block
-        yield return new WaitForSeconds(0.75f);
-        // Deactive Block
-        yield return new WaitForSeconds(0.50f);
+        isBlocking = true;
+        yield return new WaitForSeconds(0.60f);
+        // Deactive block
+        isBlocking = false;
+        yield return new WaitForSeconds(0.65f);
         currentSwordState = swordState.Idle;
+
+
+        // 1.25 overall
 
     }
 }
