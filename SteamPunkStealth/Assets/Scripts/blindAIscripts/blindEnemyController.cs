@@ -145,7 +145,7 @@ public class blindEnemyController : MonoBehaviour
 
         }
 
-         if (distance <= lookRadius && rate == 1 && clear == true)
+         if (distance <= lookRadius && rate == 1 && clear == true && done == false)
         {
             agent.SetDestination(target.position);
 
