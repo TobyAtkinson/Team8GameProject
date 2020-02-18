@@ -37,8 +37,9 @@ public class PlayerActions : MonoBehaviour
     public float extraArrowForce;
     #endregion
     #region Goggles Variables 
-    public GameObject PlayerFieldOfView;
     public bool gogglesActive;
+    public GameObject Goggles;
+    public float goggleActiveTimer;
     #endregion
     void Start()
     {
@@ -63,6 +64,9 @@ public class PlayerActions : MonoBehaviour
         DrawBow();
         
         ShockEnemy();
+
+        GoggleToggle();
+        GoggleCountdown();
     }
 
     #region Teleport Disk Functions
@@ -159,18 +163,31 @@ public class PlayerActions : MonoBehaviour
     #endregion
 
     #region Goggle Functions
+
+    void GoggleCountdown() 
+    {
+        if (gogglesActive)
+        {
+            goggleActiveTimer = goggleActiveTimer -= Time.deltaTime;
+        }
+    }
+    
+    
     void GoggleToggle() 
     {
         if (Input.GetKeyDown(KeyCode.G) && !gogglesActive) 
         {
-            PlayerFieldOfView.SetActive (true);
+            Debug.Log("Goggles Activate");
+            goggleActiveTimer = 0.4f;
             gogglesActive = true;
+            Goggles.GetComponent<Camera>().enabled = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.G) && gogglesActive)
+        if (Input.GetKeyDown(KeyCode.G) && gogglesActive && goggleActiveTimer <= 0)
         {
-            PlayerFieldOfView.SetActive(false);
+            Debug.Log("Goggles Deactivate");
             gogglesActive = false;
+            Goggles.GetComponent<Camera>().enabled = false;
         }
     }
     #endregion 

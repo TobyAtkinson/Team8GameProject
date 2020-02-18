@@ -168,7 +168,18 @@ public class blindEnemyController : MonoBehaviour
 
         if ((Vector3.Distance(transform.position, target.position) <= 2.5f  && done == false) ||     (Vector3.Distance(transform.position, target.position) <= 1.7f && done))
         {
+            facePlayer();
+            agent.SetDestination(target.position);
+            agent.speed = 0;
+            //rate = 0;
+           
             Debug.Log("Attacks player.");
+        }
+        else
+        {
+            agent.speed = 7;
+           // rate = 1;
+           
         }
     }
 
