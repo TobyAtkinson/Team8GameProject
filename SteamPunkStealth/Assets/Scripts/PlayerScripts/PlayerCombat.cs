@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerCombat : MonoBehaviour
 {
+
+    public LayerMask executeIgnoreLayers;
+
     [SerializeField]
     private GameObject sword;
 
@@ -27,6 +30,9 @@ public class PlayerCombat : MonoBehaviour
 
     [SerializeField]
     private ParticleSystem spark2;
+
+    [SerializeField]
+    private GameObject skullUi;
 
 
     public enum swordState
@@ -90,8 +96,29 @@ public class PlayerCombat : MonoBehaviour
     {
         if (isDead == true)
         {
-            Debug.LogError("Player dead");
+            //Debug.LogError("Player dead");
         }
+
+        
+        RaycastHit hitInfo;
+        if (Physics.Raycast(Camera.main.transform.position, transform.forward, out hitInfo, 2f, executeIgnoreLayers))
+        {
+            if (hitInfo.transform.root.name == "Enemy")
+            {
+                skullUi.SetActive(true);
+               
+            }
+            else
+            {
+                skullUi.SetActive(false);
+            }
+        }
+        else
+        {
+            skullUi.SetActive(false);
+        }
+            
+        
 
 
         if (Input.GetMouseButton(0))

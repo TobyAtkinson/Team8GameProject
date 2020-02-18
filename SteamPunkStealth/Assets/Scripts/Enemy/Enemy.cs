@@ -23,9 +23,7 @@ public class Enemy : MonoBehaviour {
     }
     [Header("Variables to not edit")]
 
-    [SerializeField]
-    private bool PatrollingEnemy;
-
+   
 	private PlayerMovement player;
 
 
@@ -61,7 +59,7 @@ public class Enemy : MonoBehaviour {
     NavMeshAgent enemyAgent;
 
     [SerializeField]
-    public enemyState currentMovementState = enemyState.Stationary;
+    public enemyState currentMovementState;
 
     [SerializeField]
     public enemyState currentAlarmState = enemyState.NotAlarmed;
@@ -73,6 +71,10 @@ public class Enemy : MonoBehaviour {
     private Transform lookTowardsHere2;
 
     public Vector3 wherePlayerLastSeen;
+
+    [SerializeField]
+    private ParticleSystem bloodSplat;
+
 
     [SerializeField]
     private SpriteRenderer exclemationMarkUI;
@@ -105,6 +107,10 @@ public class Enemy : MonoBehaviour {
 
     private GameObject currentPoint;
 
+    [SerializeField]
+    private bool PatrollingEnemy;
+
+
     private int currentGuardPointToGo = 1;
 
     [SerializeField]
@@ -136,6 +142,7 @@ public class Enemy : MonoBehaviour {
 
         if (PatrollingEnemy == true && gaurdPoint2 != null)
         {
+            currentGuardPointToGo = 2;
             lookTowardsHere2 = gaurdPoint2.transform.GetChild(0);
             StartCoroutine(NextPatrolPointDelay());
         }
@@ -150,7 +157,7 @@ public class Enemy : MonoBehaviour {
 	void Start()
 	{
         currentAlarmState = enemyState.NotAlarmed;
-        currentMovementState = enemyState.Stationary;
+        currentMovementState = enemyState.Patrolling;
         currentCombatState = enemyState.Ready;
         currentHealth = maxiumunHealth;
     }
@@ -162,13 +169,17 @@ public class Enemy : MonoBehaviour {
         {
             isDead = true;
         }
+        else
+        {
+            bloodSplat.Play();
+        }
     }
 
     void Update()
 	{
         if(isDead == true)
         {
-            Debug.LogWarning("Guard dead");
+            //Debug.LogWarning("Guard dead");
         }
         
         if (currentAlarmState == enemyState.NoticedPlayer && currentMovementState == Enemy.enemyState.Stationary && currentCombatState != enemyState.Stunned)
@@ -254,6 +265,7 @@ public class Enemy : MonoBehaviour {
         {
             if (gaurdPoint != null)
             {
+                gameObject.GetComponent<NavMeshAgent>().enabled = true;
                 //Debug.Log("going towards patrol point");
                 enemyAgent.SetDestination(currentPoint.transform.position);
                 anim.SetBool("isWalking", true);
@@ -357,6 +369,7 @@ public class Enemy : MonoBehaviour {
             if (currentAlarmState == enemyState.NotAlarmed)
             {
                 gameObject.GetComponent<NavMeshAgent>().enabled = false;
+                Debug.Log("connected with point");
                 currentMovementState = enemyState.Stationary;
             }
         }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 public class EnemySight : MonoBehaviour
 {
+
+    public LayerMask sightIgnoreLayers;
+
 	[SerializeField]	
 	private Enemy enemy;
 
@@ -118,7 +121,7 @@ public class EnemySight : MonoBehaviour
     {
         yield return new WaitForSeconds(0.05f);
         RaycastHit targetInfo;
-        if (Physics.Raycast(transform.position, target.transform.position - transform.transform.position, out targetInfo))
+        if (Physics.Raycast(transform.position, target.transform.position - transform.transform.position, out targetInfo, sightIgnoreLayers))
         {
             if (targetInfo.collider.tag == "Gadget")
             {

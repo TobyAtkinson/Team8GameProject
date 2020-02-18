@@ -26,8 +26,8 @@ TagManager:
   - Enemy
   - walkable
   - PlayerTosee
-  - 
-  - 
+  - Player
+  - GuardHitBox
   - 
   - 
   - 
