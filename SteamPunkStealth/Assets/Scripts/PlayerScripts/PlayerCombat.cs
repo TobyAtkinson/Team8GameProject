@@ -34,6 +34,13 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField]
     private GameObject skullUi;
 
+    public GameObject guard;
+
+    float viewThreshhold = 1.1f;
+
+
+
+
 
     public enum swordState
     {
@@ -99,7 +106,18 @@ public class PlayerCombat : MonoBehaviour
             //Debug.LogError("Player dead");
         }
 
-        
+        Vector3 forward = transform.TransformDirection(Vector3.forward);
+        Vector3 toOther = guard.transform.position - transform.position;
+        float angle = Vector3.Dot(forward, toOther);
+
+        print(Vector3.Dot(forward, toOther) > 0);
+
+        if (angle > viewThreshhold)
+        {
+            print("guard infront");
+        }
+    
+
         RaycastHit hitInfo;
         if (Physics.Raycast(Camera.main.transform.position, transform.forward, out hitInfo, 2f, executeIgnoreLayers))
         {
