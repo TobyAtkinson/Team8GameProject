@@ -9,7 +9,7 @@ public class blindEnemyController : MonoBehaviour
     public float lookRadius = 30f;
     Transform target;
     public NavMeshAgent agent;
-    
+
     int rate;
     int radius;
     int timer = 0;
@@ -21,6 +21,7 @@ public class blindEnemyController : MonoBehaviour
     bool clock;
     int finishSearch = 0;
     int radius2;
+    bool chargePlayer = false;
     bool stoppedAngry = false;
     Vector3 center;
 
@@ -30,10 +31,10 @@ public class blindEnemyController : MonoBehaviour
     void Start()
     {
         target = PlayerManager.instance.player.transform;
-       
+
         agent = GetComponent<NavMeshAgent>();
         clock = true;
-        
+
         rate = 1;
 
     }
@@ -43,9 +44,12 @@ public class blindEnemyController : MonoBehaviour
     {
         float distance = Vector3.Distance(target.position, transform.position);
 
-        
-        playerCrouching(distance, lookRadius);
+        if (!chargePlayer)
+        {
+            playerCrouching(distance, lookRadius);
+        }
 
+        chargeAttack();
         attackPlayer();
 
         if (rate == 1)
@@ -53,15 +57,15 @@ public class blindEnemyController : MonoBehaviour
             roam();
         }
 
-   
-        if(Input.GetKey(KeyCode.C))
+
+        if (Input.GetKey(KeyCode.C))
         {
             done = true;
         }
 
 
-        
-    
+
+
         timer++;
         finishSearch++;
     }
@@ -70,51 +74,51 @@ public class blindEnemyController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.C) && distance <= lookRadius)
         {
-            
+
             if (clear == true)
             {
-              //  Debug.Log("Going for the player.");
+                //  Debug.Log("Going for the player.");
                 lastPosition = target.position;
                 rate = 0;
                 clear = false;
-                
+
                 agent.SetDestination(lastPosition);
                 center = lastPosition;
 
-              
+
 
 
 
             }
 
-           
-       
-            
+
+
+
 
 
         }
 
 
-        if(done && distance <= lookRadius)
+        if (done && distance <= lookRadius)
         {
             if (clock == true)
             {
                 searchTimer++;
             }
-            if(searchTimer % 500 == 0)
+            if (searchTimer % 500 == 0)
             {
                 angry = true;
                 //start angry with timer inside function
-               
+
                 angryRoam();
                 clock = false;
                 searchTimer = 0;
             }
-            
+
 
         }
 
-        
+
         if (distance <= lookRadius && Input.GetKeyUp(KeyCode.C))
         {
 
@@ -126,12 +130,12 @@ public class blindEnemyController : MonoBehaviour
             clock = true;
             angry = false;
             stoppedAngry = false;
-          //  Debug.Log("Going for the player.");
+            //  Debug.Log("Going for the player.");
 
 
 
         }
-         if (distance > lookRadius)
+        if (distance > lookRadius)
         {
             rate = 1;
             agent.isStopped = false;
@@ -141,11 +145,11 @@ public class blindEnemyController : MonoBehaviour
             angry = false;
             stoppedAngry = false;
             roam();
-           
+
 
         }
 
-         if (distance <= lookRadius && rate == 1 && clear == true && done == false)
+        if (distance <= lookRadius && rate == 1 && clear == true && done == false)
         {
             agent.SetDestination(target.position);
 
@@ -166,25 +170,43 @@ public class blindEnemyController : MonoBehaviour
     void attackPlayer()
     {
 
-        if ((Vector3.Distance(transform.position, target.position) <= 2.5f  && done == false) ||     (Vector3.Distance(transform.position, target.position) <= 1.7f && done))
+        if ((Vector3.Distance(transform.position, target.position) <= 2.5f && done == false) || (Vector3.Distance(transform.position, target.position) <= 1.7f && done))
         {
             facePlayer();
             agent.SetDestination(target.position);
             agent.speed = 0;
             //rate = 0;
-           
+
             Debug.Log("Attacks player.");
         }
         else
         {
             agent.speed = 7;
-           // rate = 1;
-           
+            // rate = 1;
+
         }
     }
 
 
-   bool insideSphere(Vector3 position,  Vector3 location)
+    void chargeAttack()
+    {
+        if (Input.GetKey(KeyCode.K))
+        {
+            chargePlayer = true;
+            rate = 0;
+            facePlayer();
+            agent.SetDestination(target.position);
+        }
+
+        if (Input.GetKeyUp(KeyCode.K))
+        {
+            chargePlayer = false;
+            rate = 1;
+        }
+    }
+
+
+    bool insideSphere(Vector3 position, Vector3 location)
     {
         return Vector3.Distance(position, location) < radius;
     }
@@ -207,8 +229,8 @@ public class blindEnemyController : MonoBehaviour
     {
 
 
-       // Debug.Log("Calm.");
-        
+        // Debug.Log("Calm.");
+
         radius = Random.Range(1, 20);
         Vector3 randomDirection = Random.insideUnitSphere * radius;
         lookRoam(ref randomDirection);
@@ -217,13 +239,13 @@ public class blindEnemyController : MonoBehaviour
         NavMesh.SamplePosition(randomDirection, out hit, radius, 1);
         Vector3 finalPos = hit.position;
         agent.SetDestination(finalPos);
-        
-        
+
+
     }
 
     void lookRoam(ref Vector3 randomDirection)
     {
-     
+
         Quaternion lookRotationRoam = Quaternion.LookRotation(new Vector3(randomDirection.x, 0, randomDirection.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotationRoam, Time.deltaTime * 7f);
     }
@@ -239,7 +261,7 @@ public class blindEnemyController : MonoBehaviour
         if (angry && finishSearch % 80 == 0)
         {
 
-          //  Debug.Log("Stressed.");
+            //  Debug.Log("Stressed.");
             radius2 = Random.Range(1, 9);
             Vector3 randomDirection2 = Random.insideUnitSphere * radius2;
             angryLook(ref randomDirection2);
@@ -249,19 +271,19 @@ public class blindEnemyController : MonoBehaviour
             Vector3 finalPos2 = hit2.position;
             agent.SetDestination(finalPos2);
 
-          
-            
-            
-            
+
+
+
+
         }
 
-        
-       
+
+
     }
 
 
 
-        void roam()
+    void roam()
     {
         if (timer % 100 == 0)
         {
