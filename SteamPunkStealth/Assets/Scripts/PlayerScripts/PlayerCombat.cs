@@ -110,30 +110,35 @@ public class PlayerCombat : MonoBehaviour
         Vector3 toOther = guard.transform.position - transform.position;
         float angle = Vector3.Dot(forward, toOther);
 
-        print(Vector3.Dot(forward, toOther) > 0);
-
-        if (angle > viewThreshhold)
+        if (Vector3.Dot(forward, toOther) > 0)
         {
             print("guard infront");
         }
-    
+
+
+   
+
 
         RaycastHit hitInfo;
         if (Physics.Raycast(Camera.main.transform.position, transform.forward, out hitInfo, 2f, executeIgnoreLayers))
         {
-            if (hitInfo.transform.root.name == "Enemy")
+            //hitInfo.transform.root
+            if (hitInfo.transform.tag == "Hitbox")
             {
                 skullUi.SetActive(true);
+                Debug.Log("hits gaurd");
                
             }
             else
             {
                 skullUi.SetActive(false);
+                Debug.Log("not gaurd");
             }
         }
         else
         {
             skullUi.SetActive(false);
+            Debug.Log("nothing");
         }
             
         
