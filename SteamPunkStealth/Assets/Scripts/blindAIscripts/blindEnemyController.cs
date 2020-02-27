@@ -9,22 +9,16 @@ public class blindEnemyController : MonoBehaviour
     public float lookRadius = 30f;
     Transform target;
     public NavMeshAgent agent;
-    
+    Vector3 location;
+    Vector3 min;
+    Vector3 max;
     int rate;
     int radius;
     int timer = 0;
     int searchTimer = 0;
     Vector3 lastPosition;
     bool clear = true;
-    bool done = false;
-    bool angry;
-    bool clock;
-    int finishSearch = 0;
-    int radius2;
-    bool stoppedAngry = false;
-    Vector3 center;
-
-
+    
 
     // Start is called before the first frame update
     void Start()
@@ -32,8 +26,12 @@ public class blindEnemyController : MonoBehaviour
         target = PlayerManager.instance.player.transform;
        
         agent = GetComponent<NavMeshAgent>();
-        clock = true;
-        
+        min.x = 1;
+        min.y = 0;
+        min.z = 1;
+        max.x = 25;
+        max.y = 0;
+        max.z = 25;
         rate = 1;
 
     }
@@ -46,24 +44,19 @@ public class blindEnemyController : MonoBehaviour
         
         playerCrouching(distance, lookRadius);
 
-        attackPlayer();
 
         if (rate == 1)
         {
             roam();
         }
 
-   
-        if(Input.GetKey(KeyCode.C))
-        {
-            done = true;
-        }
+        /*if (distance <= lookRadius)
+            agent.SetDestination(target.position);
+*/
 
 
-        
-    
         timer++;
-        finishSearch++;
+        
     }
 
     void playerCrouching(float distance, float lookRadius)
@@ -73,60 +66,37 @@ public class blindEnemyController : MonoBehaviour
             
             if (clear == true)
             {
-              //  Debug.Log("Going for the player.");
                 lastPosition = target.position;
                 rate = 0;
-                clear = false;
                 
                 agent.SetDestination(lastPosition);
-                center = lastPosition;
-
-              
-
-
-
             }
 
-           
-       
-            
-
-
-        }
-
-
-        if(done && distance <= lookRadius)
-        {
-            if (clock == true)
+            if (transform.position == lastPosition && clear == true)
             {
+                agent.isStopped = true;
+                clear = false;
+                Debug.Log("enemy stops");
                 searchTimer++;
+                if (searchTimer % 10 == 0)
+                {
+                    agent.isStopped = false;
+                    rate = 1;
+                    roam();
+                    
+                }
+
             }
-            if(searchTimer % 500 == 0)
-            {
-                angry = true;
-                //start angry with timer inside function
-               
-                angryRoam();
-                clock = false;
-                searchTimer = 0;
-            }
-            
 
         }
-
-        
-        if (distance <= lookRadius && Input.GetKeyUp(KeyCode.C))
+         if (distance <= lookRadius && Input.GetKeyUp(KeyCode.C))
         {
 
             rate = 1;
             agent.isStopped = false;
             agent.SetDestination(target.position);
             clear = true;
-            done = false;
-            clock = true;
-            angry = false;
-            stoppedAngry = false;
-          //  Debug.Log("Going for the player.");
+
 
 
 
@@ -136,19 +106,13 @@ public class blindEnemyController : MonoBehaviour
             rate = 1;
             agent.isStopped = false;
             clear = true;
-            done = false;
-            clock = true;
-            angry = false;
-            stoppedAngry = false;
             roam();
-           
 
         }
 
-         if (distance <= lookRadius && rate == 1 && clear == true && done == false)
+         if (distance <= lookRadius && rate == 1 && clear == true)
         {
             agent.SetDestination(target.position);
-
         }
 
 
@@ -163,53 +127,13 @@ public class blindEnemyController : MonoBehaviour
 
     }
 
-    void attackPlayer()
-    {
-
-        if ((Vector3.Distance(transform.position, target.position) <= 2.5f  && done == false) ||     (Vector3.Distance(transform.position, target.position) <= 1.7f && done))
-        {
-            facePlayer();
-            agent.SetDestination(target.position);
-            agent.speed = 0;
-            //rate = 0;
-           
-            Debug.Log("Attacks player.");
-        }
-        else
-        {
-            agent.speed = 7;
-           // rate = 1;
-           
-        }
-    }
-
-
-   bool insideSphere(Vector3 position,  Vector3 location)
-    {
-        return Vector3.Distance(position, location) < radius;
-    }
-
-    bool reachedDestination()
-    {
-        if (!agent.pathPending)
-        {
-            if (agent.remainingDistance <= agent.stoppingDistance)
-            {
-                if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
     void idleRoam()
     {
+       
+              
 
-
-       // Debug.Log("Calm.");
         
-        radius = Random.Range(1, 20);
+        radius = Random.Range(1, 15);
         Vector3 randomDirection = Random.insideUnitSphere * radius;
         lookRoam(ref randomDirection);
         randomDirection += transform.position;
@@ -228,40 +152,19 @@ public class blindEnemyController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotationRoam, Time.deltaTime * 7f);
     }
 
-    void angryLook(ref Vector3 randomDirection)
+    void searchForPlayer(float distance)
     {
-        Quaternion lookRotationRoam = Quaternion.LookRotation(new Vector3(randomDirection.x, 0, randomDirection.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotationRoam, Time.deltaTime * 9f);
+        radius = Random.Range(1, 5);
+        Vector3 randomDirection = Random.insideUnitSphere * radius;
+        lookRoam(ref randomDirection);
+        randomDirection += transform.position;
+        NavMeshHit hit;
+        NavMesh.SamplePosition(randomDirection, out hit, radius, 1);
+        Vector3 finalPos = hit.position;
+        agent.SetDestination(finalPos);
     }
 
-    void angryRoam()
-    {
-        if (angry && finishSearch % 80 == 0)
-        {
-
-          //  Debug.Log("Stressed.");
-            radius2 = Random.Range(1, 9);
-            Vector3 randomDirection2 = Random.insideUnitSphere * radius2;
-            angryLook(ref randomDirection2);
-            randomDirection2 += transform.position;
-            NavMeshHit hit2;
-            NavMesh.SamplePosition(randomDirection2, out hit2, radius2, 1);
-            Vector3 finalPos2 = hit2.position;
-            agent.SetDestination(finalPos2);
-
-          
-            
-            
-            
-        }
-
-        
-       
-    }
-
-
-
-        void roam()
+    void roam()
     {
         if (timer % 100 == 0)
         {
