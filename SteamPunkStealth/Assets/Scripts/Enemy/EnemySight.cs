@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 public class EnemySight : MonoBehaviour
 {
+
+    public LayerMask sightIgnoreLayers;
+
 	[SerializeField]	
 	private Enemy enemy;
 
@@ -118,7 +121,7 @@ public class EnemySight : MonoBehaviour
     {
         yield return new WaitForSeconds(0.05f);
         RaycastHit targetInfo;
-        if (Physics.Raycast(transform.position, target.transform.position - transform.transform.position, out targetInfo))
+        if (Physics.Raycast(transform.position, target.transform.position - transform.transform.position, out targetInfo, sightIgnoreLayers))
         {
             if (targetInfo.collider.tag == "Gadget")
             {
@@ -265,6 +268,93 @@ public class EnemySight : MonoBehaviour
 
     }
     /*
+     * 
+     * 
+     * #pragma strict
+
+// http://unitycoder.com/blog
+// ** remember to donate :) **
+
+private var viewThreshold:float = 1.5; // 0 = back
+
+// This would cast rays only against colliders in layer 8
+private var layerMask = 1 << 8;
+
+public var linemat : Material;
+//private var startVertex : Vector3;
+private var targetPos : Vector3;
+
+private var lineRenderer : LineRenderer;
+
+function Start()
+{
+	lineRenderer = GetComponent(LineRenderer);
+	lineRenderer.SetPosition(0, transform.position);
+	lineRenderer.SetPosition(1, transform.position);
+}
+
+
+function OnTriggerStay(other : Collider) 
+{
+	
+	// check angle, are we looking towards player
+	//var forward = transform.TransformDirection(Vector3.forward);
+	var forward = transform.forward;
+	var toOther = other.transform.position - transform.position;
+	var angle = Vector3.Dot(forward, toOther);
+	
+	if ( angle > viewThreshold)
+	{
+		// do linecast, check if we can reach player without hitting walls
+		// linecast #1 middle
+		if (!Physics.Linecast (transform.position, other.transform.position, layerMask)) 
+		{
+			// there was no hit, so we can see the player
+			
+			// lets move that way
+			//rigidbody.MovePosition(
+			//var MoveDir = Vector3.MoveTowards(transform.position, other.transform.position, 0.001); 
+			//transform.Translate(MoveDir * Time.deltaTime);
+			var targetRotation = Quaternion.LookRotation(other.transform.position - transform.position);
+			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 2 * Time.deltaTime);
+			
+			transform.position = Vector3.MoveTowards(transform.position, other.transform.position, 1*Time.deltaTime);
+		//transform.position = Vector3(Mathf.MoveTowards(transform.position.x, target, speed * Time.deltaTime), 0, 0);
+			
+			//Debug.DrawLine (transform.position, other.transform.position, Color.red);
+			lineRenderer.SetPosition(0, transform.position);
+			lineRenderer.SetPosition(1, other.transform.position);
+		}else{
+			lineRenderer.SetPosition(0, transform.position);
+			lineRenderer.SetPosition(1, transform.position);
+		}
+	}else{
+		lineRenderer.SetPosition(0, transform.position);
+		lineRenderer.SetPosition(1, transform.position);
+	}
+}
+
+function OnTriggerExit(other : Collider) 
+{
+	lineRenderer.SetPosition(0, transform.position);
+	lineRenderer.SetPosition(1, transform.position);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
 	IEnumerator ReactionToPlayer()
 	{
@@ -293,44 +383,44 @@ public class EnemySight : MonoBehaviour
 	}
     */
 
-        /*
-    IEnumerator GiveUpDelay()
+    /*
+IEnumerator GiveUpDelay()
+{
+
+    RaycastHit hitInfo;
+    if (Physics.Raycast(transform.position, player.transform.position - transform.transform.position, out hitInfo))
     {
-       
-        RaycastHit hitInfo;
-        if (Physics.Raycast(transform.position, player.transform.position - transform.transform.position, out hitInfo))
+        if (hitInfo.collider.tag == "Player")
         {
-            if (hitInfo.collider.tag == "Player")
+            //keep up chase
+           // alertProgress = 100;
+        }
+        else
+        {
+            //alertProgress -= 5;
+           // Debug.Log(alertProgress);
+            if(alertProgress <= 0)
             {
-                //keep up chase
-               // alertProgress = 100;
+                enemy.EnemyLostPlayer(player);
+            }
+            float dist = Vector3.Distance(player.transform.position, transform.position);
+            //Debug.Log(dist);
+            if (dist > 10.0f)
+            {
+                //enemy.EnemyLostPlayer(player);
+                // player is far away and out of sight
             }
             else
             {
-                //alertProgress -= 5;
-               // Debug.Log(alertProgress);
-                if(alertProgress <= 0)
-                {
-                    enemy.EnemyLostPlayer(player);
-                }
-                float dist = Vector3.Distance(player.transform.position, transform.position);
-                //Debug.Log(dist);
-                if (dist > 10.0f)
-                {
-                    //enemy.EnemyLostPlayer(player);
-                    // player is far away and out of sight
-                }
-                else
-                {
-                    // keep up chase
-                }
-                
+                // keep up chase
             }
 
         }
-        yield return new WaitForSeconds(0f);
+
     }
-    */
+    yield return new WaitForSeconds(0f);
+}
+*/
     void OnTriggerExit(Collider other) 
 	{
 		if(other.gameObject.tag == "Player")
