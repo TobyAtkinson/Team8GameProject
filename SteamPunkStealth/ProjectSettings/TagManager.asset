@@ -8,11 +8,6 @@ TagManager:
   - Enemy
   - Gadget
   - Gaurdpoint
-  - Ground
-  - GuardSpear
-  - PlayerSword
-  - PlayerParry
-  - Hitbox
   layers:
   - Default
   - TransparentFX
@@ -26,9 +21,9 @@ TagManager:
   - Enviroment
   - Enemy
   - walkable
-  - PlayerTosee
-  - Player
-  - GuardHitBox
+  - 
+  - 
+  - 
   - 
   - 
   - 
