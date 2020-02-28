@@ -8953,7 +8953,7 @@ MonoBehaviour:
   isSprinting: 0
   canSprint: 0
   SprintCountdown: 0
-  staminaMax: 10
+  staminaMax: 8
   SprintCooldownCount: 0
   wallRunLength: 10
   isWallRunningUp: 0
