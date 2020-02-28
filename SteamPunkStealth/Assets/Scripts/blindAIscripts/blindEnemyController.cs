@@ -58,7 +58,7 @@ public class blindEnemyController : MonoBehaviour
         }
 
 
-        if (Input.GetKey(KeyCode.C))
+        if (Input.GetKey(KeyCode.LeftControl))
         {
             done = true;
         }
@@ -72,7 +72,9 @@ public class blindEnemyController : MonoBehaviour
 
     void playerCrouching(float distance, float lookRadius)
     {
-        if (Input.GetKeyDown(KeyCode.C) && distance <= lookRadius)
+
+        // If the Player crouches using left control and is in the Blind Enemy's area of detection, the Enemy goes to the position where he last heard the player.
+        if (Input.GetKeyDown(KeyCode.LeftControl) && distance <= lookRadius)
         {
 
             if (clear == true)
@@ -98,7 +100,7 @@ public class blindEnemyController : MonoBehaviour
 
         }
 
-
+        // Look for player around the position where the player was heard last
         if (done && distance <= lookRadius)
         {
             if (clock == true)
@@ -118,8 +120,8 @@ public class blindEnemyController : MonoBehaviour
 
         }
 
-
-        if (distance <= lookRadius && Input.GetKeyUp(KeyCode.C))
+        // If the player stands up while they're still in the area of detection, attack him
+        if (distance <= lookRadius && Input.GetKeyUp(KeyCode.LeftControl))
         {
 
             rate = 1;
@@ -135,6 +137,8 @@ public class blindEnemyController : MonoBehaviour
 
 
         }
+
+        // If the player got out of the area of detection, continue roaming peacefully
         if (distance > lookRadius)
         {
             rate = 1;
@@ -159,6 +163,8 @@ public class blindEnemyController : MonoBehaviour
 
     }
 
+
+    //Look at the player
     void facePlayer()
     {
         Vector3 direction = (target.position - transform.position).normalized;
@@ -167,6 +173,8 @@ public class blindEnemyController : MonoBehaviour
 
     }
 
+
+    //If player bumps into the Enemy, they'll get attacked
     void attackPlayer()
     {
 
@@ -175,19 +183,21 @@ public class blindEnemyController : MonoBehaviour
             facePlayer();
             agent.SetDestination(target.position);
             agent.speed = 0;
-            //rate = 0;
+          
 
             Debug.Log("Attacks player.");
         }
         else
         {
             agent.speed = 7;
-            // rate = 1;
+            
 
         }
     }
 
 
+
+    // Placeholder method for when the Blind enemy will hear fighting
     void chargeAttack()
     {
         if (Input.GetKey(KeyCode.K))
@@ -225,6 +235,9 @@ public class blindEnemyController : MonoBehaviour
         }
         return false;
     }
+
+
+    // Idle/peaceful roam
     void idleRoam()
     {
 
@@ -243,6 +256,8 @@ public class blindEnemyController : MonoBehaviour
 
     }
 
+
+    // Look for random spot to go to
     void lookRoam(ref Vector3 randomDirection)
     {
 
@@ -256,6 +271,8 @@ public class blindEnemyController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotationRoam, Time.deltaTime * 9f);
     }
 
+
+    // Look around for player in the last position they were heard
     void angryRoam()
     {
         if (angry && finishSearch % 80 == 0)
