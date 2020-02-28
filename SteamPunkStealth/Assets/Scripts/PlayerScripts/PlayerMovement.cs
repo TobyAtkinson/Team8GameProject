@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class PlayerMovement : MonoBehaviour
 {
     #region Variables
@@ -11,10 +11,14 @@ public class PlayerMovement : MonoBehaviour
     public CharacterController Controller;
     Vector3 inputVector;
 
-
+    public Slider staminaBar;
     public float gravity = -9.81f;
     public float jumpHeight = 3f;
-
+    public bool isSprinting;
+    public bool canSprint = true;
+    public float SprintCountdown;
+    public float staminaMax;
+    public float SprintCooldownCount;
     public float wallRunLength = 10f;
     public bool isWallRunningUp;
     public bool isWallRunningSide;
@@ -38,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
     {
         speed = walkSpeed;
         playerRB = GetComponent<Rigidbody>();
+        staminaBar.maxValue = staminaMax;
     }
     // Update is called once per frame
     void Update()
@@ -46,7 +51,8 @@ public class PlayerMovement : MonoBehaviour
         isGroundCheck();
         Crouch();
         SpeedChanges();
-
+        SprintTimer();
+        SprintCooldown();
         x = Input.GetAxisRaw("Horizontal");
         z = Input.GetAxisRaw("Vertical");
 
@@ -68,6 +74,8 @@ public class PlayerMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
 
         Controller.Move(velocity * Time.deltaTime);
+
+        staminaBar.value = SprintCountdown;
     }
 
     void isGroundCheck() 
@@ -116,18 +124,59 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
+
+    void SprintTimer() 
+    {
+        if (isSprinting && SprintCountdown > 0) 
+        {
+            SprintCountdown = SprintCountdown - Time.deltaTime;
+        }
+
+        if (!isSprinting && SprintCountdown <= staminaMax) 
+        {
+            SprintCountdown = SprintCountdown + Time.deltaTime;
+        }
+    }
+
+
+    void SprintCooldown() 
+    {
+        if (SprintCountdown <= 0) 
+        {
+            canSprint = false;
+        }
+
+        if (!canSprint)
+        {
+            SprintCooldownCount = SprintCooldownCount - Time.deltaTime;
+        }
+
+        if (canSprint)
+        {
+            SprintCooldownCount = 2;
+        }
+
+        if (SprintCooldownCount <= 0)
+        {
+            canSprint = true;
+        }
+    }
+
+
     void SpeedChanges()
     {
         if (isGrounded && !isCrouched)
         {
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift) && canSprint)
             {
                 speed = sprintSpeed;
+                isSprinting = true;
             }
 
             else if (!Input.GetKey(KeyCode.LeftControl))
             {
                 speed = walkSpeed;
+                isSprinting = false;
             }
         }
 
