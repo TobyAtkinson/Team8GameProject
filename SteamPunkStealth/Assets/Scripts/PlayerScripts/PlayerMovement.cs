@@ -22,6 +22,10 @@ public class PlayerMovement : MonoBehaviour
     public float wallRunLength = 10f;
     public bool isWallRunningUp;
     public bool isWallRunningSide;
+
+    // New bool added by toby, registers if the player is currently locked in an animation like an execution
+    public bool movementLocked;
+    
     #region Speeds
     public float speed;
     public float walkSpeed;
@@ -53,8 +57,19 @@ public class PlayerMovement : MonoBehaviour
         SpeedChanges();
         SprintTimer();
         SprintCooldown();
-        x = Input.GetAxisRaw("Horizontal");
-        z = Input.GetAxisRaw("Vertical");
+
+        // change 1/2 by Toby, player cannot move while executing guard
+        if(!movementLocked)
+        {
+            x = Input.GetAxisRaw("Horizontal");
+            z = Input.GetAxisRaw("Vertical");
+        }
+        else
+        {
+            x = 0;
+            z = 0;
+        }
+
 
         if (isWallRunningUp == false) 
         {
@@ -65,7 +80,8 @@ public class PlayerMovement : MonoBehaviour
             Controller.Move(velocity * Time.deltaTime);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded == true)
+        // change 2/2 by Toby, player cannot jump while executing guard
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded == true && movementLocked == false)
         {
             Jump();
         }

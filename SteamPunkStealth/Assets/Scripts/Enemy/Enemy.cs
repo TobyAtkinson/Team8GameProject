@@ -98,6 +98,13 @@ public class Enemy : MonoBehaviour {
 
     private BoxCollider spearKillCollider;
 
+    [SerializeField]
+    private GameObject aliveGuard;
+
+    [SerializeField]
+    private GameObject deadGuard;
+
+
     [Header("Variables you can customize")]
     public GameObject gaurdPoint;
 
@@ -191,6 +198,10 @@ public class Enemy : MonoBehaviour {
         if (currentHealth <= 0 && !isDead)
         {
             isDead = true;
+            this.gameObject.transform.DetachChildren();
+            Destroy(aliveGuard);
+            deadGuard.SetActive(true);
+            Destroy(this.gameObject);
         }
         else
         {

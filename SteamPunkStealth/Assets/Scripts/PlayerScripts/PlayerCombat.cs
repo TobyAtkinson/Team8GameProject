@@ -41,6 +41,8 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField]
     private Camera camera;
 
+    private CameraController cameraScript;
+
     private bool ableToExecute;
 
     private Enemy enemyToExecute;
@@ -68,6 +70,7 @@ public class PlayerCombat : MonoBehaviour
     {
         swordKillCollider = sword.GetComponent<BoxCollider>();
         playerMovementScript = this.GetComponent<PlayerMovement>();
+        cameraScript = camera.gameObject.GetComponent<CameraController>();
     }
 
     void Start()
@@ -182,6 +185,8 @@ public class PlayerCombat : MonoBehaviour
                         // false = player guard
                         Debug.Log("executing guard");
 
+                        playerMovementScript.movementLocked = true;
+                        cameraScript.turningLocked = true;
                         currentSwordState = swordState.Executing;
                         ableToExecute = false;
                         StartCoroutine(Execute());
@@ -292,10 +297,14 @@ public class PlayerCombat : MonoBehaviour
     IEnumerator Execute()
     {
         swordAnim.Play("SwordExecute");
+        yield return new WaitForSeconds(0.75f);
+        // execute
+        enemyToExecute.TakeDamage(500f);
 
-      
-        yield return new WaitForSeconds(1.51f);
+        yield return new WaitForSeconds(0.75f);
         currentSwordState = swordState.Idle;
+        playerMovementScript.movementLocked = false;
+        cameraScript.turningLocked = false;
 
 
         // 1.5 overall

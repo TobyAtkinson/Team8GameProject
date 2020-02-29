@@ -10,23 +10,29 @@ public class CameraController : MonoBehaviour
     public Transform playerBody;
     float xRotation = 0f;
 
-    // Start is called before the first frame update
+    // New bool added by toby, registers if the player is currently locked in an animation like an execution
+    public bool turningLocked;
+  
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        mouseX = Input.GetAxis("Mouse X") * mouseSenstivity * Time.deltaTime;
-        mouseY = Input.GetAxis("Mouse Y") * mouseSenstivity * Time.deltaTime;
+        // Change 1/1 by Toby, locks camera from moving while bool is true
+        if(!turningLocked)
+        {
+            mouseX = Input.GetAxis("Mouse X") * mouseSenstivity * Time.deltaTime;
+            mouseY = Input.GetAxis("Mouse Y") * mouseSenstivity * Time.deltaTime;
 
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+            xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        playerBody.Rotate(Vector3.up * mouseX);
+            transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+            playerBody.Rotate(Vector3.up * mouseX);
+        }
+        
 
     }
 }
