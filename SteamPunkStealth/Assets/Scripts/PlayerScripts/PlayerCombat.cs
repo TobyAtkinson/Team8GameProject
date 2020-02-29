@@ -36,7 +36,16 @@ public class PlayerCombat : MonoBehaviour
 
     public GameObject guard;
 
-    float viewThreshhold = 1.1f;
+    float viewThreshhold = 1;
+
+    [SerializeField]
+    private Camera camera;
+
+    private bool ableToExecute;
+
+    private Enemy enemyToExecute;
+
+    private PlayerMovement playerMovementScript;
 
 
 
@@ -47,7 +56,8 @@ public class PlayerCombat : MonoBehaviour
         Idle,
         FirstSwing,
         SecondSwing,
-        Blocking
+        Blocking,
+        Executing
     }
 
     public bool windowForSecondSwing = false;
@@ -57,6 +67,7 @@ public class PlayerCombat : MonoBehaviour
     void Awake()
     {
         swordKillCollider = sword.GetComponent<BoxCollider>();
+        playerMovementScript = this.GetComponent<PlayerMovement>();
     }
 
     void Start()
@@ -106,6 +117,7 @@ public class PlayerCombat : MonoBehaviour
             //Debug.LogError("Player dead");
         }
 
+        /*
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 toOther = guard.transform.position - transform.position;
         float angle = Vector3.Dot(forward, toOther);
@@ -116,39 +128,76 @@ public class PlayerCombat : MonoBehaviour
         {
             print("guard infront");
         }
+        */
     
 
         RaycastHit hitInfo;
-        if (Physics.Raycast(Camera.main.transform.position, transform.forward, out hitInfo, 2f, executeIgnoreLayers))
+        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+
+
+        if (Physics.Raycast(ray, out hitInfo, 2f, executeIgnoreLayers))
         {
-            if (hitInfo.transform.root.name == "Enemy")
+            //Debug.Log("hit" + hitInfo.transform.tag);
+            if (hitInfo.transform.CompareTag("Enemy"))
             {
-                skullUi.SetActive(true);
-               
+                Enemy enemyscript = hitInfo.transform.root.GetComponent<Enemy>();
+                if(enemyscript.currentCombatState == Enemy.enemyState.Stunned || enemyscript.currentAlarmState ==  Enemy.enemyState.NotAlarmed)
+                {
+                    skullUi.SetActive(true);
+                    ableToExecute = true;
+                    enemyToExecute = enemyscript;
+                }
+
+                //GuardHitBox
             }
             else
             {
                 skullUi.SetActive(false);
+                ableToExecute = false;
             }
         }
         else
         {
             skullUi.SetActive(false);
+            ableToExecute = false;
         }
-            
+
+
+
+     
         
 
 
         if (Input.GetMouseButton(0))
         {
+            
             if(currentSwordState == swordState.Idle)
             {
-                //swordAnim.enabled = false;
-                //swordAnim.enabled = true;
-                // start first swing
-                windowForSecondSwing = false;
-                currentSwordState = swordState.FirstSwing;
-                StartCoroutine(FirstSwing());
+                if(ableToExecute == true)
+                {
+                    if(playerMovementScript.isCrouched == false)
+                    {
+                        enemyToExecute.isPlayerAhead(this.gameObject);
+                        // true = player infront of guard
+                        // false = player guard
+                        Debug.Log("executing guard");
+
+                        currentSwordState = swordState.Executing;
+                        ableToExecute = false;
+                        StartCoroutine(Execute());
+                    }
+                   
+                }
+                else
+                {
+                    //swordAnim.enabled = false;
+                    //swordAnim.enabled = true;
+                    // start first swing
+                    windowForSecondSwing = false;
+                    currentSwordState = swordState.FirstSwing;
+                    StartCoroutine(FirstSwing());
+                }
+                
 
             }
             else if (currentSwordState == swordState.FirstSwing && windowForSecondSwing == true)
@@ -238,6 +287,18 @@ public class PlayerCombat : MonoBehaviour
 
 
         // 1.25 overall
+
+    }
+    IEnumerator Execute()
+    {
+        swordAnim.Play("SwordExecute");
+
+      
+        yield return new WaitForSeconds(1.51f);
+        currentSwordState = swordState.Idle;
+
+
+        // 1.5 overall
 
     }
 }

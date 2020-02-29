@@ -58,10 +58,10 @@ public class Enemy : MonoBehaviour {
 
     NavMeshAgent enemyAgent;
 
-    [SerializeField]
+
     public enemyState currentMovementState;
 
-    [SerializeField]
+  
     public enemyState currentAlarmState = enemyState.NotAlarmed;
 
     
@@ -84,7 +84,7 @@ public class Enemy : MonoBehaviour {
 
     [Header("Combat Variables")]
 
-    [SerializeField]
+  
     public enemyState currentCombatState = enemyState.Ready;
 
     [SerializeField]
@@ -118,6 +118,8 @@ public class Enemy : MonoBehaviour {
 
     [SerializeField]
     private float walkSpeed;
+
+    
     
 
     void Awake () 
@@ -128,6 +130,7 @@ public class Enemy : MonoBehaviour {
         enemyAgent = GetComponent<NavMeshAgent>();
         enemyAgent.speed = walkSpeed;
         spearKillCollider = attackKickSpear.GetComponent<BoxCollider>();
+       
 
         if (gaurdPoint != null)
         {
@@ -160,6 +163,26 @@ public class Enemy : MonoBehaviour {
         currentMovementState = enemyState.Patrolling;
         currentCombatState = enemyState.Ready;
         currentHealth = maxiumunHealth;
+    }
+
+    public bool isPlayerAhead(GameObject player)
+    {
+        Vector3 forward = transform.TransformDirection(Vector3.forward);
+        Vector3 toOther = player.transform.position - transform.position;
+        float angle = Vector3.Dot(forward, toOther);
+
+        print(Vector3.Dot(forward, toOther) > 0);
+
+        if (angle > 1)
+        {
+            print("infront");
+            return true;
+        }
+        else
+        {
+            print("behind");
+            return false;
+        }
     }
 
     public void TakeDamage(float damageAmount)

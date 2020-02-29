@@ -12,6 +12,7 @@ TagManager:
   - GuardSpear
   - PlayerSword
   - PlayerParry
+  - GuardHitBox
   layers:
   - Default
   - TransparentFX
