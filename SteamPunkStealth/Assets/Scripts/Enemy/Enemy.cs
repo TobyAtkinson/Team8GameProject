@@ -104,6 +104,9 @@ public class Enemy : MonoBehaviour {
     [SerializeField]
     private GameObject deadGuard;
 
+    public bool isMovementLocked;
+
+    private PlayerCombat playerCombatScript;
 
     [Header("Variables you can customize")]
     public GameObject gaurdPoint;
@@ -134,6 +137,7 @@ public class Enemy : MonoBehaviour {
 		ui = GetComponent<EnemyUI>();
         anim = body.GetComponent<Animator>();
         _player = GameObject.FindGameObjectWithTag("Player");
+        playerCombatScript = _player.GetComponent<PlayerCombat>();
         enemyAgent = GetComponent<NavMeshAgent>();
         enemyAgent.speed = walkSpeed;
         spearKillCollider = attackKickSpear.GetComponent<BoxCollider>();
@@ -214,6 +218,11 @@ public class Enemy : MonoBehaviour {
         if(isDead == true)
         {
             //Debug.LogWarning("Guard dead");
+        }
+
+        if(isMovementLocked)
+        {
+            enemyAgent.speed = 0;
         }
         
         if (currentAlarmState == enemyState.NoticedPlayer && currentMovementState == Enemy.enemyState.Stationary && currentCombatState != enemyState.Stunned)
@@ -380,11 +389,17 @@ public class Enemy : MonoBehaviour {
         Debug.Log("Kick");
         anim.SetBool("isKicking", true);
         anim.SetTrigger("kick");
-        yield return new WaitForSeconds(1.2f);
+        yield return new WaitForSeconds(0.4f);
+
+        playerCombatScript.TakeDamage(10);
+      
+        yield return new WaitForSeconds(0.8f);
 
         attackKickSpear.SetActive(false);
         anim.SetBool("isKicking", false);
         currentCombatState = enemyState.Ready;
+
+        //1.2 overall
     }
 
     void OnTriggerEnter(Collider other)

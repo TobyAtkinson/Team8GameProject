@@ -129,7 +129,7 @@ public class PlayerActions : MonoBehaviour
     #region Bow Functions
     void DrawBow() 
     {
-        if (Input.GetMouseButtonDown(0)) 
+        if (Input.GetKeyDown("up"))
         {
             Arrow = GameObject.Instantiate(arrowPrefab, arrowSpawnPoint.transform.position, arrowSpawnPoint.transform.rotation);
             Arrow.transform.parent = arrowSpawnPoint.transform;
@@ -137,7 +137,7 @@ public class PlayerActions : MonoBehaviour
             arrowRB.useGravity = false;
         }
         
-        if (Input.GetMouseButton(0)) 
+        if (Input.GetKey("up"))
         {
             if (CurrrentDraw <= maxDraw) 
             {

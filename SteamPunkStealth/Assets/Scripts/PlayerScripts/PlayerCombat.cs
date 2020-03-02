@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerCombat : MonoBehaviour
 {
@@ -34,12 +35,15 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField]
     private GameObject skullUi;
 
-    public GameObject guard;
+
 
     float viewThreshhold = 1;
 
     [SerializeField]
     private Camera camera;
+
+    [SerializeField]
+    private Text healthText;
 
     private CameraController cameraScript;
 
@@ -82,9 +86,12 @@ public class PlayerCombat : MonoBehaviour
     public void TakeDamage(float damageAmount)
     {
         currentHealth -= damageAmount;
+        healthText.text = ("Health: " + currentHealth);
         if (currentHealth <= 0 && !isDead)
         {
             isDead = true;
+            healthText.text = (" ----------------------       Dead");
+            Destroy(this.gameObject);
         }
 
     }
@@ -106,7 +113,7 @@ public class PlayerCombat : MonoBehaviour
             }
             else
             {
-                TakeDamage(50);
+                TakeDamage(25);
             }
 
             
@@ -184,7 +191,7 @@ public class PlayerCombat : MonoBehaviour
                         // true = player infront of guard
                         // false = player guard
                         Debug.Log("executing guard");
-
+                        enemyToExecute.isMovementLocked = true;
                         playerMovementScript.movementLocked = true;
                         cameraScript.turningLocked = true;
                         currentSwordState = swordState.Executing;
