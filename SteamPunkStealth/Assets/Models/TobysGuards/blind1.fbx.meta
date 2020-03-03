@@ -1,0 +1,222 @@
+fileFormatVersion: 2
+guid: f98d2da79b27d8d47b564e5d72185173
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Head
+    100004: leftarm
+    100006: leftarm.001
+    100008: Leftelbow
+    100010: LeftFoot
+    100012: LeftKnee
+    100014: LeftPelvis
+    100016: MiddleSpine
+    100018: MiddleSpine.001
+    100020: MiddleSpine.002
+    100022: MiddleSpine.003
+    100024: MiddleSpine.004
+    100026: MiddleSpine.005
+    100028: MiddleSpine.006
+    100030: MiddleSpine.007
+    100032: MiddleSpine.008
+    100034: MiddleSpine.009
+    100036: Pelvis
+    100038: Rightelbow
+    100040: RightFoot
+    100042: RightKnee
+    100044: RightPelvis
+    400000: //RootNode
+    400002: Head
+    400004: leftarm
+    400006: leftarm.001
+    400008: Leftelbow
+    400010: LeftFoot
+    400012: LeftKnee
+    400014: LeftPelvis
+    400016: MiddleSpine
+    400018: MiddleSpine.001
+    400020: MiddleSpine.002
+    400022: MiddleSpine.003
+    400024: MiddleSpine.004
+    400026: MiddleSpine.005
+    400028: MiddleSpine.006
+    400030: MiddleSpine.007
+    400032: MiddleSpine.008
+    400034: MiddleSpine.009
+    400036: Pelvis
+    400038: Rightelbow
+    400040: RightFoot
+    400042: RightKnee
+    400044: RightPelvis
+    2100000: Trousers
+    2100002: Skin
+    2100004: Helmet2.001
+    2100006: GoldPlate
+    2100008: Helmet
+    2100010: Helmet2
+    2100012: Helmet2.002
+    2100014: GoldPlate.003
+    2100016: Material.003
+    2100018: Material.004
+    2100020: Helmet2.003
+    2100022: Armor1
+    2100024: Boots
+    2100026: Helmet.001
+    2100028: Material.006
+    2100030: GoldPlate.001
+    2100032: Helmet2.004
+    2100034: No Name
+    2100036: Skin.001
+    2300000: Head
+    2300002: leftarm
+    2300004: leftarm.001
+    2300006: Leftelbow
+    2300008: LeftFoot
+    2300010: LeftKnee
+    2300012: LeftPelvis
+    2300014: MiddleSpine
+    2300016: MiddleSpine.001
+    2300018: MiddleSpine.002
+    2300020: MiddleSpine.003
+    2300022: MiddleSpine.004
+    2300024: MiddleSpine.005
+    2300026: MiddleSpine.006
+    2300028: MiddleSpine.007
+    2300030: MiddleSpine.008
+    2300032: MiddleSpine.009
+    2300034: Pelvis
+    2300036: Rightelbow
+    2300038: RightFoot
+    2300040: RightKnee
+    2300042: RightPelvis
+    3300000: Head
+    3300002: leftarm
+    3300004: leftarm.001
+    3300006: Leftelbow
+    3300008: LeftFoot
+    3300010: LeftKnee
+    3300012: LeftPelvis
+    3300014: MiddleSpine
+    3300016: MiddleSpine.001
+    3300018: MiddleSpine.002
+    3300020: MiddleSpine.003
+    3300022: MiddleSpine.004
+    3300024: MiddleSpine.005
+    3300026: MiddleSpine.006
+    3300028: MiddleSpine.007
+    3300030: MiddleSpine.008
+    3300032: MiddleSpine.009
+    3300034: Pelvis
+    3300036: Rightelbow
+    3300038: RightFoot
+    3300040: RightKnee
+    3300042: RightPelvis
+    4300000: LeftPelvis
+    4300002: RightPelvis
+    4300004: Head
+    4300006: Pelvis
+    4300008: RightFoot
+    4300010: LeftFoot
+    4300012: RightKnee
+    4300014: LeftKnee
+    4300016: MiddleSpine
+    4300018: leftarm
+    4300020: Rightelbow
+    4300022: Leftelbow
+    4300024: MiddleSpine.001
+    4300026: MiddleSpine.002
+    4300028: MiddleSpine.003
+    4300030: MiddleSpine.004
+    4300032: MiddleSpine.005
+    4300034: MiddleSpine.006
+    4300036: MiddleSpine.009
+    4300038: MiddleSpine.008
+    4300040: MiddleSpine.007
+    4300042: leftarm.001
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
