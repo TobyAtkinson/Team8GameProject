@@ -118,7 +118,7 @@ public class PlayerActions : MonoBehaviour
     void ShockEnemy() 
     {
         enemyToShock = shockGadgetRange.GetComponent<StoreEnemyShock>().storedEnemy;
-        if (Input.GetKeyDown(KeyCode.Q) == true && shockGadgetRange.GetComponent<StoreEnemyShock>().enemyDectected == true) 
+        if (Input.GetKeyDown(KeyCode.F) == true && shockGadgetRange.GetComponent<StoreEnemyShock>().enemyDectected == true) 
         {
             
             enemyToShock.GetComponent<ShockGadgetReceiver>().Shock();
@@ -146,7 +146,7 @@ public class PlayerActions : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonUp(0)) 
+        if (Input.GetKeyUp("up")) 
         {
             arrowVelocity = CurrrentDraw;
             Arrow.transform.parent = null;

@@ -21,5 +21,4 @@ public class ArrowController : MonoBehaviour
     {
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
     }
-
 }
