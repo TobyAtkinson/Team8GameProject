@@ -1,0 +1,228 @@
+fileFormatVersion: 2
+guid: dc0b02c963c21684a8b9ac801a09c9ff
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Base
+    100002: Base 1
+    100004: Base1
+    100006: Base2
+    100008: Base3
+    100010: bend1Handle
+    100012: Brace
+    100014: CrossBar
+    100016: Crossbar
+    100018: Crossbar 1
+    100020: CrossBar1
+    100022: Crossbar1
+    100024: CrossBar2
+    100026: Crossbar2
+    100028: CrossBar3
+    100030: Crossbar3
+    100032: pCylinder1
+    100034: pCylinder4
+    100036: Pipe1
+    100038: Pipebreak
+    100040: Pipebreak1
+    100042: Pipes
+    100044: Pipes 1
+    100046: Pipes1
+    100048: Silo
+    100050: //RootNode
+    100052: Support
+    100054: Support1
+    100056: Support2
+    100058: Support3
+    100060: Support4
+    100062: Supports2
+    400000: Base
+    400002: Base 1
+    400004: Base1
+    400006: Base2
+    400008: Base3
+    400010: bend1Handle
+    400012: Brace
+    400014: CrossBar
+    400016: Crossbar
+    400018: Crossbar 1
+    400020: CrossBar1
+    400022: Crossbar1
+    400024: CrossBar2
+    400026: Crossbar2
+    400028: CrossBar3
+    400030: Crossbar3
+    400032: pCylinder1
+    400034: pCylinder4
+    400036: Pipe1
+    400038: Pipebreak
+    400040: Pipebreak1
+    400042: Pipes
+    400044: Pipes 1
+    400046: Pipes1
+    400048: Silo
+    400050: //RootNode
+    400052: Support
+    400054: Support1
+    400056: Support2
+    400058: Support3
+    400060: Support4
+    400062: Supports2
+    2100000: lambert1
+    2300000: Base 1
+    2300002: Base1
+    2300004: Base2
+    2300006: Base3
+    2300008: CrossBar
+    2300010: Crossbar 1
+    2300012: CrossBar1
+    2300014: Crossbar1
+    2300016: CrossBar2
+    2300018: Crossbar2
+    2300020: CrossBar3
+    2300022: Crossbar3
+    2300024: pCylinder1
+    2300026: pCylinder4
+    2300028: Pipe1
+    2300030: Pipebreak
+    2300032: Pipebreak1
+    2300034: Pipes 1
+    2300036: Pipes1
+    2300038: Silo
+    2300040: Support1
+    2300042: Support2
+    2300044: Support3
+    2300046: Support4
+    3300000: Base 1
+    3300002: Base1
+    3300004: Base2
+    3300006: Base3
+    3300008: CrossBar
+    3300010: Crossbar 1
+    3300012: CrossBar1
+    3300014: Crossbar1
+    3300016: CrossBar2
+    3300018: Crossbar2
+    3300020: CrossBar3
+    3300022: Crossbar3
+    3300024: pCylinder1
+    3300026: pCylinder4
+    3300028: Pipe1
+    3300030: Pipebreak
+    3300032: Pipebreak1
+    3300034: Pipes 1
+    3300036: Pipes1
+    3300038: Silo
+    3300040: Support1
+    3300042: Support2
+    3300044: Support3
+    3300046: Support4
+    4300000: Support1
+    4300002: Support2
+    4300004: Support3
+    4300006: Support4
+    4300008: pCylinder1
+    4300010: pCylinder4
+    4300012: Silo
+    4300014: CrossBar
+    4300016: Crossbar
+    4300018: Crossbar1
+    4300020: CrossBar1
+    4300022: CrossBar2
+    4300024: Crossbar2
+    4300026: Crossbar3
+    4300028: CrossBar3
+    4300030: Base
+    4300032: Base1
+    4300034: Base2
+    4300036: Base3
+    4300038: Pipes1
+    4300040: Pipebreak1
+    4300042: Pipe1
+    4300044: Pipebreak
+    4300046: Pipes
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

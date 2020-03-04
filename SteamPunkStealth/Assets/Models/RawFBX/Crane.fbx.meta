@@ -1,0 +1,882 @@
+fileFormatVersion: 2
+guid: 952a3a3ca96aec84aa1217f7013e6bc4
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: BaseSuports
+    100002: Cab
+    100004: CabBack
+    100006: Cabin
+    100008: Cabpivot
+    100010: CabPlatform
+    100012: Connection
+    100014: Connection 1
+    100016: Connection1
+    100018: Connection1 1
+    100020: Connectionss
+    100022: Connectionss1
+    100024: //RootNode
+    100026: Crane
+    100028: CraneRotation
+    100030: CraneRotation1
+    100032: Crosses
+    100034: Crosses1
+    100036: Crosses10
+    100038: Crosses11
+    100040: Crosses12
+    100042: Crosses13
+    100044: Crosses14
+    100046: Crosses15
+    100048: Crosses16
+    100050: Crosses2
+    100052: Crosses3
+    100054: Crosses4
+    100056: Crosses5
+    100058: Crosses6
+    100060: Crosses7
+    100062: Crosses8
+    100064: Crosses9
+    100066: Door
+    100068: Entrance
+    100070: Entrance 1
+    100072: Gurder
+    100074: Gurder1
+    100076: Gurder10
+    100078: Gurder11
+    100080: Gurder2
+    100082: Gurder3
+    100084: Gurder4
+    100086: Gurder5
+    100088: Gurder6
+    100090: Gurder7
+    100092: Gurder8
+    100094: Gurder9
+    100096: Gurders
+    100098: HorizontalSup
+    100100: HorizontalSup1
+    100102: HorizontalSup10
+    100104: HorizontalSup11
+    100106: HorizontalSup2
+    100108: HorizontalSup3
+    100110: HorizontalSup4
+    100112: HorizontalSup5
+    100114: HorizontalSup6
+    100116: HorizontalSup7
+    100118: HorizontalSup8
+    100120: HorizontalSup9
+    100122: HorizontalSupports
+    100124: HorizontalSupports1
+    100126: pCube1
+    100128: pCube10
+    100130: pCube11
+    100132: pCube12
+    100134: pCube13
+    100136: pCube14
+    100138: pCube15
+    100140: pCube16
+    100142: pCube2
+    100144: pCube2 1
+    100146: pCube2 2
+    100148: pCube2 3
+    100150: pCube20
+    100152: pCube21
+    100154: pCube22
+    100156: pCube23
+    100158: pCube24
+    100160: pCube25
+    100162: pCube26
+    100164: pCube27
+    100166: pCube28
+    100168: pCube29
+    100170: pCube3
+    100172: pCube3 1
+    100174: pCube3 2
+    100176: pCube3 3
+    100178: pCube4
+    100180: pCube4 1
+    100182: pCube4 2
+    100184: pCube4 3
+    100186: pCube5
+    100188: pCube6
+    100190: pCube7
+    100192: pCube9
+    100194: pCylinder1
+    100196: Platform
+    100198: Railing
+    100200: Railing1
+    100202: Railing10
+    100204: Railing2
+    100206: Railing3
+    100208: Railing4
+    100210: Railing5
+    100212: Railing6
+    100214: Railing7
+    100216: Railing8
+    100218: Railing9
+    100220: Railings
+    100222: RopeBase
+    100224: StructureSupports
+    100226: StructureSupports1
+    100228: StructureSupports2
+    100230: StructureSupports3
+    100232: Support
+    100234: Support1
+    100236: Support10
+    100238: Support10 1
+    100240: Support10 2
+    100242: Support10 3
+    100244: Support11
+    100246: Support11 1
+    100248: Support11 2
+    100250: Support11 3
+    100252: Support12
+    100254: Support12 1
+    100256: Support12 2
+    100258: Support12 3
+    100260: Support13
+    100262: Support13 1
+    100264: Support13 2
+    100266: Support13 3
+    100268: Support2
+    100270: Support3
+    100272: Support4
+    100274: Support4 1
+    100276: Support4 2
+    100278: Support4 3
+    100280: Support5
+    100282: Support5 1
+    100284: Support5 2
+    100286: Support5 3
+    100288: Support6
+    100290: Support6 1
+    100292: Support6 2
+    100294: Support6 3
+    100296: Support7
+    100298: Support7 1
+    100300: Support7 2
+    100302: Support7 3
+    100304: Support8
+    100306: Support8 1
+    100308: Support8 2
+    100310: Support8 3
+    100312: Support9
+    100314: Support9 1
+    100316: Support9 2
+    100318: Support9 3
+    100320: SupportStructure
+    100322: Tower
+    100324: TowerCross
+    100326: TowerPlatform
+    100328: TowerRailing
+    100330: TowerSupport
+    100332: TowerSupport1
+    100334: TowerSupport2
+    100336: TowerSupport3
+    100338: TowerSupport4
+    100340: TowerSupports
+    100342: TRail
+    100344: TRail1
+    100346: TRail2
+    100348: TRail3
+    100350: TRail4
+    100352: transform1
+    100354: transform10
+    100356: transform11
+    100358: transform12
+    100360: transform13
+    100362: transform14
+    100364: transform15
+    100366: transform16
+    100368: transform17
+    100370: transform18
+    100372: transform19
+    100374: transform2
+    100376: transform20
+    100378: transform21
+    100380: transform22
+    100382: transform23
+    100384: transform24
+    100386: transform25
+    100388: transform26
+    100390: transform27
+    100392: transform28
+    100394: transform29
+    100396: transform3
+    100398: transform30
+    100400: transform31
+    100402: transform32
+    100404: transform33
+    100406: transform34
+    100408: transform35
+    100410: transform36
+    100412: transform37
+    100414: transform38
+    100416: transform39
+    100418: transform4
+    100420: transform40
+    100422: transform41
+    100424: transform42
+    100426: transform43
+    100428: transform44
+    100430: transform45
+    100432: transform46
+    100434: transform47
+    100436: transform48
+    100438: transform49
+    100440: transform5
+    100442: transform50
+    100444: transform51
+    100446: transform52
+    100448: transform6
+    100450: transform7
+    100452: transform8
+    100454: transform9
+    100456: Weel
+    100458: Window
+    100460: Window2
+    100462: Window3
+    100464: Windows
+    400000: BaseSuports
+    400002: Cab
+    400004: CabBack
+    400006: Cabin
+    400008: Cabpivot
+    400010: CabPlatform
+    400012: Connection
+    400014: Connection 1
+    400016: Connection1
+    400018: Connection1 1
+    400020: Connectionss
+    400022: Connectionss1
+    400024: //RootNode
+    400026: Crane
+    400028: CraneRotation
+    400030: CraneRotation1
+    400032: Crosses
+    400034: Crosses1
+    400036: Crosses10
+    400038: Crosses11
+    400040: Crosses12
+    400042: Crosses13
+    400044: Crosses14
+    400046: Crosses15
+    400048: Crosses16
+    400050: Crosses2
+    400052: Crosses3
+    400054: Crosses4
+    400056: Crosses5
+    400058: Crosses6
+    400060: Crosses7
+    400062: Crosses8
+    400064: Crosses9
+    400066: Door
+    400068: Entrance
+    400070: Entrance 1
+    400072: Gurder
+    400074: Gurder1
+    400076: Gurder10
+    400078: Gurder11
+    400080: Gurder2
+    400082: Gurder3
+    400084: Gurder4
+    400086: Gurder5
+    400088: Gurder6
+    400090: Gurder7
+    400092: Gurder8
+    400094: Gurder9
+    400096: Gurders
+    400098: HorizontalSup
+    400100: HorizontalSup1
+    400102: HorizontalSup10
+    400104: HorizontalSup11
+    400106: HorizontalSup2
+    400108: HorizontalSup3
+    400110: HorizontalSup4
+    400112: HorizontalSup5
+    400114: HorizontalSup6
+    400116: HorizontalSup7
+    400118: HorizontalSup8
+    400120: HorizontalSup9
+    400122: HorizontalSupports
+    400124: HorizontalSupports1
+    400126: pCube1
+    400128: pCube10
+    400130: pCube11
+    400132: pCube12
+    400134: pCube13
+    400136: pCube14
+    400138: pCube15
+    400140: pCube16
+    400142: pCube2
+    400144: pCube2 1
+    400146: pCube2 2
+    400148: pCube2 3
+    400150: pCube20
+    400152: pCube21
+    400154: pCube22
+    400156: pCube23
+    400158: pCube24
+    400160: pCube25
+    400162: pCube26
+    400164: pCube27
+    400166: pCube28
+    400168: pCube29
+    400170: pCube3
+    400172: pCube3 1
+    400174: pCube3 2
+    400176: pCube3 3
+    400178: pCube4
+    400180: pCube4 1
+    400182: pCube4 2
+    400184: pCube4 3
+    400186: pCube5
+    400188: pCube6
+    400190: pCube7
+    400192: pCube9
+    400194: pCylinder1
+    400196: Platform
+    400198: Railing
+    400200: Railing1
+    400202: Railing10
+    400204: Railing2
+    400206: Railing3
+    400208: Railing4
+    400210: Railing5
+    400212: Railing6
+    400214: Railing7
+    400216: Railing8
+    400218: Railing9
+    400220: Railings
+    400222: RopeBase
+    400224: StructureSupports
+    400226: StructureSupports1
+    400228: StructureSupports2
+    400230: StructureSupports3
+    400232: Support
+    400234: Support1
+    400236: Support10
+    400238: Support10 1
+    400240: Support10 2
+    400242: Support10 3
+    400244: Support11
+    400246: Support11 1
+    400248: Support11 2
+    400250: Support11 3
+    400252: Support12
+    400254: Support12 1
+    400256: Support12 2
+    400258: Support12 3
+    400260: Support13
+    400262: Support13 1
+    400264: Support13 2
+    400266: Support13 3
+    400268: Support2
+    400270: Support3
+    400272: Support4
+    400274: Support4 1
+    400276: Support4 2
+    400278: Support4 3
+    400280: Support5
+    400282: Support5 1
+    400284: Support5 2
+    400286: Support5 3
+    400288: Support6
+    400290: Support6 1
+    400292: Support6 2
+    400294: Support6 3
+    400296: Support7
+    400298: Support7 1
+    400300: Support7 2
+    400302: Support7 3
+    400304: Support8
+    400306: Support8 1
+    400308: Support8 2
+    400310: Support8 3
+    400312: Support9
+    400314: Support9 1
+    400316: Support9 2
+    400318: Support9 3
+    400320: SupportStructure
+    400322: Tower
+    400324: TowerCross
+    400326: TowerPlatform
+    400328: TowerRailing
+    400330: TowerSupport
+    400332: TowerSupport1
+    400334: TowerSupport2
+    400336: TowerSupport3
+    400338: TowerSupport4
+    400340: TowerSupports
+    400342: TRail
+    400344: TRail1
+    400346: TRail2
+    400348: TRail3
+    400350: TRail4
+    400352: transform1
+    400354: transform10
+    400356: transform11
+    400358: transform12
+    400360: transform13
+    400362: transform14
+    400364: transform15
+    400366: transform16
+    400368: transform17
+    400370: transform18
+    400372: transform19
+    400374: transform2
+    400376: transform20
+    400378: transform21
+    400380: transform22
+    400382: transform23
+    400384: transform24
+    400386: transform25
+    400388: transform26
+    400390: transform27
+    400392: transform28
+    400394: transform29
+    400396: transform3
+    400398: transform30
+    400400: transform31
+    400402: transform32
+    400404: transform33
+    400406: transform34
+    400408: transform35
+    400410: transform36
+    400412: transform37
+    400414: transform38
+    400416: transform39
+    400418: transform4
+    400420: transform40
+    400422: transform41
+    400424: transform42
+    400426: transform43
+    400428: transform44
+    400430: transform45
+    400432: transform46
+    400434: transform47
+    400436: transform48
+    400438: transform49
+    400440: transform5
+    400442: transform50
+    400444: transform51
+    400446: transform52
+    400448: transform6
+    400450: transform7
+    400452: transform8
+    400454: transform9
+    400456: Weel
+    400458: Window
+    400460: Window2
+    400462: Window3
+    400464: Windows
+    2100000: lambert1
+    2300000: Cab
+    2300002: CabBack
+    2300004: Cabpivot
+    2300006: Connection
+    2300008: Connection 1
+    2300010: Connection1
+    2300012: Connection1 1
+    2300014: CraneRotation
+    2300016: CraneRotation1
+    2300018: Crosses16
+    2300020: Door
+    2300022: Entrance 1
+    2300024: Gurder
+    2300026: Gurder1
+    2300028: Gurder10
+    2300030: Gurder11
+    2300032: Gurder2
+    2300034: Gurder3
+    2300036: Gurder4
+    2300038: Gurder5
+    2300040: Gurder6
+    2300042: Gurder7
+    2300044: Gurder8
+    2300046: Gurder9
+    2300048: HorizontalSupports1
+    2300050: pCube1
+    2300052: pCube10
+    2300054: pCube11
+    2300056: pCube16
+    2300058: pCube2
+    2300060: pCube2 1
+    2300062: pCube2 2
+    2300064: pCube2 3
+    2300066: pCube20
+    2300068: pCube21
+    2300070: pCube22
+    2300072: pCube24
+    2300074: pCube25
+    2300076: pCube26
+    2300078: pCube28
+    2300080: pCube29
+    2300082: pCube3
+    2300084: pCube3 1
+    2300086: pCube3 2
+    2300088: pCube3 3
+    2300090: pCube4
+    2300092: pCube4 1
+    2300094: pCube4 2
+    2300096: pCube4 3
+    2300098: pCube5
+    2300100: pCube6
+    2300102: pCube7
+    2300104: pCube9
+    2300106: pCylinder1
+    2300108: Platform
+    2300110: Railing10
+    2300112: RopeBase
+    2300114: Support
+    2300116: Support1
+    2300118: Support10
+    2300120: Support10 1
+    2300122: Support10 2
+    2300124: Support10 3
+    2300126: Support11
+    2300128: Support11 1
+    2300130: Support11 2
+    2300132: Support11 3
+    2300134: Support12
+    2300136: Support12 1
+    2300138: Support12 2
+    2300140: Support12 3
+    2300142: Support13
+    2300144: Support13 1
+    2300146: Support13 2
+    2300148: Support13 3
+    2300150: Support2
+    2300152: Support3
+    2300154: Support4
+    2300156: Support4 1
+    2300158: Support4 2
+    2300160: Support4 3
+    2300162: Support5
+    2300164: Support5 1
+    2300166: Support5 2
+    2300168: Support5 3
+    2300170: Support6
+    2300172: Support6 1
+    2300174: Support6 2
+    2300176: Support6 3
+    2300178: Support7
+    2300180: Support7 1
+    2300182: Support7 2
+    2300184: Support7 3
+    2300186: Support8
+    2300188: Support8 1
+    2300190: Support8 2
+    2300192: Support8 3
+    2300194: Support9
+    2300196: Support9 1
+    2300198: Support9 2
+    2300200: Support9 3
+    2300202: TowerPlatform
+    2300204: TowerSupport4
+    2300206: TRail4
+    2300208: Weel
+    2300210: Window
+    2300212: Window2
+    2300214: Window3
+    3300000: Cab
+    3300002: CabBack
+    3300004: Cabpivot
+    3300006: Connection
+    3300008: Connection 1
+    3300010: Connection1
+    3300012: Connection1 1
+    3300014: CraneRotation
+    3300016: CraneRotation1
+    3300018: Crosses16
+    3300020: Door
+    3300022: Entrance 1
+    3300024: Gurder
+    3300026: Gurder1
+    3300028: Gurder10
+    3300030: Gurder11
+    3300032: Gurder2
+    3300034: Gurder3
+    3300036: Gurder4
+    3300038: Gurder5
+    3300040: Gurder6
+    3300042: Gurder7
+    3300044: Gurder8
+    3300046: Gurder9
+    3300048: HorizontalSupports1
+    3300050: pCube1
+    3300052: pCube10
+    3300054: pCube11
+    3300056: pCube16
+    3300058: pCube2
+    3300060: pCube2 1
+    3300062: pCube2 2
+    3300064: pCube2 3
+    3300066: pCube20
+    3300068: pCube21
+    3300070: pCube22
+    3300072: pCube24
+    3300074: pCube25
+    3300076: pCube26
+    3300078: pCube28
+    3300080: pCube29
+    3300082: pCube3
+    3300084: pCube3 1
+    3300086: pCube3 2
+    3300088: pCube3 3
+    3300090: pCube4
+    3300092: pCube4 1
+    3300094: pCube4 2
+    3300096: pCube4 3
+    3300098: pCube5
+    3300100: pCube6
+    3300102: pCube7
+    3300104: pCube9
+    3300106: pCylinder1
+    3300108: Platform
+    3300110: Railing10
+    3300112: RopeBase
+    3300114: Support
+    3300116: Support1
+    3300118: Support10
+    3300120: Support10 1
+    3300122: Support10 2
+    3300124: Support10 3
+    3300126: Support11
+    3300128: Support11 1
+    3300130: Support11 2
+    3300132: Support11 3
+    3300134: Support12
+    3300136: Support12 1
+    3300138: Support12 2
+    3300140: Support12 3
+    3300142: Support13
+    3300144: Support13 1
+    3300146: Support13 2
+    3300148: Support13 3
+    3300150: Support2
+    3300152: Support3
+    3300154: Support4
+    3300156: Support4 1
+    3300158: Support4 2
+    3300160: Support4 3
+    3300162: Support5
+    3300164: Support5 1
+    3300166: Support5 2
+    3300168: Support5 3
+    3300170: Support6
+    3300172: Support6 1
+    3300174: Support6 2
+    3300176: Support6 3
+    3300178: Support7
+    3300180: Support7 1
+    3300182: Support7 2
+    3300184: Support7 3
+    3300186: Support8
+    3300188: Support8 1
+    3300190: Support8 2
+    3300192: Support8 3
+    3300194: Support9
+    3300196: Support9 1
+    3300198: Support9 2
+    3300200: Support9 3
+    3300202: TowerPlatform
+    3300204: TowerSupport4
+    3300206: TRail4
+    3300208: Weel
+    3300210: Window
+    3300212: Window2
+    3300214: Window3
+    4300000: Support3
+    4300002: Support2
+    4300004: Support1
+    4300006: Support
+    4300008: pCube1
+    4300010: Support10
+    4300012: Support13
+    4300014: Support12
+    4300016: Support7
+    4300018: Support6
+    4300020: Support5
+    4300022: Support4
+    4300024: Support8
+    4300026: pCube2
+    4300028: Support11
+    4300030: Support9
+    4300032: pCube3
+    4300034: pCube4
+    4300036: Support10
+    4300038: Support13
+    4300040: Support12
+    4300042: Support7
+    4300044: Support6
+    4300046: Support5
+    4300048: Support4
+    4300050: Support8
+    4300052: pCube2
+    4300054: Support11
+    4300056: Support9
+    4300058: pCube3
+    4300060: pCube4
+    4300062: Support10
+    4300064: Support13
+    4300066: Support12
+    4300068: Support7
+    4300070: Support6
+    4300072: Support5
+    4300074: Support4
+    4300076: Support8
+    4300078: pCube2
+    4300080: Support11
+    4300082: Support9
+    4300084: pCube3
+    4300086: pCube4
+    4300088: Support10
+    4300090: Support13
+    4300092: Support12
+    4300094: Support7
+    4300096: Support6
+    4300098: Support5
+    4300100: Support4
+    4300102: Support8
+    4300104: pCube2
+    4300106: Support11
+    4300108: Support9
+    4300110: pCube3
+    4300112: pCube4
+    4300114: Platform
+    4300116: Gurder11
+    4300118: Gurder10
+    4300120: Gurder9
+    4300122: Gurder8
+    4300124: Gurder7
+    4300126: Gurder6
+    4300128: Gurder5
+    4300130: Gurder4
+    4300132: Gurder3
+    4300134: Gurder2
+    4300136: Gurder1
+    4300138: Gurder
+    4300140: Railing10
+    4300142: pCube16
+    4300144: pCube11
+    4300146: pCube10
+    4300148: pCube9
+    4300150: Entrance
+    4300152: pCube7
+    4300154: pCube6
+    4300156: pCube5
+    4300158: CabBack
+    4300160: Cab
+    4300162: Cabpivot
+    4300164: Door
+    4300166: Window3
+    4300168: Window2
+    4300170: Window
+    4300172: TRail4
+    4300174: RopeBase
+    4300176: Crosses16
+    4300178: HorizontalSupports1
+    4300180: TowerSupport4
+    4300182: TowerPlatform
+    4300184: pCube29
+    4300186: CraneRotation
+    4300188: pCube20
+    4300190: pCube21
+    4300192: Connection1
+    4300194: Connection
+    4300196: pCube22
+    4300198: pCube24
+    4300200: pCube25
+    4300202: Connection1
+    4300204: Connection
+    4300206: pCube26
+    4300208: pCube28
+    4300210: pCylinder1
+    4300212: Weel
+    4300214: CraneRotation1
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
