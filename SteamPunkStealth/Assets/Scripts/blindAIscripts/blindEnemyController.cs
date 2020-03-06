@@ -24,8 +24,8 @@ public class blindEnemyController : MonoBehaviour
     bool chargePlayer = false;
     bool stoppedAngry = false;
     Vector3 center;
-
-
+    Animator anim;
+    bool attack = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +33,7 @@ public class blindEnemyController : MonoBehaviour
         target = PlayerManager.instance.player.transform;
 
         agent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>();
         clock = true;
 
         rate = 1;
@@ -63,7 +64,10 @@ public class blindEnemyController : MonoBehaviour
             done = true;
         }
 
-
+        if(reachedDestination() && rate == 1 && attack == false)
+        {
+            anim.SetInteger("condition", 2);
+        }
 
 
         timer++;
@@ -111,7 +115,7 @@ public class blindEnemyController : MonoBehaviour
             {
                 angry = true;
                 //start angry with timer inside function
-
+                anim.SetInteger("condition", 1);
                 angryRoam();
                 clock = false;
                 searchTimer = 0;
@@ -133,7 +137,7 @@ public class blindEnemyController : MonoBehaviour
             angry = false;
             stoppedAngry = false;
             //  Debug.Log("Going for the player.");
-
+            anim.SetInteger("condition", 3);
 
 
         }
@@ -156,6 +160,7 @@ public class blindEnemyController : MonoBehaviour
         if (distance <= lookRadius && rate == 1 && clear == true && done == false)
         {
             agent.SetDestination(target.position);
+            anim.SetInteger("condition", 3);
 
         }
 
@@ -181,15 +186,17 @@ public class blindEnemyController : MonoBehaviour
         if ((Vector3.Distance(transform.position, target.position) <= 2.5f && done == false) || (Vector3.Distance(transform.position, target.position) <= 1.7f && done))
         {
             facePlayer();
+            attack = true;
             agent.SetDestination(target.position);
             agent.speed = 0;
-          
-
+            anim.SetInteger("condition", 4);
+            
             Debug.Log("Attacks player.");
         }
         else
         {
             agent.speed = 7;
+            attack = false;
             
 
         }
@@ -302,10 +309,13 @@ public class blindEnemyController : MonoBehaviour
 
     void roam()
     {
+       // anim.SetInteger("condition", 2);
         if (timer % 100 == 0)
         {
+            anim.SetInteger("condition", 1);
             idleRoam();
         }
+        
     }
 
     private void OnDrawGizmosSelected()
