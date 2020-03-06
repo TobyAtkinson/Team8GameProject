@@ -8,14 +8,40 @@ public class UiFader : MonoBehaviour
 
     public CanvasGroup uiElement;
 
+    public bool isFaded;
+
+    Player playerScript;
+
+
+    void Start()
+    {
+        playerScript = GameObject.FindWithTag("Player").GetComponent<Player>();
+    }
+
+    void Update()
+    {
+        if(playerScript.currentHealth == playerScript.maxHealth && !isFaded)
+        {
+            FadeOut();
+        }
+
+        else if (playerScript.currentHealth < playerScript.maxHealth && isFaded)
+        {
+            FadeIn();
+        }
+
+    }
+
     public void FadeIn()
     {
+        isFaded = false;
         StartCoroutine(FadeCanvasGroup(uiElement, uiElement.alpha, 1));
     }
 
     public void FadeOut()
     {
         StartCoroutine(FadeCanvasGroup(uiElement, uiElement.alpha, 0));
+        isFaded = true;
     }
 
     public IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float startValue, float endValue, float lerpTime = 0.5f)
