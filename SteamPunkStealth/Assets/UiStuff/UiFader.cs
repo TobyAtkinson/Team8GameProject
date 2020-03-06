@@ -6,9 +6,11 @@ using UnityEngine.UI;
 public class UiFader : MonoBehaviour
 {
 
-    public CanvasGroup uiElement;
+    public CanvasGroup hpBar;
+    public CanvasGroup staminaBar;
 
-    public bool isFaded;
+    bool hpFaded;
+    bool staminaFaded;
 
     Player playerScript;
 
@@ -20,28 +22,50 @@ public class UiFader : MonoBehaviour
 
     void Update()
     {
-        if(playerScript.currentHealth == playerScript.maxHealth && !isFaded)
+        if (playerScript.currentHealth == playerScript.maxHealth && !hpFaded)
         {
-            FadeOut();
+            FadeHealthOut();
         }
 
-        else if (playerScript.currentHealth < playerScript.maxHealth && isFaded)
+        else if (playerScript.currentHealth < playerScript.maxHealth && hpFaded)
         {
-            FadeIn();
+            FadeHealthIn();
+        }
+
+        if (playerScript.currentStamina == playerScript.maxStamina && !staminaFaded)
+        {
+            FadeStaminaOut();
+        }
+
+        else if (playerScript.currentStamina < playerScript.maxStamina && staminaFaded)
+        {
+            FadeStaminaIn();
         }
 
     }
 
-    public void FadeIn()
+    public void FadeHealthIn()
     {
-        isFaded = false;
-        StartCoroutine(FadeCanvasGroup(uiElement, uiElement.alpha, 1));
+        hpFaded = false;
+        StartCoroutine(FadeCanvasGroup(hpBar, hpBar.alpha, 1));
     }
 
-    public void FadeOut()
+    public void FadeHealthOut()
     {
-        StartCoroutine(FadeCanvasGroup(uiElement, uiElement.alpha, 0));
-        isFaded = true;
+        StartCoroutine(FadeCanvasGroup(hpBar, hpBar.alpha, 0));
+        hpFaded = true;
+    }
+
+    public void FadeStaminaIn()
+    {
+        staminaFaded = false;
+        StartCoroutine(FadeCanvasGroup(staminaBar, staminaBar.alpha, 1));
+    }
+
+    public void FadeStaminaOut()
+    {
+        StartCoroutine(FadeCanvasGroup(staminaBar, staminaBar.alpha, 0));
+        staminaFaded = true;
     }
 
     public IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float startValue, float endValue, float lerpTime = 0.5f)

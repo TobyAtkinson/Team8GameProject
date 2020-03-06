@@ -6,17 +6,22 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
 
-    public int maxHealth = 100;
-    public int currentHealth;
+    public float maxHealth = 100f;
+    public float currentHealth;
 
     
-    public int maxStamina = 100;
-    public int currentStamina;
-    public int staminaOverTime;
+    public float maxStamina = 100f;
+    public float currentStamina;
+    public float staminaOverTime = 5f;
 
+    private float StaminaRegenTimer = 0.0f;
 
-    public ChangeSliderValue changeHealthValue;
-    public ChangeSliderValue changeStaminaValue;
+    private const float StaminaDecreasePerFrame = 10.0f;
+    private const float StaminaIncreasePerFrame = 20.0f;
+    private const float StaminaTimeToRegen = 3.0f;
+
+    ChangeSliderValue changeHealthValue;
+    ChangeSliderValue changeStaminaValue;
 
     public GameObject healthBar;
     public GameObject staminaBar;
@@ -26,11 +31,15 @@ public class Player : MonoBehaviour
         currentHealth = maxHealth;
         currentStamina = maxStamina;
 
+        currentHealth = Mathf.Clamp(currentHealth, 0f, 100f);
+        currentStamina = Mathf.Clamp(currentStamina, 0f, 100f);
+
         changeHealthValue = healthBar.GetComponent<ChangeSliderValue>();
         changeStaminaValue = staminaBar.GetComponent<ChangeSliderValue>();
 
         changeHealthValue.SetMaxValue(maxHealth);
         changeStaminaValue.SetMaxValue(maxStamina);
+
 
     }
 
@@ -46,7 +55,7 @@ public class Player : MonoBehaviour
             addHealth(20);
         }
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        /*if (Input.GetKeyDown(KeyCode.Z))
         {
             DamageStamina(20);
         }
@@ -54,7 +63,21 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.X))
         {
             addStamina(20);
+        }*/
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            currentStamina = Mathf.Clamp(currentStamina - (StaminaDecreasePerFrame * Time.deltaTime), 0.0f, maxStamina);
+            StaminaRegenTimer = 0.0f;
         }
+
+       /* else if (currentStamina < maxStamina)
+        {
+            if (StaminaRegenTimer >= StaminaTimeToRegen)
+                currentStamina = Mathf.Clamp(currentStamina + (StaminaIncreasePerFrame * Time.deltaTime), 0.0f, maxStamina);
+            else
+                StaminaRegenTimer += Time.deltaTime;
+        }*/
 
     }
 
@@ -65,24 +88,10 @@ public class Player : MonoBehaviour
         changeHealthValue.SetHealth(currentHealth);
     }
 
-    void DamageStamina(int damage)
-    {
-        currentStamina -= damage;
-
-        changeStaminaValue.SetStamina(currentStamina);
-    }
-
     void addHealth(int heal)
     {
         currentHealth += heal;
 
         changeHealthValue.SetHealth(currentHealth);
-    }
-
-    void addStamina(int heal)
-    {
-        currentStamina += heal;
-
-        changeStaminaValue.SetStamina(currentStamina);
     }
 }

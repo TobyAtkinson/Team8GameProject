@@ -9,20 +9,18 @@ public class ChangeSliderValue : MonoBehaviour
     public Slider healthBar;
     public Slider staminaBar;
 
-    public void SetMaxValue(int value)
+    public void SetMaxValue(float value)
     { 
         healthBar.maxValue = value;
-        healthBar.value = value;
         staminaBar.maxValue = value;
-        staminaBar.value = value;
     }
     
-    public void SetHealth(int value)
+    public void SetHealth(float value)
     {
         healthBar.value = value;
     }
 
-    public void SetStamina(int value)
+    public void SetStamina(float value)
     {
         staminaBar.value = value;
     }

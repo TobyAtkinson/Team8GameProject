@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -493,8 +493,6 @@ MonoBehaviour:
   maxStamina: 100
   currentStamina: 0
   staminaOverTime: 0
-  changeHealthValue: {fileID: 0}
-  changeStaminaValue: {fileID: 0}
   healthBar: {fileID: 157869668}
   staminaBar: {fileID: 1796754563}
 --- !u!1 &471258748
@@ -667,8 +665,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0777b1911b466647a6d412eebf2a0ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiElement: {fileID: 157869672}
-  isFaded: 0
+  hpBar: {fileID: 157869672}
+  staminaBar: {fileID: 1796754566}
 --- !u!1 &645679896
 GameObject:
   m_ObjectHideFlags: 0
