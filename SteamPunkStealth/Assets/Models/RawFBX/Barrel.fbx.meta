@@ -8,9 +8,13 @@ ModelImporter:
     2100000: barrelwood
     2100002: Material
     2100004: BARRELRIM
+    2100006: Barrel1
+    2100008: Barre2
+    2100010: Barrel2
     2300000: //RootNode
     3300000: //RootNode
     4300000: Barrel
+    4300002: Cylinder
   externalObjects: {}
   materials:
     importMaterials: 1
