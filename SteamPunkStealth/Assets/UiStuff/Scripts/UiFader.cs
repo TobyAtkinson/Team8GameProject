@@ -22,7 +22,7 @@ public class UiFader : MonoBehaviour
 
     void Update()
     {
-        if (playerScript.currentHealth == playerScript.maxHealth && !hpFaded)
+        if (playerScript.currentHealth >= playerScript.maxHealth && !hpFaded)
         {
             FadeHealthOut();
         }
@@ -32,7 +32,7 @@ public class UiFader : MonoBehaviour
             FadeHealthIn();
         }
 
-        if (playerScript.currentStamina == playerScript.maxStamina && !staminaFaded)
+        if (playerScript.currentStamina >= playerScript.maxStamina && !staminaFaded)
         {
             FadeStaminaOut();
         }

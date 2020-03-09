@@ -8,16 +8,14 @@ public class Player : MonoBehaviour
 
     public float maxHealth = 100f;
     public float currentHealth;
-
     
     public float maxStamina = 100f;
     public float currentStamina;
-    public float staminaOverTime = 5f;
 
     private float StaminaRegenTimer = 0.0f;
 
     private const float StaminaDecreasePerFrame = 10.0f;
-    private const float StaminaIncreasePerFrame = 20.0f;
+    private const float StaminaIncreasePerFrame = 15.0f;
     private const float StaminaTimeToRegen = 3.0f;
 
     ChangeSliderValue changeHealthValue;
@@ -52,32 +50,29 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftAlt))
         {
-            addHealth(20);
+            AddHealth(20);
         }
 
-        /*if (Input.GetKeyDown(KeyCode.Z))
-        {
-            DamageStamina(20);
-        }
+        bool isRunning = Input.GetKey(KeyCode.LeftShift);
 
-        if (Input.GetKeyDown(KeyCode.X))
+        if (isRunning)
         {
-            addStamina(20);
-        }*/
-
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            currentStamina = Mathf.Clamp(currentStamina - (StaminaDecreasePerFrame * Time.deltaTime), 0.0f, maxStamina);
+            currentStamina -= Mathf.Clamp((StaminaDecreasePerFrame * Time.deltaTime), 0.0f, maxStamina);
+            changeStaminaValue.SetStamina(currentStamina);
             StaminaRegenTimer = 0.0f;
         }
 
-       /* else if (currentStamina < maxStamina)
+        else if (currentStamina < maxStamina && !isRunning)
         {
             if (StaminaRegenTimer >= StaminaTimeToRegen)
-                currentStamina = Mathf.Clamp(currentStamina + (StaminaIncreasePerFrame * Time.deltaTime), 0.0f, maxStamina);
+            {
+                currentStamina += Mathf.Clamp((StaminaIncreasePerFrame * Time.deltaTime), 0.0f, maxStamina);
+                changeStaminaValue.SetStamina(currentStamina);
+            }
+                
             else
                 StaminaRegenTimer += Time.deltaTime;
-        }*/
+        }
 
     }
 
@@ -88,7 +83,7 @@ public class Player : MonoBehaviour
         changeHealthValue.SetHealth(currentHealth);
     }
 
-    void addHealth(int heal)
+    void AddHealth(int heal)
     {
         currentHealth += heal;
 
