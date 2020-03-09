@@ -26,6 +26,8 @@ public class blindEnemyController : MonoBehaviour
     Vector3 center;
     Animator anim;
     bool attack = false;
+    int animTimer = 0;
+    bool animToIdle = false;
 
     // Start is called before the first frame update
     void Start()
@@ -68,7 +70,23 @@ public class blindEnemyController : MonoBehaviour
 
         if(reachedDestination() && !attack)
         {
-            anim.SetInteger("condition", 2);
+            if (animToIdle)
+            {
+                animTimer++;
+                anim.SetInteger("condition", 5);
+            }
+            if (animTimer % 20 == 0)
+            {
+                anim.SetInteger("condition", 2);
+                animTimer = 0;
+                animToIdle = false;
+            }
+            
+            
+        }
+        else
+        {
+            animToIdle = true;
         }
 
         timer++;
