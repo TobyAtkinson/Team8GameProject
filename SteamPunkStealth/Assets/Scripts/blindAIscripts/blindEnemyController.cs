@@ -64,11 +64,12 @@ public class blindEnemyController : MonoBehaviour
             done = true;
         }
 
-        if(reachedDestination() && rate == 1 && attack == false)
+       
+
+        if(reachedDestination() && !attack)
         {
             anim.SetInteger("condition", 2);
         }
-
 
         timer++;
         finishSearch++;
@@ -286,6 +287,7 @@ public class blindEnemyController : MonoBehaviour
         {
 
             //  Debug.Log("Stressed.");
+
             radius2 = Random.Range(1, 9);
             Vector3 randomDirection2 = Random.insideUnitSphere * radius2;
             angryLook(ref randomDirection2);
