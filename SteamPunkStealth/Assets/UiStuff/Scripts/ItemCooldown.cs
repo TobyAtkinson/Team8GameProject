@@ -7,8 +7,9 @@ public class ItemCooldown : MonoBehaviour
 {
     public float cooldownDuration;
     public Image itemIcon;
-    [HideInInspector]
+    //[HideInInspector]
     public float currentCooldown;
+
 
     void FixedUpdate()
     {
@@ -27,8 +28,7 @@ public class ItemCooldown : MonoBehaviour
         if (currentCooldown < cooldownDuration)
         {
             currentCooldown += Time.deltaTime;
-            itemIcon.fillAmount = currentCooldown / cooldownDuration;
-                
+            itemIcon.fillAmount = 1 - currentCooldown / cooldownDuration;              
         }
     }
 

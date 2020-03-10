@@ -8,16 +8,25 @@ public class UiFader : MonoBehaviour
 
     public CanvasGroup hpBar;
     public CanvasGroup staminaBar;
+    public CanvasGroup itemCooldown;
 
     bool hpFaded;
     bool staminaFaded;
+    bool cooldownFaded;
 
     Player playerScript;
+
+    ItemCooldown cooldownScript;
+
 
 
     void Start()
     {
         playerScript = GameObject.FindWithTag("Player").GetComponent<Player>();
+        //cooldownScript = GetComponent<ItemCooldown>();
+
+
+
     }
 
     void Update()
@@ -40,6 +49,16 @@ public class UiFader : MonoBehaviour
         else if (playerScript.currentStamina < playerScript.maxStamina && staminaFaded)
         {
             FadeStaminaIn();
+        }
+
+        if (cooldownScript.currentCooldown >= cooldownScript.cooldownDuration && !cooldownFaded)
+        {
+            FadeCooldownOut();
+        }
+
+        else if (cooldownScript.currentCooldown < cooldownScript.cooldownDuration && cooldownFaded)
+        {
+            FadeCooldownIn();
         }
 
     }
@@ -66,6 +85,17 @@ public class UiFader : MonoBehaviour
     {
         StartCoroutine(FadeCanvasGroup(staminaBar, staminaBar.alpha, 0));
         staminaFaded = true;
+    }
+    public void FadeCooldownIn()
+    {
+        cooldownFaded = false;
+        StartCoroutine(FadeCanvasGroup(itemCooldown, itemCooldown.alpha, 1));
+    }
+
+    public void FadeCooldownOut()
+    {
+        StartCoroutine(FadeCanvasGroup(itemCooldown, itemCooldown.alpha, 0));
+        cooldownFaded = true;
     }
 
     public IEnumerator FadeCanvasGroup(CanvasGroup canvasGroup, float startValue, float endValue, float lerpTime = 0.5f)
