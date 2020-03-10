@@ -129,8 +129,11 @@ public class Enemy : MonoBehaviour {
     [SerializeField]
     private float walkSpeed;
 
-    
-    
+    float viewAngle = 170;
+
+
+
+
 
     void Awake () 
 	{
@@ -178,8 +181,7 @@ public class Enemy : MonoBehaviour {
 
     public bool isPlayerAhead(GameObject player)
     {
-        Vector3 forward = transform.TransformDirection(Vector3.forward);
-        Vector3 toOther = player.transform.position - transform.position;
+        /*
         float angle = Vector3.Dot(forward, toOther);
 
         print(Vector3.Dot(forward, toOther) > 0);
@@ -187,13 +189,21 @@ public class Enemy : MonoBehaviour {
         if (angle > 1)
         {
             print("infront");
-            return true;
+           return true;
         }
         else
         {
             print("behind");
-            return false;
+           return false;
         }
+        */
+
+        Vector3 forward = transform.forward;
+        Vector3 toOther = transform.position - player.transform.position;
+        float checkAngle = Vector3.Angle(forward, toOther);
+        bool returnState = (checkAngle >= viewAngle * .5f);
+        print(returnState);
+        return returnState;
     }
 
     public void TakeDamage(float damageAmount)
