@@ -223,6 +223,12 @@ public class Enemy : MonoBehaviour {
         }
     }
 
+    public void Backstab()
+    {
+            isDead = true;
+            Destroy(this.gameObject);
+    }
+
     void Update()
 	{
         if(isDead == true)

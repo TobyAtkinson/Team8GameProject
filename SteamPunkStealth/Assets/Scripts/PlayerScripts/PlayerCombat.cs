@@ -53,6 +53,23 @@ public class PlayerCombat : MonoBehaviour
 
     private PlayerMovement playerMovementScript;
 
+    [SerializeField]
+    private MeshRenderer swordMeshRender;
+
+    [SerializeField]
+    private GameObject behindExecuteSword;
+
+    [SerializeField]
+    private GameObject deadguard;
+
+    [SerializeField]
+    private ParticleSystem blood;
+
+    [SerializeField]
+    private Animator BackStabAnim;
+
+    [SerializeField]
+    private GameObject deadguardprefab;
 
 
 
@@ -101,7 +118,7 @@ public class PlayerCombat : MonoBehaviour
         if (other.gameObject.tag == "GuardSpear")
         {
             other.enabled = false;
-            if(isBlocking)
+            if (isBlocking)
             {
 
                 Enemy enemyScript = other.transform.root.GetComponent<Enemy>();
@@ -116,7 +133,7 @@ public class PlayerCombat : MonoBehaviour
                 TakeDamage(25);
             }
 
-            
+
         }
     }
 
@@ -139,7 +156,7 @@ public class PlayerCombat : MonoBehaviour
             print("guard infront");
         }
         */
-    
+
 
         RaycastHit hitInfo;
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
@@ -151,7 +168,7 @@ public class PlayerCombat : MonoBehaviour
             if (hitInfo.transform.CompareTag("Enemy"))
             {
                 Enemy enemyscript = hitInfo.transform.root.GetComponent<Enemy>();
-                if(enemyscript.currentCombatState == Enemy.enemyState.Stunned || enemyscript.currentAlarmState ==  Enemy.enemyState.NotAlarmed)
+                if (enemyscript.currentCombatState == Enemy.enemyState.Stunned || enemyscript.currentAlarmState == Enemy.enemyState.NotAlarmed)
                 {
                     skullUi.SetActive(true);
                     ableToExecute = true;
@@ -174,31 +191,45 @@ public class PlayerCombat : MonoBehaviour
 
 
 
-     
-        
+
+
 
 
         if (Input.GetMouseButton(0))
         {
-            
-            if(currentSwordState == swordState.Idle)
+
+            if (currentSwordState == swordState.Idle)
             {
-                if(ableToExecute == true)
+                if (ableToExecute == true)
                 {
-                    if(playerMovementScript.isCrouched == false)
+                    if (playerMovementScript.isCrouched == false)
                     {
-                        enemyToExecute.isPlayerAhead(this.gameObject);
+                        bool isplayerahead = enemyToExecute.isPlayerAhead(this.gameObject);
+                        if (isplayerahead == true)
+                        {
+                            enemyToExecute.isMovementLocked = true;
+                            playerMovementScript.movementLocked = true;
+                            cameraScript.turningLocked = true;
+                            currentSwordState = swordState.Executing;
+                            ableToExecute = false;
+                            StartCoroutine(Execute());
+                        }
+                        else
+                        {
+                            enemyToExecute.isMovementLocked = true;
+                            playerMovementScript.movementLocked = true;
+                            cameraScript.turningLocked = true;
+                            currentSwordState = swordState.Executing;
+                            ableToExecute = false;
+                            StartCoroutine(BehindExecute());
+                        }
+
                         // true = player infront of guard
                         // false = player guard
                         Debug.Log("executing guard");
-                        enemyToExecute.isMovementLocked = true;
-                        playerMovementScript.movementLocked = true;
-                        cameraScript.turningLocked = true;
-                        currentSwordState = swordState.Executing;
-                        ableToExecute = false;
-                        StartCoroutine(Execute());
+
                     }
-                   
+
                 }
                 else
                 {
@@ -209,7 +240,7 @@ public class PlayerCombat : MonoBehaviour
                     currentSwordState = swordState.FirstSwing;
                     StartCoroutine(FirstSwing());
                 }
-                
+
 
             }
             else if (currentSwordState == swordState.FirstSwing && windowForSecondSwing == true)
@@ -229,13 +260,13 @@ public class PlayerCombat : MonoBehaviour
         }
         if (Input.GetMouseButton(1))
         {
-            if(currentSwordState == swordState.Idle)
+            if (currentSwordState == swordState.Idle)
             {
                 windowForSecondSwing = false;
                 currentSwordState = swordState.Blocking;
                 StartCoroutine(Block());
             }
-            
+
         }
     }
 
@@ -247,7 +278,7 @@ public class PlayerCombat : MonoBehaviour
         swordKillCollider.enabled = true;
         yield return new WaitForSeconds(0.25f);
         windowForSecondSwing = true;
-        if(currentSwordState == swordState.FirstSwing)
+        if (currentSwordState == swordState.FirstSwing)
         {
             yield return new WaitForSeconds(0.15f);
             // Deactive kill barrier
@@ -259,8 +290,8 @@ public class PlayerCombat : MonoBehaviour
             windowForSecondSwing = false;
             currentSwordState = swordState.Idle;
         }
-        
-        
+
+
 
         //0.70 left
     }
@@ -287,7 +318,7 @@ public class PlayerCombat : MonoBehaviour
     IEnumerator Block()
     {
         swordAnim.Play("SwordBlock");
-        
+
         //yield return new WaitForSeconds(0.10f);
         // Activate block
         isBlocking = true;
@@ -317,4 +348,25 @@ public class PlayerCombat : MonoBehaviour
         // 1.5 overall
 
     }
+
+    IEnumerator BehindExecute()
+    {
+        behindExecuteSword.SetActive(true);
+        BackStabAnim.Play("BackstabSword");
+        swordMeshRender.enabled = false;
+       
+        deadguard.SetActive(true);
+        blood.Play();
+        enemyToExecute.Backstab();
+        yield return new WaitForSeconds(1.3f);
+        Instantiate(deadguardprefab, deadguard.transform.position, deadguard.transform.rotation);
+        deadguard.SetActive(false);
+        behindExecuteSword.SetActive(false);
+        swordMeshRender.enabled = true;
+        currentSwordState = swordState.Idle;
+        playerMovementScript.movementLocked = false;
+        cameraScript.turningLocked = false;
+    }
+
+
 }
