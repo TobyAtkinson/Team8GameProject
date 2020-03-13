@@ -14,6 +14,7 @@ TagManager:
   - PlayerParry
   - GuardHitBox
   - EnemySight
+  - Ability Wheel
   layers:
   - Default
   - TransparentFX
