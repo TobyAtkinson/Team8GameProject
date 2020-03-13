@@ -108,6 +108,9 @@ public class Enemy : MonoBehaviour {
 
     private PlayerCombat playerCombatScript;
 
+    [SerializeField]
+    private bool canTakeDamage = true;
+
     [Header("Variables you can customize")]
     public GameObject gaurdPoint;
 
@@ -130,6 +133,8 @@ public class Enemy : MonoBehaviour {
     private float walkSpeed;
 
     float viewAngle = 170;
+
+   
 
 
 
@@ -423,7 +428,14 @@ public class Enemy : MonoBehaviour {
         if (other.gameObject.tag == "PlayerSword")
         {
             other.enabled = false;
-            TakeDamage(50);
+            if(canTakeDamage)
+            {
+                StartCoroutine(CanTakeDamage());
+                TakeDamage(50);
+                Debug.Log("Damage 50");
+            }
+
+            
         }
     }
 
@@ -497,6 +509,13 @@ public class Enemy : MonoBehaviour {
             ui.EnemyDidntSeePlayer();
             //ui.NoticedPlayer();
         }
+    }
+
+    IEnumerator CanTakeDamage()
+    {
+        canTakeDamage = false;
+        yield return new WaitForSeconds(0.2f);
+        canTakeDamage = true;
     }
 
     IEnumerator YellowAlarmOffDelay()
