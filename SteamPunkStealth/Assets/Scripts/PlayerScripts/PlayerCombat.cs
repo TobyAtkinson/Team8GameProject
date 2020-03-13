@@ -71,6 +71,9 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField]
     private GameObject deadguardprefab;
 
+    [SerializeField]
+    private bool blockOnCoolDown;
+
 
 
 
@@ -256,10 +259,11 @@ public class PlayerCombat : MonoBehaviour
                 // player is already doing something
             }
         }
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButtonDown(1))
         {
-            if (currentSwordState == swordState.Idle)
+            if (currentSwordState != swordState.Blocking && blockOnCoolDown == false)
             {
+                swordKillCollider.enabled = false;
                 windowForSecondSwing = false;
                 currentSwordState = swordState.Blocking;
                 StartCoroutine(Block());
@@ -270,7 +274,10 @@ public class PlayerCombat : MonoBehaviour
 
     IEnumerator FirstSwing()
     {
+
         swordAnim.SetBool("Attack1", true);
+        swordAnim.SetBool("Block", false);
+        blockOnCoolDown = false;
 
         yield return new WaitForSeconds(0.25f);
 
@@ -281,8 +288,9 @@ public class PlayerCombat : MonoBehaviour
         if(currentSwordState == swordState.FirstSwing)
         {
             windowForSecondSwing = false;
-            currentSwordState = swordState.Idle;
+            
             yield return new WaitForSeconds(0.50f);
+            currentSwordState = swordState.Idle;
             swordAnim.SetBool("Attack1", false);
         }
 
@@ -296,21 +304,27 @@ public class PlayerCombat : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
         currentSwordState = swordState.Idle;
+
         swordAnim.SetBool("Attack2", false);
  
     }
     IEnumerator Block()
     {
-        swordAnim.Play("SwordBlock");
-
-        //yield return new WaitForSeconds(0.10f);
-        // Activate block
+        blockOnCoolDown = true;
+        swordAnim.SetBool("Block", true);
+        swordAnim.SetBool("Attack1", false);
+        swordAnim.SetBool("Attack2", false);
         isBlocking = true;
         yield return new WaitForSeconds(0.60f);
-        // Deactive block
         isBlocking = false;
-        yield return new WaitForSeconds(0.65f);
         currentSwordState = swordState.Idle;
+        yield return new WaitForSeconds(0.40f);
+        swordAnim.SetBool("Block", false);
+        blockOnCoolDown = false;
+
+
+
+        
 
 
         // 1.25 overall
@@ -396,12 +410,20 @@ public class PlayerCombat : MonoBehaviour
         currentSwordState = swordState.Idle;
 
         //0.70 left
+
+
+    block old
+
+    swordAnim.Play("SwordBlock");
+
+        //yield return new WaitForSeconds(0.10f);
+        // Activate block
+        isBlocking = true;
+        yield return new WaitForSeconds(0.60f);
+        // Deactive block
+        isBlocking = false;
+        yield return new WaitForSeconds(0.65f);
+        currentSwordState = swordState.Idle;
      */
 
-
-
-
-
-
-    //0.70 left
 }
