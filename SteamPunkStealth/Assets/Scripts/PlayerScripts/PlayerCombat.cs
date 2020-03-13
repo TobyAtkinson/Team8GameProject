@@ -236,6 +236,7 @@ public class PlayerCombat : MonoBehaviour
                     //swordAnim.enabled = false;
                     //swordAnim.enabled = true;
                     // start first swing
+                    swordAnim.SetBool("Attack1", false);
                     windowForSecondSwing = false;
                     currentSwordState = swordState.FirstSwing;
                     StartCoroutine(FirstSwing());
@@ -245,9 +246,6 @@ public class PlayerCombat : MonoBehaviour
             }
             else if (currentSwordState == swordState.FirstSwing && windowForSecondSwing == true)
             {
-                //swordAnim.enabled = false;
-                //swordAnim.enabled = true;
-                //start second swing
                 currentSwordState = swordState.SecondSwing;
                 windowForSecondSwing = false;
                 swordKillCollider.enabled = false;
@@ -272,48 +270,34 @@ public class PlayerCombat : MonoBehaviour
 
     IEnumerator FirstSwing()
     {
-        swordAnim.Play("SwordAttack1");
-        yield return new WaitForSeconds(0.15f);
-        // Activate kill barrier
-        swordKillCollider.enabled = true;
+        swordAnim.SetBool("Attack1", true);
+
         yield return new WaitForSeconds(0.25f);
+
         windowForSecondSwing = true;
-        if (currentSwordState == swordState.FirstSwing)
+
+
+        yield return new WaitForSeconds(0.25f);
+        if(currentSwordState == swordState.FirstSwing)
         {
-            yield return new WaitForSeconds(0.15f);
-            // Deactive kill barrier
-            swordKillCollider.enabled = false;
-            yield return new WaitForSeconds(0.15f);
-            windowForSecondSwing = false;
-            yield return new WaitForSeconds(0.15f);
-            yield return new WaitForSeconds(0.75f);
             windowForSecondSwing = false;
             currentSwordState = swordState.Idle;
+            yield return new WaitForSeconds(0.50f);
+            swordAnim.SetBool("Attack1", false);
         }
 
 
-
-        //0.70 left
+     
     }
     IEnumerator SecondSwing()
     {
-        swordAnim.Play("SwordAttack2");
-        windowForSecondSwing = false;
-        yield return new WaitForSeconds(0.25f);
-        // Activate kill barrier
-        swordKillCollider.enabled = true;
-        windowForSecondSwing = false;
-        yield return new WaitForSeconds(0.30f);
-        // Deactive kill barrier
-        swordKillCollider.enabled = false;
-        windowForSecondSwing = false;
-        yield return new WaitForSeconds(0.3f);
-        windowForSecondSwing = false;
-        yield return new WaitForSeconds(0.75f);
-        windowForSecondSwing = false;
-        currentSwordState = swordState.Idle;
+        swordAnim.SetBool("Attack2", true);
+        swordAnim.SetBool("Attack1", false);
 
-        //0.70 left
+        yield return new WaitForSeconds(0.5f);
+        currentSwordState = swordState.Idle;
+        swordAnim.SetBool("Attack2", false);
+ 
     }
     IEnumerator Block()
     {
@@ -369,4 +353,55 @@ public class PlayerCombat : MonoBehaviour
     }
 
 
+
+    // first swing old
+    /*
+
+     swordAnim.Play("SwordAttack1");
+     yield return new WaitForSeconds(0.15f);
+     // Activate kill barrier
+     swordKillCollider.enabled = true;
+     yield return new WaitForSeconds(0.25f);
+     windowForSecondSwing = true;
+     if (currentSwordState == swordState.FirstSwing)
+     {
+         yield return new WaitForSeconds(0.15f);
+         // Deactive kill barrier
+         swordKillCollider.enabled = false;
+         yield return new WaitForSeconds(0.15f);
+         windowForSecondSwing = false;
+         yield return new WaitForSeconds(0.15f);
+         yield return new WaitForSeconds(0.75f);
+         windowForSecondSwing = false;
+         currentSwordState = swordState.Idle;
+     }
+
+
+    second swing old
+
+     swordAnim.Play("SwordAttack2");
+        
+        yield return new WaitForSeconds(0.25f);
+        // Activate kill barrier
+        swordKillCollider.enabled = true;
+        windowForSecondSwing = false;
+        yield return new WaitForSeconds(0.30f);
+        // Deactive kill barrier
+        swordKillCollider.enabled = false;
+        windowForSecondSwing = false;
+        yield return new WaitForSeconds(0.3f);
+        windowForSecondSwing = false;
+        yield return new WaitForSeconds(0.75f);
+        windowForSecondSwing = false;
+        currentSwordState = swordState.Idle;
+
+        //0.70 left
+     */
+
+
+
+
+
+
+    //0.70 left
 }
