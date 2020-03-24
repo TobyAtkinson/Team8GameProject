@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerActions : MonoBehaviour
 {
-
+    public GameObject AbilityWheel;
+    public int AWC;
     #region Teleport Disk Variables
     public bool isThrown;
     public GameObject PlayerCam;
@@ -56,7 +57,8 @@ public class PlayerActions : MonoBehaviour
     }
 
     void Update()
-    {      
+    {
+        AWC = AbilityWheel.GetComponent<AbilityWheelController>().AbilityChoice;
         TeleportCountdown();
         ThrowTeleport();
         TeleportToDisk();
@@ -67,6 +69,7 @@ public class PlayerActions : MonoBehaviour
 
         GoggleToggle();
         GoggleCountdown();
+        AbilityWheelToggle();
     }
 
     #region Teleport Disk Functions
@@ -86,7 +89,7 @@ public class PlayerActions : MonoBehaviour
     void ThrowTeleport()
     {
         Debug.DrawRay(PlayerCam.transform.position, PlayerCam.transform.forward, Color.black, 1f);
-        if (Input.GetKeyDown(KeyCode.E) && !isThrown)
+        if (Input.GetKeyDown(KeyCode.E) && AWC == 2 && !isThrown)
         {
             Debug.Log("Throw Teleport Disk");
             TDIcollider.enabled = true;
@@ -101,7 +104,7 @@ public class PlayerActions : MonoBehaviour
 
     void TeleportToDisk()
     {
-        if (Input.GetKeyDown(KeyCode.E) && isThrown && thrownTime <= 0)
+        if (Input.GetKeyDown(KeyCode.E) && AWC == 2 && isThrown && thrownTime <= 0)
         {
             Debug.Log("Teleport" + TeleportDiskInstance.transform.position);
 
@@ -118,7 +121,7 @@ public class PlayerActions : MonoBehaviour
     void ShockEnemy() 
     {
         enemyToShock = shockGadgetRange.GetComponent<StoreEnemyShock>().storedEnemy;
-        if (Input.GetKeyDown(KeyCode.F) == true && shockGadgetRange.GetComponent<StoreEnemyShock>().enemyDectected == true) 
+        if (Input.GetKeyDown(KeyCode.F) == true && AWC == 3 && shockGadgetRange.GetComponent<StoreEnemyShock>().enemyDectected == true) 
         {
             
             enemyToShock.GetComponent<ShockGadgetReceiver>().Shock();
@@ -175,7 +178,7 @@ public class PlayerActions : MonoBehaviour
     
     void GoggleToggle() 
     {
-        if (Input.GetKeyDown(KeyCode.G) && !gogglesActive) 
+        if (Input.GetKeyDown(KeyCode.G) && AWC == 1 && !gogglesActive) 
         {
             Debug.Log("Goggles Activate");
             goggleActiveTimer = 0.4f;
@@ -183,7 +186,7 @@ public class PlayerActions : MonoBehaviour
             Goggles.GetComponent<Camera>().enabled = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.G) && gogglesActive && goggleActiveTimer <= 0)
+        if (Input.GetKeyDown(KeyCode.G) && AWC == 1 && gogglesActive && goggleActiveTimer <= 0)
         {
             Debug.Log("Goggles Deactivate");
             gogglesActive = false;
@@ -191,4 +194,21 @@ public class PlayerActions : MonoBehaviour
         }
     }
     #endregion 
+
+    void AbilityWheelToggle()
+    {
+        if (Input.GetKey(KeyCode.Tab))
+        {
+            AbilityWheel.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            AbilityWheel.SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+
+    }
 }
