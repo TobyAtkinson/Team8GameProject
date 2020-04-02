@@ -1,0 +1,216 @@
+fileFormatVersion: 2
+guid: b2b2b85cf67b31547a4db3f97256ba4e
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Pagoda
+    100004: Pagoda1
+    100006: Pagoda10
+    100008: Pagoda11
+    100010: Pagoda12
+    100012: Pagoda13
+    100014: Pagoda14
+    100016: Pagoda15
+    100018: Pagoda16
+    100020: Pagoda17
+    100022: Pagoda18
+    100024: Pagoda19
+    100026: Pagoda2
+    100028: Pagoda20
+    100030: Pagoda21
+    100032: Pagoda3
+    100034: Pagoda4
+    100036: Pagoda5
+    100038: Pagoda6
+    100040: Pagoda7
+    100042: Pagoda8
+    100044: Pagoda9
+    100046: PagodaDetails
+    100048: Top
+    100050: Wall
+    400000: //RootNode
+    400002: Pagoda
+    400004: Pagoda1
+    400006: Pagoda10
+    400008: Pagoda11
+    400010: Pagoda12
+    400012: Pagoda13
+    400014: Pagoda14
+    400016: Pagoda15
+    400018: Pagoda16
+    400020: Pagoda17
+    400022: Pagoda18
+    400024: Pagoda19
+    400026: Pagoda2
+    400028: Pagoda20
+    400030: Pagoda21
+    400032: Pagoda3
+    400034: Pagoda4
+    400036: Pagoda5
+    400038: Pagoda6
+    400040: Pagoda7
+    400042: Pagoda8
+    400044: Pagoda9
+    400046: PagodaDetails
+    400048: Top
+    400050: Wall
+    2100000: lambert1
+    2300000: Pagoda
+    2300002: Pagoda1
+    2300004: Pagoda10
+    2300006: Pagoda11
+    2300008: Pagoda12
+    2300010: Pagoda13
+    2300012: Pagoda14
+    2300014: Pagoda15
+    2300016: Pagoda16
+    2300018: Pagoda17
+    2300020: Pagoda18
+    2300022: Pagoda19
+    2300024: Pagoda2
+    2300026: Pagoda20
+    2300028: Pagoda21
+    2300030: Pagoda3
+    2300032: Pagoda4
+    2300034: Pagoda5
+    2300036: Pagoda6
+    2300038: Pagoda7
+    2300040: Pagoda8
+    2300042: Pagoda9
+    2300044: Top
+    2300046: Wall
+    3300000: Pagoda
+    3300002: Pagoda1
+    3300004: Pagoda10
+    3300006: Pagoda11
+    3300008: Pagoda12
+    3300010: Pagoda13
+    3300012: Pagoda14
+    3300014: Pagoda15
+    3300016: Pagoda16
+    3300018: Pagoda17
+    3300020: Pagoda18
+    3300022: Pagoda19
+    3300024: Pagoda2
+    3300026: Pagoda20
+    3300028: Pagoda21
+    3300030: Pagoda3
+    3300032: Pagoda4
+    3300034: Pagoda5
+    3300036: Pagoda6
+    3300038: Pagoda7
+    3300040: Pagoda8
+    3300042: Pagoda9
+    3300044: Top
+    3300046: Wall
+    4300000: Pagoda
+    4300002: Pagoda1
+    4300004: Pagoda2
+    4300006: Pagoda3
+    4300008: Pagoda4
+    4300010: Pagoda5
+    4300012: Pagoda6
+    4300014: Pagoda7
+    4300016: Pagoda8
+    4300018: Pagoda9
+    4300020: Pagoda10
+    4300022: Pagoda11
+    4300024: Pagoda12
+    4300026: Pagoda13
+    4300028: Pagoda14
+    4300030: Pagoda15
+    4300032: Pagoda16
+    4300034: Pagoda17
+    4300036: Pagoda18
+    4300038: Pagoda19
+    4300040: Pagoda20
+    4300042: Pagoda21
+    4300044: Wall
+    4300046: Top
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
