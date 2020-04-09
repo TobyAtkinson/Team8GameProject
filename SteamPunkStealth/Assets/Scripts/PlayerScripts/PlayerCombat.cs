@@ -13,11 +13,11 @@ public class PlayerCombat : MonoBehaviour
 
     private Animator swordAnim;
 
-    [SerializeField]
-    private float maxiumunHealth;
 
-    [SerializeField]
-    private float currentHealth;
+    public float maxiumunHealth;
+
+
+    public float currentHealth;
 
     [SerializeField]
     private bool isDead;
@@ -73,6 +73,8 @@ public class PlayerCombat : MonoBehaviour
 
     [SerializeField]
     private bool blockOnCoolDown;
+
+    public UiFader uiFadingScript;
 
 
 

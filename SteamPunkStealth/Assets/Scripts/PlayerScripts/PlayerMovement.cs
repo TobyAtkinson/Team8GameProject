@@ -47,6 +47,8 @@ public class PlayerMovement : MonoBehaviour
         speed = walkSpeed;
         playerRB = GetComponent<Rigidbody>();
         staminaBar.maxValue = staminaMax;
+
+        SprintCountdown = staminaMax;
     }
     // Update is called once per frame
     void Update()

@@ -16,7 +16,15 @@ public class UiFader : MonoBehaviour
 
     Player playerScript;
 
+
+    // variables made by toby 
+    public PlayerCombat playerCombatScript;
+
+    public PlayerMovement playerMovementScript;
+
     ItemCooldown cooldownScript;
+
+    public Image healthProgressBar;
 
 
 
@@ -26,21 +34,39 @@ public class UiFader : MonoBehaviour
         //cooldownScript = GetComponent<ItemCooldown>();
 
 
-
     }
 
     void Update()
     {
-        if (playerScript.currentHealth >= playerScript.maxHealth && !hpFaded)
+
+        //toby change
+        healthProgressBar.fillAmount = playerCombatScript.currentHealth / playerCombatScript.maxiumunHealth;
+        //toby change
+        if (playerCombatScript.currentHealth >= playerCombatScript.maxiumunHealth && !hpFaded)
         {
             FadeHealthOut();
         }
-
-        else if (playerScript.currentHealth < playerScript.maxHealth && hpFaded)
+        //toby change
+        else if (playerCombatScript.currentHealth < playerCombatScript.maxiumunHealth && hpFaded)
         {
             FadeHealthIn();
         }
 
+
+        //new
+        if (playerMovementScript.SprintCountdown >= playerMovementScript.staminaMax && !staminaFaded)
+        {
+            FadeStaminaOut();
+        }
+
+        else if (playerMovementScript.SprintCountdown < playerMovementScript.staminaMax && staminaFaded)
+        {
+            FadeStaminaIn();
+        }
+
+
+        //old
+        /*
         if (playerScript.currentStamina >= playerScript.maxStamina && !staminaFaded)
         {
             FadeStaminaOut();
@@ -50,7 +76,11 @@ public class UiFader : MonoBehaviour
         {
             FadeStaminaIn();
         }
+        */
 
+
+        // currently dashed out due to not working at the moment
+        /*
         if (cooldownScript.currentCooldown >= cooldownScript.cooldownDuration && !cooldownFaded)
         {
             FadeCooldownOut();
@@ -60,6 +90,7 @@ public class UiFader : MonoBehaviour
         {
             FadeCooldownIn();
         }
+        */
 
     }
 
