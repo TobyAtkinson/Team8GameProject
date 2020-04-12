@@ -185,7 +185,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isGrounded && !isCrouched)
         {
-            if (Input.GetKey(KeyCode.LeftShift) && canSprint)
+            if (Input.GetKey(KeyCode.LeftShift) && canSprint && Input.GetKey(KeyCode.W))
             {
                 speed = sprintSpeed;
                 isSprinting = true;
@@ -291,19 +291,22 @@ public class PlayerMovement : MonoBehaviour
 
     void Crouch() 
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl) && isGrounded) 
+        if (isGrounded)
         {
-            isCrouched = true;
-            speed = crouchSpeed;
-            transform.localScale = transform.localScale / 2;
-        }
+            if (Input.GetKeyDown(KeyCode.LeftControl) && !isCrouched)
+            {
+                isCrouched = true;
+                speed = crouchSpeed;
+                transform.localScale = transform.localScale / 2;
+            }
 
-        if (Input.GetKeyUp(KeyCode.LeftControl) && isGrounded)
-        {
-            Debug.Log("UnCrouch");
-            isCrouched = false;
-            speed = walkSpeed;
-            transform.localScale = transform.localScale * 2;
+            else if (Input.GetKeyDown(KeyCode.LeftControl) && isCrouched)
+            {
+                Debug.Log("UnCrouch");
+                isCrouched = false;
+                speed = walkSpeed;
+                transform.localScale = transform.localScale * 2;
+            }
         }
     }
 }
