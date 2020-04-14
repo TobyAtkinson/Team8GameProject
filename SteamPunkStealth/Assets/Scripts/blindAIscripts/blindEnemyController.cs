@@ -10,6 +10,11 @@ public class blindEnemyController : MonoBehaviour
     Transform target;
     public NavMeshAgent agent;
 
+    
+    PlayerMovement playerMovement;
+
+
+
     int rate;
     int radius;
     int timer = 0;
@@ -40,6 +45,9 @@ public class blindEnemyController : MonoBehaviour
 
         rate = 1;
 
+        GameObject player = GameObject.Find("NewPlayer");
+        playerMovement = player.GetComponent<PlayerMovement>();
+
     }
 
     // Update is called once per frame
@@ -61,7 +69,7 @@ public class blindEnemyController : MonoBehaviour
         }
 
 
-        if (Input.GetKey(KeyCode.LeftControl))
+        if (playerMovement.isCrouched)
         {
             done = true;
         }
@@ -97,7 +105,7 @@ public class blindEnemyController : MonoBehaviour
     {
 
         // If the Player crouches using left control and is in the Blind Enemy's area of detection, the Enemy goes to the position where he last heard the player.
-        if (Input.GetKeyDown(KeyCode.LeftControl) && distance <= lookRadius)
+        if (playerMovement.isCrouched && distance <= lookRadius)
         {
 
             if (clear == true)
@@ -144,7 +152,7 @@ public class blindEnemyController : MonoBehaviour
         }
 
         // If the player stands up while they're still in the area of detection, attack him
-        if (distance <= lookRadius && Input.GetKeyUp(KeyCode.LeftControl))
+        if (distance <= lookRadius && !playerMovement.isCrouched)
         {
 
             rate = 1;
