@@ -10,7 +10,7 @@ public class blindEnemyController : MonoBehaviour
     Transform target;
     public NavMeshAgent agent;
 
-    
+   
     PlayerMovement playerMovement;
 
 
@@ -33,6 +33,7 @@ public class blindEnemyController : MonoBehaviour
     bool attack = false;
     int animTimer = 0;
     bool animToIdle = false;
+   public bool spawnHitbox = false;
 
     // Start is called before the first frame update
     void Start()
@@ -82,12 +83,14 @@ public class blindEnemyController : MonoBehaviour
             {
                 animTimer++;
                 anim.SetInteger("condition", 5);
+                spawnHitbox = false;
             }
             if (animTimer % 20 == 0)
             {
                 anim.SetInteger("condition", 2);
                 animTimer = 0;
                 animToIdle = false;
+                spawnHitbox = false;
             }
             
             
@@ -96,6 +99,9 @@ public class blindEnemyController : MonoBehaviour
         {
             animToIdle = true;
         }
+
+
+       
 
         timer++;
         finishSearch++;
@@ -146,6 +152,7 @@ public class blindEnemyController : MonoBehaviour
                 angryRoam();
                 clock = false;
                 searchTimer = 0;
+                spawnHitbox = false;
             }
 
 
@@ -165,7 +172,7 @@ public class blindEnemyController : MonoBehaviour
             stoppedAngry = false;
             //  Debug.Log("Going for the player.");
             anim.SetInteger("condition", 3);
-
+            spawnHitbox = false;
 
         }
 
@@ -180,7 +187,7 @@ public class blindEnemyController : MonoBehaviour
             angry = false;
             stoppedAngry = false;
             roam();
-
+            spawnHitbox = false;
 
         }
 
@@ -188,6 +195,7 @@ public class blindEnemyController : MonoBehaviour
         {
             agent.SetDestination(target.position);
             anim.SetInteger("condition", 3);
+            spawnHitbox = false;
 
         }
 
@@ -217,14 +225,14 @@ public class blindEnemyController : MonoBehaviour
             agent.SetDestination(target.position);
             agent.speed = 0;
             anim.SetInteger("condition", 4);
-            
+            spawnHitbox = true;
             Debug.Log("Attacks player.");
         }
         else
         {
             agent.speed = 7;
             attack = false;
-            
+            spawnHitbox = false;
 
         }
     }
@@ -345,6 +353,8 @@ public class blindEnemyController : MonoBehaviour
         }
         
     }
+
+    
 
     private void OnDrawGizmosSelected()
     {
