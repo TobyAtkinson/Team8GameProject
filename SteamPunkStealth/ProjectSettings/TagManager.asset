@@ -15,6 +15,7 @@ TagManager:
   - GuardHitBox
   - EnemySight
   - Ability Wheel
+  - Explosive
   layers:
   - Default
   - TransparentFX
