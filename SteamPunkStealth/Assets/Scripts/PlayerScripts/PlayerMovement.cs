@@ -55,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
     {
         WallRunning();
         isGroundCheck();
-        Crouch();
+        CrouchCheck();
         SpeedChanges();
         SprintTimer();
         SprintCooldown();
@@ -138,7 +138,12 @@ public class PlayerMovement : MonoBehaviour
 
     void Jump()
     {
-        velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);     
+        velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
+        if (isCrouched)
+        {
+            isCrouched = false;
+            UnCrouch();
+        }
     }
 
 
@@ -289,24 +294,40 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void Crouch() 
+    void CrouchCheck() 
     {
         if (isGrounded)
         {
             if (Input.GetKeyDown(KeyCode.LeftControl) && !isCrouched)
             {
                 isCrouched = true;
-                speed = crouchSpeed;
-                transform.localScale = transform.localScale / 2;
+                Crouch();
             }
 
             else if (Input.GetKeyDown(KeyCode.LeftControl) && isCrouched)
             {
-                Debug.Log("UnCrouch");
                 isCrouched = false;
-                speed = walkSpeed;
-                transform.localScale = transform.localScale * 2;
+                UnCrouch();
             }
+        }
+    }
+
+    void Crouch()
+    {
+        if (isCrouched)
+        {
+            speed = crouchSpeed;
+            transform.localScale = transform.localScale / 2;
+        }
+
+    }
+
+    void UnCrouch()
+    {
+        if (!isCrouched)
+        {
+            speed = walkSpeed;
+            transform.localScale = transform.localScale * 2;
         }
     }
 }

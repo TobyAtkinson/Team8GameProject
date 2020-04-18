@@ -54,15 +54,16 @@ public class PlayerActions : MonoBehaviour
         TDIcollider.enabled = false;
         TDIrenderer.enabled = false;
         #endregion
+        AWC = 1;
     }
 
     void Update()
     {
-        AWC = AbilityWheel.GetComponent<AbilityWheelController>().AbilityChoice;
+        ActionScroll();
         TeleportCountdown();
         ThrowTeleport();
         TeleportToDisk();
-
+        TeleportReset();
         DrawBow();
         
         ShockEnemy();
@@ -70,9 +71,21 @@ public class PlayerActions : MonoBehaviour
         GoggleToggle();
         GoggleCountdown();
         AbilityWheelToggle();
+
     }
 
     #region Teleport Disk Functions
+
+    void TeleportReset()
+    {
+        if (AWC != 3 && isThrown)
+        {
+            TDIrenderer.enabled = false;
+            TDIcollider.enabled = false;
+            isThrown = false;
+        }
+    }
+
     void TeleportCountdown() 
     {
         if (isThrown) 
@@ -88,31 +101,37 @@ public class PlayerActions : MonoBehaviour
     
     void ThrowTeleport()
     {
-        Debug.DrawRay(PlayerCam.transform.position, PlayerCam.transform.forward, Color.black, 1f);
-        if (Input.GetKeyDown(KeyCode.E) && AWC == 2 && !isThrown)
+        if (AWC == 3)
         {
-            Debug.Log("Throw Teleport Disk");
-            TDIcollider.enabled = true;
-            TDIrenderer.enabled = true;
-            TDItransform.position = DiskSpawnPoint.position;
-            TDItransform.rotation = DiskSpawnPoint.rotation;
-            TDIrigidbody.AddForce(TDItransform.forward * throwForce);
-            isThrown = true;
-            TeleportDiskInstance.GetComponent<TeleportDiskController>().isFlying = true;
+            Debug.DrawRay(PlayerCam.transform.position, PlayerCam.transform.forward, Color.black, 1f);
+            if (Input.GetKeyDown(KeyCode.E)  && !isThrown)
+            {
+                Debug.Log("Throw Teleport Disk");
+                TDIcollider.enabled = true;
+                TDIrenderer.enabled = true;
+                TDItransform.position = DiskSpawnPoint.position;
+                TDItransform.rotation = DiskSpawnPoint.rotation;
+                TDIrigidbody.AddForce(TDItransform.forward * throwForce);
+                isThrown = true;
+                TeleportDiskInstance.GetComponent<TeleportDiskController>().isFlying = true;
+            }
         }
     }
 
     void TeleportToDisk()
     {
-        if (Input.GetKeyDown(KeyCode.E) && AWC == 2 && isThrown && thrownTime <= 0)
+        if (AWC == 3)
         {
-            Debug.Log("Teleport" + TeleportDiskInstance.transform.position);
+            if (Input.GetKeyDown(KeyCode.E) && isThrown && thrownTime <= 0)
+            {
+                Debug.Log("Teleport" + TeleportDiskInstance.transform.position);
 
-            TDIrenderer.enabled = false;
-            Player.transform.SetPositionAndRotation(TeleportDiskInstance.transform.position, Player.transform.rotation);
-            TDIcollider.enabled = false; 
-            isThrown = false;
-            Debug.Log(Player.transform.position);
+                TDIrenderer.enabled = false;
+                Player.transform.position = TeleportDiskInstance.transform.position;
+                TDIcollider.enabled = false; 
+                isThrown = false;
+                Debug.Log(Player.transform.position);
+            }
         }
     }
     #endregion
@@ -120,12 +139,16 @@ public class PlayerActions : MonoBehaviour
     #region Shock Gauntlet Functions
     void ShockEnemy() 
     {
-        enemyToShock = shockGadgetRange.GetComponent<StoreEnemyShock>().storedEnemy;
-        if (Input.GetKeyDown(KeyCode.F) == true && AWC == 3 && shockGadgetRange.GetComponent<StoreEnemyShock>().enemyDectected == true) 
+        if (AWC == 2)
         {
+            enemyToShock = shockGadgetRange.GetComponent<StoreEnemyShock>().storedEnemy;
+            if (Input.GetKeyDown(KeyCode.E) == true && shockGadgetRange.GetComponent<StoreEnemyShock>().enemyDectected == true) 
+            {
             
-            enemyToShock.GetComponent<ShockGadgetReceiver>().Shock();
+                enemyToShock.GetComponent<ShockGadgetReceiver>().Shock();
+            }
         }
+       
     }
     #endregion
 
@@ -178,23 +201,39 @@ public class PlayerActions : MonoBehaviour
     
     void GoggleToggle() 
     {
-        if (Input.GetKeyDown(KeyCode.G) && AWC == 1 && !gogglesActive) 
+        if (AWC == 1)
         {
-            Debug.Log("Goggles Activate");
-            goggleActiveTimer = 0.4f;
-            gogglesActive = true;
-            Goggles.GetComponent<Camera>().enabled = true;
-        }
+            if (Input.GetKeyDown(KeyCode.E) && !gogglesActive) 
+            {
+                Debug.Log("Goggles Activate");
+                goggleActiveTimer = 0.4f;
+                gogglesActive = true;
+                Goggles.GetComponent<Camera>().enabled = true;
+            }
 
-        if (Input.GetKeyDown(KeyCode.G) && AWC == 1 && gogglesActive && goggleActiveTimer <= 0)
-        {
-            Debug.Log("Goggles Deactivate");
-            gogglesActive = false;
-            Goggles.GetComponent<Camera>().enabled = false;
-        }
+            if (Input.GetKeyDown(KeyCode.E) && gogglesActive && goggleActiveTimer <= 0)
+            {
+                Debug.Log("Goggles Deactivate");
+                gogglesActive = false;
+                Goggles.GetComponent<Camera>().enabled = false;
+            }
+        }      
     }
     #endregion 
 
+    void ActionScroll()
+    {
+        Debug.Log("Action Scroll Active");
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Debug.Log("AWC + 1");
+            AWC = AWC + 1;
+            if (AWC >= 4)
+            {
+                AWC = 1;
+            }
+        }
+    }
     void AbilityWheelToggle()
     {
         if (Input.GetKey(KeyCode.Tab))
