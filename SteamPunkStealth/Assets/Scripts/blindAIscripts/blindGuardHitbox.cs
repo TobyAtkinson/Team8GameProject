@@ -10,6 +10,7 @@ public class blindGuardHitbox : MonoBehaviour
      public  Transform hitboxPosition;
      float lifetime = 5f;
     public  bool destroyHitbox = false;
+    public bool knockback = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,10 +25,12 @@ public class blindGuardHitbox : MonoBehaviour
         {
             destroyHitbox = false;
             Instantiate(hitbox, hitboxPosition.position, hitboxPosition.rotation);
+            knockback = true;
         }
         else
         {
             destroyHitbox = true;
+            knockback = false;
         }
     }
 }

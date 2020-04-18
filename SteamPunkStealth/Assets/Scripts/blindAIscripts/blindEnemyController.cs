@@ -224,9 +224,14 @@ public class blindEnemyController : MonoBehaviour
             attack = true;
             agent.SetDestination(target.position);
             agent.speed = 0;
+            spawnHitbox = true;
+            StartCoroutine(HitAnim());
+            /*
             anim.SetInteger("condition", 4);
             spawnHitbox = true;
             Debug.Log("Attacks player.");
+
+    */
         }
         else
         {
@@ -354,7 +359,15 @@ public class blindEnemyController : MonoBehaviour
         
     }
 
-    
+
+    IEnumerator HitAnim()
+    {
+        yield return new WaitForSeconds(0.1f);
+        anim.SetInteger("condition", 4);
+        Debug.Log("Attacks player.");
+       
+    }
+
 
     private void OnDrawGizmosSelected()
     {
