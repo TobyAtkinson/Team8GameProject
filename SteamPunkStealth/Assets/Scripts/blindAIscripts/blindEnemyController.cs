@@ -218,7 +218,7 @@ public class blindEnemyController : MonoBehaviour
     void attackPlayer()
     {
 
-        if ((Vector3.Distance(transform.position, target.position) <= 2.5f && done == false) || (Vector3.Distance(transform.position, target.position) <= 1.7f && done))
+        if ((Vector3.Distance(transform.position, target.position) <= 2f && done == false) || (Vector3.Distance(transform.position, target.position) <= 1.7f && done))
         {
             facePlayer();
             attack = true;
