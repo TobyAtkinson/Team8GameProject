@@ -16,6 +16,7 @@ TagManager:
   - EnemySight
   - Ability Wheel
   - Explosive
+  - Blindhitbox
   layers:
   - Default
   - TransparentFX
@@ -25,7 +26,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Blindhitbox
   - Enviroment
   - Enemy
   - walkable
