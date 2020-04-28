@@ -146,6 +146,7 @@ public class Enemy : MonoBehaviour {
         anim = body.GetComponent<Animator>();
         _player = GameObject.FindGameObjectWithTag("Player");
         playerCombatScript = _player.GetComponent<PlayerCombat>();
+        player = _player.GetComponent<PlayerMovement>();
         enemyAgent = GetComponent<NavMeshAgent>();
         enemyAgent.speed = walkSpeed;
         spearKillCollider = attackKickSpear.GetComponent<BoxCollider>();

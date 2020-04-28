@@ -76,6 +76,16 @@ public class PlayerCombat : MonoBehaviour
 
     public UiFader uiFadingScript;
 
+    public GameObject[] tutorialWaypoints;
+
+    public Objective objectiveScript;
+
+    public int checkpointStage = 0;
+
+    public Text instructions;
+
+    public GameObject instructionsgroup;
+
 
 
 
@@ -101,6 +111,9 @@ public class PlayerCombat : MonoBehaviour
 
     void Start()
     {
+        instructionsgroup.SetActive(false);
+        objectiveScript.target = tutorialWaypoints[0].transform;
+        objectiveScript.offset = new Vector3(0, 1);
         currentHealth = maxiumunHealth;
         swordAnim = sword.GetComponent<Animator>();
     }
@@ -120,6 +133,58 @@ public class PlayerCombat : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if(other.gameObject == tutorialWaypoints[0])
+        {
+            if(checkpointStage == 0)
+            {
+                objectiveScript.target = tutorialWaypoints[1].transform;
+                Destroy(other.gameObject);
+                
+                checkpointStage = 1;
+
+                instructions.text = "Move stealthily by crouching with the CTRL key. Crouch under the obstacle.";
+            }
+            
+        }
+        else if (other.gameObject == tutorialWaypoints[1])
+        {
+            if (checkpointStage == 1)
+            {
+                objectiveScript.target = tutorialWaypoints[2].transform;
+                Destroy(other.gameObject);
+                
+                checkpointStage = 2;
+
+                instructions.text = "Use your agility to navigate areas. Walk up to a vine wall and hold W to climb up.";
+            }
+            
+        }
+        else if (other.gameObject == tutorialWaypoints[2])
+        {
+            if (checkpointStage == 2)
+            {
+                objectiveScript.target = tutorialWaypoints[3].transform;
+                Destroy(other.gameObject);
+                
+                checkpointStage = 3;
+
+                instructions.text = "Wall run to explore further. Jump to the wall while sprinting using SHIFT and SPACE, then hold W while keeping the wall on your left.";
+            }
+            
+        }
+        else if (other.gameObject == tutorialWaypoints[3])
+        {
+            if (checkpointStage == 3)
+            {
+                objectiveScript.target = tutorialWaypoints[4].transform;
+                objectiveScript.offset = new Vector3(0, 8);
+                Destroy(other.gameObject);
+                
+                checkpointStage = 4;
+            }
+            
+        }
+
         if (other.gameObject.tag == "GuardSpear")
         {
             other.enabled = false;
@@ -142,6 +207,14 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
+
+    void DojoStart()
+    {
+        this.gameObject.transform.position = new Vector3(-191.24f, 11.8f, -458.15f);
+        instructionsgroup.SetActive(true);
+        instructions.text = "To train your defensive skills as a monk, you must perfect the basics. Use Shift while moving with WASD to sprint. Sprint to the marker.";
+    }
+
     void Update()
     {
         if (isDead == true)
@@ -149,21 +222,26 @@ public class PlayerCombat : MonoBehaviour
             //Debug.LogError("Player dead");
         }
 
-        /*
-        Vector3 forward = transform.TransformDirection(Vector3.forward);
-        Vector3 toOther = guard.transform.position - transform.position;
-        float angle = Vector3.Dot(forward, toOther);
-
-        print(Vector3.Dot(forward, toOther) > 0);
-
-        if (angle > viewThreshhold)
+        if (Input.GetKeyDown(KeyCode.O))
         {
-            print("guard infront");
+            DojoStart();
         }
-        */
+
+            /*
+            Vector3 forward = transform.TransformDirection(Vector3.forward);
+            Vector3 toOther = guard.transform.position - transform.position;
+            float angle = Vector3.Dot(forward, toOther);
+
+            print(Vector3.Dot(forward, toOther) > 0);
+
+            if (angle > viewThreshhold)
+            {
+                print("guard infront");
+            }
+            */
 
 
-        RaycastHit hitInfo;
+            RaycastHit hitInfo;
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
 
 
