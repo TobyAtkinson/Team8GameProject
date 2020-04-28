@@ -86,7 +86,7 @@ public class PlayerCombat : MonoBehaviour
 
     public GameObject instructionsgroup;
 
-
+    AudioManager manager;
 
 
     public enum swordState
@@ -116,6 +116,8 @@ public class PlayerCombat : MonoBehaviour
         objectiveScript.offset = new Vector3(0, 1);
         currentHealth = maxiumunHealth;
         swordAnim = sword.GetComponent<Animator>();
+        GameObject AudioManager = GameObject.Find("Audio Manager");
+        manager = AudioManager.GetComponent<AudioManager>();
     }
 
     public void TakeDamage(float damageAmount)
@@ -359,6 +361,7 @@ public class PlayerCombat : MonoBehaviour
         swordAnim.SetBool("Block", false);
         blockOnCoolDown = false;
 
+        manager.Play("SwordSwing");
         yield return new WaitForSeconds(0.25f);
 
         windowForSecondSwing = true;

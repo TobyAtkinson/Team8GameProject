@@ -23,6 +23,8 @@ public class PlayerMovement : MonoBehaviour
     public bool isWallRunningUp;
     public bool isWallRunningSide;
 
+    AudioManager manager;
+
     // New bool added by toby, registers if the player is currently locked in an animation like an execution
     public bool movementLocked;
     
@@ -49,6 +51,9 @@ public class PlayerMovement : MonoBehaviour
         staminaBar.maxValue = staminaMax;
 
         SprintCountdown = staminaMax;
+
+        GameObject AudioManager = GameObject.Find("Audio Manager");
+        manager = AudioManager.GetComponent < AudioManager > ();
     }
     // Update is called once per frame
     void Update()
@@ -59,12 +64,15 @@ public class PlayerMovement : MonoBehaviour
         SpeedChanges();
         SprintTimer();
         SprintCooldown();
-
+     
         // change 1/2 by Toby, player cannot move while executing guard
-        if(!movementLocked)
+        if (!movementLocked)
         {
             x = Input.GetAxisRaw("Horizontal");
             z = Input.GetAxisRaw("Vertical");
+          
+
+
         }
         else
         {
@@ -94,6 +102,8 @@ public class PlayerMovement : MonoBehaviour
         Controller.Move(velocity * Time.deltaTime);
 
         staminaBar.value = SprintCountdown;
+
+      
     }
 
     void isGroundCheck() 
