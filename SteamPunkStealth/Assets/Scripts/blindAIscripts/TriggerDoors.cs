@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class TriggerDoors : MonoBehaviour
 {
-    GameObject door1;
-    GameObject door2;
-    // Start is called before the first frame update
-    void Start()
-    {
-        door1 = GameObject.Find("gate1");
-        door2 = GameObject.Find("gate2");
-    }
+    public GameObject gateGroupOpen;
+    public GameObject gateGroupClosed;
+    public GameObject blindGuard;
+    public GameObject waypoint;
+    public GameObject objective1;
+    public GameObject objective2;
+    public GameObject healthBargroup;
+        
+
 
    
 
@@ -19,9 +20,15 @@ public class TriggerDoors : MonoBehaviour
     {
         if(other.gameObject.tag == "Player")
         {
-            door1.transform.Rotate(0, 40, 0);
-            door2.transform.Rotate(0, -55, 0);
+            blindGuard.SetActive(true);
+            gateGroupOpen.SetActive(false);
+            gateGroupClosed.SetActive(true);
+            waypoint.SetActive(false);
+            objective1.SetActive(false);
+            objective2.SetActive(true);
+            healthBargroup.SetActive(true);
             Destroy(this);
+            
         }
     }
 }

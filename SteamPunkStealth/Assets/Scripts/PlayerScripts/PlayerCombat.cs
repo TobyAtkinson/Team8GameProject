@@ -88,7 +88,15 @@ public class PlayerCombat : MonoBehaviour
 
     AudioManager manager;
 
+    public GameObject key1;
 
+    public GameObject key2;
+
+    public GameObject gateGroupOpen;
+    public GameObject gateGroupClosed;
+
+    public GameObject waypoint;
+    public GameObject objective1;
     public enum swordState
     {
         Idle,
@@ -133,9 +141,42 @@ public class PlayerCombat : MonoBehaviour
 
     }
 
+    void DojoStart()
+    {
+        this.gameObject.transform.position = new Vector3(-191.24f, 11.8f, -458.15f);
+        instructionsgroup.SetActive(true);
+        instructions.text = "To train your defensive skills as a monk, you must perfect the basics. Use Shift while moving with WASD to sprint. Sprint to the marker.";
+        objective1.SetActive(false);
+    }
+
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject == tutorialWaypoints[0])
+
+        if (other.gameObject == key1)
+        {
+            if(key2 == null)
+            {
+                // BOTH KEYS DONE
+                gateGroupClosed.SetActive(false);
+                gateGroupOpen.SetActive(true);
+                waypoint.SetActive(true);
+            }
+            Destroy(key1);
+        }
+        else if (other.gameObject == key2)
+        {
+            if (key1 == null)
+            {
+                // BOTH KEYS DONE
+                gateGroupClosed.SetActive(false);
+                gateGroupOpen.SetActive(true);
+                waypoint.SetActive(true);
+            }
+            Destroy(key2);
+        }
+
+
+        if (other.gameObject == tutorialWaypoints[0])
         {
             if(checkpointStage == 0)
             {
@@ -180,14 +221,23 @@ public class PlayerCombat : MonoBehaviour
             {
                 objectiveScript.target = tutorialWaypoints[4].transform;
                 objectiveScript.offset = new Vector3(0, 8);
+                instructionsgroup.SetActive(false);
+
+                waypoint.SetActive(false);
                 Destroy(other.gameObject);
-                
+                objective1.SetActive(true);
                 checkpointStage = 4;
             }
             
         }
 
-        if (other.gameObject.tag == "GuardSpear")
+        if (other.gameObject.tag == "Explosive")
+        {
+            TakeDamage(10);
+        }
+
+
+            if (other.gameObject.tag == "GuardSpear")
         {
             other.enabled = false;
             if (isBlocking)
@@ -210,12 +260,7 @@ public class PlayerCombat : MonoBehaviour
     }
 
 
-    void DojoStart()
-    {
-        this.gameObject.transform.position = new Vector3(-191.24f, 11.8f, -458.15f);
-        instructionsgroup.SetActive(true);
-        instructions.text = "To train your defensive skills as a monk, you must perfect the basics. Use Shift while moving with WASD to sprint. Sprint to the marker.";
-    }
+ 
 
     void Update()
     {
