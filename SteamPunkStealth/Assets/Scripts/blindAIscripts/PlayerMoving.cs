@@ -9,9 +9,12 @@ public class PlayerMoving : MonoBehaviour
     PlayerMovement movement;
     bool finished = true;
 
+    bool jumped = false;
     bool isMoving;
     bool playingSound;
-
+    bool playingSprint;
+    bool isSprinting;
+    bool notGrounded;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,35 +38,52 @@ public class PlayerMoving : MonoBehaviour
             isMoving = false;
         }
 
-        if(isMoving == true && playingSound == false)
+        if(isMoving == true && playingSound == false && !isSprinting )
         {
             manager.Play("Run");
             playingSound = true;
         }
-        else if(isMoving == false && playingSound == true)
+        else if(isMoving == false && playingSound == true )
         {
             manager.StopPlaying("Run");
             playingSound = false;
         }
 
+        else if(isMoving == true && isSprinting)
+        {
+            manager.StopPlaying("Run");
+            playingSound = false;
+        }
 
-        /*
-         if(moving() && finished)
-         {
-             playRun();
-             finished = false;
-         }
+       if(Input.GetKey(KeyCode.LeftShift))
+        {
+            isSprinting = true;
+        }
 
+       else
+        {
+            isSprinting = false;
+        }
 
-         else
-         {
-             if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.D))
-             {
-                 manager.StopPlaying("Run");
-             }
-         }
-         */
+        if (isSprinting && playingSprint == false )
+        {
+            manager.Play("Sprint");
+            manager.Play("SprintingFootsteps");
+            playingSprint = true;
+          
+            
 
+        }
+        else
+             if (!isSprinting && playingSprint )
+        {
+            manager.StopPlaying("Sprint");
+            manager.StopPlaying("SprintingFootsteps");
+            playingSprint = false;
+           
+
+        }
+     
     }
 
     bool moving()
@@ -73,9 +93,37 @@ public class PlayerMoving : MonoBehaviour
         return false;
     }
 
+
+   void isNotGrounded()
+    {
+        if (!movement.isGrounded)
+        {
+            jumped = true;
+        }
+       
+      
+    }
+
+    void afterJump()
+    {
+        isNotGrounded();
+        if(jumped && movement.isGrounded)
+        {
+            manager.Play("afterJumpImpact");
+            if (manager.hasFinishedPlaying("afterJumpImpact"))
+                jumped = false;
+        }
+    }
     void playRun()
     {
         manager.PlayOnce("Run");
+    }
+
+    bool isSoundCurrentlyPlaying()
+    {
+        if (playingSound || playingSprint)
+            return true;
+        return false;
     }
 
    
