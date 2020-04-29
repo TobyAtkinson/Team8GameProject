@@ -93,6 +93,7 @@ public class PlayerMovement : MonoBehaviour
         // change 2/2 by Toby, player cannot jump while executing guard
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded == true && movementLocked == false)
         {
+           
             Jump();
         }
       
@@ -148,7 +149,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Jump()
     {
+
         velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
+        manager.Play("Jump");
         if (isCrouched)
         {
             isCrouched = false;
