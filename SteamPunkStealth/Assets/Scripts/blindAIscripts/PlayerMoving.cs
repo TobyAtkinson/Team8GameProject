@@ -55,7 +55,7 @@ public class PlayerMoving : MonoBehaviour
             playingSound = false;
         }
 
-       if(Input.GetKey(KeyCode.LeftShift))
+       if(Input.GetKey(KeyCode.LeftShift) && movement.isSprinting)
         {
             isSprinting = true;
         }
