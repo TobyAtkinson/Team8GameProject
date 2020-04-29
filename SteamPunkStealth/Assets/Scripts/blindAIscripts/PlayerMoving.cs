@@ -8,6 +8,10 @@ public class PlayerMoving : MonoBehaviour
     AudioManager manager;
     PlayerMovement movement;
     bool finished = true;
+
+    bool isMoving;
+    bool playingSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,30 +25,45 @@ public class PlayerMoving : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D)) && movement.isGrounded)
+        if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) && movement.isGrounded)
         {
-            manager.Play("Run");
-
-          
-
+            //manager.Play("Run");
+            isMoving = true;
         }
-       
-       /*
-        if(moving() && finished)
-        {
-            playRun();
-            finished = false;
-        }
-     
-    */
         else
         {
-            if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.D))
-            {
-                manager.StopPlaying("Run");
-            }
+            isMoving = false;
         }
-       
+
+        if(isMoving == true && playingSound == false)
+        {
+            manager.Play("Run");
+            playingSound = true;
+        }
+        else if(isMoving == false && playingSound == true)
+        {
+            manager.StopPlaying("Run");
+            playingSound = false;
+        }
+
+
+        /*
+         if(moving() && finished)
+         {
+             playRun();
+             finished = false;
+         }
+
+
+         else
+         {
+             if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.D))
+             {
+                 manager.StopPlaying("Run");
+             }
+         }
+         */
+
     }
 
     bool moving()

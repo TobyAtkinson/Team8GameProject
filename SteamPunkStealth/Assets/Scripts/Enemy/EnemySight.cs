@@ -88,7 +88,8 @@ public class EnemySight : MonoBehaviour
             }
 
         }
-        #region Enemy and Gadget detection
+        
+        /*
         if (other.gameObject.tag == "Enemy")
         {
             // Saw another guard
@@ -114,7 +115,8 @@ public class EnemySight : MonoBehaviour
             if (enemy.currentAlarmState != Enemy.enemyState.AlarmedbyPlayer)
                 StartCoroutine(RayCastForSuspicosObject(other.gameObject));
         }
-        #endregion
+      
+        */
     }
 
     IEnumerator RayCastForSuspicosObject(GameObject target)
