@@ -384,7 +384,7 @@ public class PlayerCombat : MonoBehaviour
     {
         swordAnim.SetBool("Attack2", true);
         swordAnim.SetBool("Attack1", false);
-
+        manager.Play("SwordSwing2");
         yield return new WaitForSeconds(0.5f);
         currentSwordState = swordState.Idle;
 
