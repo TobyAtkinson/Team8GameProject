@@ -13,7 +13,8 @@ public class blindEnemyController : MonoBehaviour
    
     PlayerMovement playerMovement;
 
-
+    public AudioClip clip;
+    AudioSource source;
 
     int rate;
     int radius;
@@ -48,6 +49,8 @@ public class blindEnemyController : MonoBehaviour
 
         GameObject player = GameObject.Find("NewPlayer");
         playerMovement = player.GetComponent<PlayerMovement>();
+
+        source = GetComponent<AudioSource>();
 
     }
 
@@ -116,6 +119,7 @@ public class blindEnemyController : MonoBehaviour
 
             if (clear == true)
             {
+                source.PlayOneShot(clip, 0.2f);
                 //  Debug.Log("Going for the player.");
                 lastPosition = target.position;
                 rate = 0;
@@ -161,7 +165,7 @@ public class blindEnemyController : MonoBehaviour
         // If the player stands up while they're still in the area of detection, attack him
         if (distance <= lookRadius && !playerMovement.isCrouched)
         {
-
+            source.PlayOneShot(clip, 0.2f);
             rate = 1;
             agent.isStopped = false;
             agent.SetDestination(target.position);
@@ -193,6 +197,7 @@ public class blindEnemyController : MonoBehaviour
 
         if (distance <= lookRadius && rate == 1 && clear == true && done == false)
         {
+            source.PlayOneShot(clip, 0.2f);
             agent.SetDestination(target.position);
             anim.SetInteger("condition", 3);
             spawnHitbox = false;
@@ -220,6 +225,7 @@ public class blindEnemyController : MonoBehaviour
 
         if ((Vector3.Distance(transform.position, target.position) <= 2f && done == false) || (Vector3.Distance(transform.position, target.position) <= 1.7f && done))
         {
+            source.PlayOneShot(clip, 0.2f);
             facePlayer();
             attack = true;
             agent.SetDestination(target.position);

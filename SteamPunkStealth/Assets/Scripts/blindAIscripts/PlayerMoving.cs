@@ -55,7 +55,7 @@ public class PlayerMoving : MonoBehaviour
             playingSound = false;
         }
 
-       if(Input.GetKey(KeyCode.LeftShift) && movement.isSprinting)
+       if(Input.GetKey(KeyCode.LeftShift) && movement.isSprinting && !movement.isCrouched && movement.isGrounded)
         {
             isSprinting = true;
         }
