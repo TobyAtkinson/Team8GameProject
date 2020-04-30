@@ -10,6 +10,7 @@ public class PlayerKnockback : MonoBehaviour
     public float knockBackPower = 5f;
     Rigidbody rb;
     GameObject blindGuardEnemy;
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +21,8 @@ public class PlayerKnockback : MonoBehaviour
         GameObject Player = GameObject.Find("NewPlayer");
         playerCombat = Player.GetComponent <PlayerCombat >();
         blindGuardEnemy = GameObject.Find("blindGuard");
+     
+        
     }
 
     // Update is called once per frame

@@ -48,6 +48,7 @@ public class Enemy : MonoBehaviour {
 
     private float dist;
 
+    private bool playsoundG = true;
 	private EnemyUI ui;
 
     [SerializeField]
@@ -64,7 +65,12 @@ public class Enemy : MonoBehaviour {
   
     public enemyState currentAlarmState = enemyState.NotAlarmed;
 
-    
+
+    public AudioClip clip;
+    public AudioClip deathSound;
+    AudioSource source;
+
+    bool playsoundD = true;
 
     private Transform lookTowardsHere;
 
@@ -114,7 +120,7 @@ public class Enemy : MonoBehaviour {
     [Header("Variables you can customize")]
     public GameObject gaurdPoint;
 
-
+    private int soundTimer = 0;
 
     public GameObject gaurdPoint2;
 
@@ -134,7 +140,7 @@ public class Enemy : MonoBehaviour {
 
     float viewAngle = 170;
 
-   
+    public bool dead;
 
 
 
@@ -183,6 +189,7 @@ public class Enemy : MonoBehaviour {
         currentMovementState = enemyState.Patrolling;
         currentCombatState = enemyState.Ready;
         currentHealth = maxiumunHealth;
+        source = GetComponent<AudioSource>();
     }
 
     public bool isPlayerAhead(GameObject player)
@@ -237,6 +244,7 @@ public class Enemy : MonoBehaviour {
 
     void Update()
 	{
+        dead = isDead;
         if(isDead == true)
         {
             //Debug.LogWarning("Guard dead");
@@ -255,7 +263,8 @@ public class Enemy : MonoBehaviour {
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * (LookRoationSpeed * 0.5f));
             anim.SetBool("isWalking", false);
             walkSpear.SetActive(false);
-            idleStunnedSpear.SetActive(true); 
+            idleStunnedSpear.SetActive(true);
+            
         }
         else if(currentAlarmState == enemyState.AlarmedbyPlayer && currentMovementState == Enemy.enemyState.Chasing && currentCombatState != enemyState.Stunned)
         {
@@ -345,6 +354,18 @@ public class Enemy : MonoBehaviour {
         {
             currentMovementState = enemyState.Patrolling;
         }
+
+        if(currentAlarmState == enemyState.AlarmedbyPlayer && playsoundG )
+        {
+            playSound();
+        }
+        if(currentAlarmState != enemyState.AlarmedbyPlayer )
+        {
+            playsoundG = true;
+        }
+
+        
+        
     }
 
     IEnumerator Attack()
@@ -551,6 +572,24 @@ public class Enemy : MonoBehaviour {
             yield return new WaitForSeconds(patrolDelay);
         }
         
+    }
+
+
+    void playSound()
+    {
+       
+       
+        
+            source.PlayOneShot(clip, 0.2f);
+            playsoundG = false;
+           
+        
+    }
+
+    void SoundDeath()
+    {
+        source.PlayOneShot(deathSound, 0.2f);
+        playsoundD = false;
     }
 
 

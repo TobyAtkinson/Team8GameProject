@@ -13,7 +13,7 @@ public class PlayerCombat : MonoBehaviour
 
     private Animator swordAnim;
 
-
+    
     public float maxiumunHealth;
 
 
@@ -329,6 +329,12 @@ public class PlayerCombat : MonoBehaviour
 
     void Update()
     {
+        if(currentSwordState == swordState.Executing)
+        {
+            manager.Play("GuardDeath");
+        }
+
+     
         if (isDead == true)
         {
             //Debug.LogError("Player dead");
