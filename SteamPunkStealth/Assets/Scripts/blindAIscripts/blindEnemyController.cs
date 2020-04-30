@@ -15,6 +15,7 @@ public class blindEnemyController : MonoBehaviour
     PlayerMovement playerMovement;
 
     public AudioClip clip;
+    public AudioClip punchSound;
     AudioSource source;
 
     int rate;
@@ -36,10 +37,11 @@ public class blindEnemyController : MonoBehaviour
     int animTimer = 0;
     bool animToIdle = false;
    public bool spawnHitbox = false;
-
+    bool punchSoundPlay;
     //tobys  ints for battle
     public int speed;
-    
+    int punchTimer = 0;
+    bool punchSoundAllow;
     public float health;
     public Image healthProgressBar;
 
@@ -254,7 +256,8 @@ public class blindEnemyController : MonoBehaviour
 
         if ((Vector3.Distance(transform.position, target.position) <= 2f && done == false) || (Vector3.Distance(transform.position, target.position) <= 1.7f && done))
         {
-            source.PlayOneShot(clip, 0.2f);
+            punchSoundPlay = true;
+            playPunch(punchSoundPlay);
             facePlayer();
             attack = true;
             agent.SetDestination(target.position);
@@ -278,7 +281,18 @@ public class blindEnemyController : MonoBehaviour
     }
 
 
+    void playPunch(bool playSound)
+    {
+         punchTimer ++;
+        if (playSound &&    punchTimer % 30 == 0)
+        {
+            source.PlayOneShot(punchSound, 0.7f);
+            playSound = false;
+            punchTimer = 0;
 
+        }
+       
+    }
     // Placeholder method for when the Blind enemy will hear fighting
     void chargeAttack()
     {
@@ -401,6 +415,13 @@ public class blindEnemyController : MonoBehaviour
         anim.SetInteger("condition", 4);
         Debug.Log("Attacks player.");
        
+    }
+
+    IEnumerator PunchSound()
+    {
+        yield return new WaitForSeconds(1f);
+        source.PlayOneShot(punchSound, 0.7f);
+
     }
 
 
