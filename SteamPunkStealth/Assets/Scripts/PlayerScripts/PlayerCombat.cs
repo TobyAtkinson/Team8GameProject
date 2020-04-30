@@ -110,6 +110,8 @@ public class PlayerCombat : MonoBehaviour
 
     public swordState currentSwordState = swordState.Idle;
 
+    public Image blackFadeImage;
+
     void Awake()
     {
         swordKillCollider = sword.GetComponent<BoxCollider>();
@@ -119,6 +121,7 @@ public class PlayerCombat : MonoBehaviour
 
     void Start()
     {
+        blackFadeImage.CrossFadeAlpha(0, 1f, false);
         instructionsgroup.SetActive(false);
         objectiveScript.target = tutorialWaypoints[0].transform;
         objectiveScript.offset = new Vector3(0, 1);
@@ -136,10 +139,29 @@ public class PlayerCombat : MonoBehaviour
         {
             isDead = true;
             healthText.text = (" ----------------------       Dead");
-            Destroy(this.gameObject);
+            blackFadeImage.CrossFadeAlpha(1, 1.0f, false);
+            StartCoroutine(Death());
+            //Destroy(this.gameObject);
         }
 
     }
+
+    IEnumerator Death()
+    {
+      
+        yield return new WaitForSeconds(1.0f);
+        Application.LoadLevel(Application.loadedLevel);
+
+    }
+
+    public void Finished()
+    {
+        blackFadeImage.CrossFadeAlpha(1, 10.0f, false);
+    }
+
+   
+
+
 
     void DojoStart()
     {
@@ -221,11 +243,13 @@ public class PlayerCombat : MonoBehaviour
             {
                 objectiveScript.target = tutorialWaypoints[4].transform;
                 objectiveScript.offset = new Vector3(0, 8);
-                instructionsgroup.SetActive(false);
+                //instructionsgroup.SetActive(false);
+
+                StartCoroutine(DojoEnd());
 
                 waypoint.SetActive(false);
                 Destroy(other.gameObject);
-                objective1.SetActive(true);
+                
                 checkpointStage = 4;
             }
             
@@ -259,8 +283,19 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
+    IEnumerator DojoEnd()
+    {
+        blackFadeImage.CrossFadeAlpha(1, 9.0f, false);
+        instructions.text = "Good work Fa Shen, you have trained well. Go to the emporers docks and find one of the warlords responsible for attacking the temples.";
+        yield return new WaitForSeconds(9.0f);
+        this.gameObject.transform.position = new Vector3(-81.02f, 7.9f, -192.079f);
+        objective1.SetActive(true);
+        instructionsgroup.SetActive(false);
+        blackFadeImage.CrossFadeAlpha(0, 3f, false);
 
- 
+    }
+
+
 
     void Update()
     {

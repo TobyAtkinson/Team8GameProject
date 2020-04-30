@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class blindEnemyController : MonoBehaviour
 {
@@ -36,8 +37,14 @@ public class blindEnemyController : MonoBehaviour
     bool animToIdle = false;
    public bool spawnHitbox = false;
 
-    //tobys speed int
+    //tobys  ints for battle
     public int speed;
+    
+    public float health;
+    public Image healthProgressBar;
+
+    public PlayerCombat playerCombatScript;
+
 
     // Start is called before the first frame update
     void Start()
@@ -59,8 +66,25 @@ public class blindEnemyController : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Explosive")
+        {
+            health -= 25f;
+            
+            //toby change
+            healthProgressBar.fillAmount = health /100f;
+            if (health <= 0f)
+            {
+                playerCombatScript.Finished();
+                Destroy(this.gameObject);
+            }
+        }
+    }
+
+
+        // Update is called once per frame
+        void Update()
     {
         float distance = Vector3.Distance(target.position, transform.position);
 
