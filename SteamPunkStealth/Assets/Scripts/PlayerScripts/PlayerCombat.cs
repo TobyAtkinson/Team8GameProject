@@ -112,6 +112,8 @@ public class PlayerCombat : MonoBehaviour
 
     public Image blackFadeImage;
 
+    public CheckpointManager checkpointManager;
+
     void Awake()
     {
         swordKillCollider = sword.GetComponent<BoxCollider>();
@@ -121,7 +123,7 @@ public class PlayerCombat : MonoBehaviour
 
     void Start()
     {
-        blackFadeImage.CrossFadeAlpha(0, 1f, false);
+        //blackFadeImage.CrossFadeAlpha(0, 1f, false);
         instructionsgroup.SetActive(false);
         objectiveScript.target = tutorialWaypoints[0].transform;
         objectiveScript.offset = new Vector3(0, 1);
@@ -129,6 +131,34 @@ public class PlayerCombat : MonoBehaviour
         swordAnim = sword.GetComponent<Animator>();
         GameObject AudioManager = GameObject.Find("Audio Manager");
         manager = AudioManager.GetComponent<AudioManager>();
+
+        checkpointManager = GameObject.FindGameObjectWithTag("CheckpointManager").GetComponent<CheckpointManager>();
+        if(checkpointManager != null)
+        {
+            if(checkpointManager.Checkpointat == 0)
+            {
+                DojoStart();
+                blackFadeImage.CrossFadeAlpha(0, 4f, false);
+            }
+            else if(checkpointManager.Checkpointat == 1)
+            {
+                this.gameObject.transform.position = new Vector3(-81.02f, 7.9f, -192.079f);
+                objective1.SetActive(true);
+                instructionsgroup.SetActive(false);
+                blackFadeImage.CrossFadeAlpha(0, 1f, false);
+            }
+            else
+            {
+                this.gameObject.transform.position = new Vector3(-203.51f, 14.29f, -157.7f);
+                gateGroupClosed.SetActive(false);
+                waypoint.SetActive(false);
+                blackFadeImage.CrossFadeAlpha(0, 1f, false);
+            }
+        }
+        else
+        {
+            blackFadeImage.CrossFadeAlpha(0, 1f, false);
+        }
     }
 
     public void TakeDamage(float damageAmount)

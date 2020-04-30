@@ -17,6 +17,7 @@ TagManager:
   - Ability Wheel
   - Explosive
   - Blindhitbox
+  - CheckpointManager
   layers:
   - Default
   - TransparentFX
