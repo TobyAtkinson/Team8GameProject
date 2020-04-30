@@ -20,7 +20,7 @@ public class TriggerDoors : MonoBehaviour
     {
         if(other.gameObject.tag == "Player")
         {
-            blindGuard.SetActive(true);
+            blindGuard.GetComponent<blindEnemyController>().speed = 7;
             gateGroupOpen.SetActive(false);
             gateGroupClosed.SetActive(true);
             waypoint.SetActive(false);

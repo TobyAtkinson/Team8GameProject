@@ -36,6 +36,9 @@ public class blindEnemyController : MonoBehaviour
     bool animToIdle = false;
    public bool spawnHitbox = false;
 
+    //tobys speed int
+    public int speed;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -51,6 +54,8 @@ public class blindEnemyController : MonoBehaviour
         playerMovement = player.GetComponent<PlayerMovement>();
 
         source = GetComponent<AudioSource>();
+
+        speed = 0;
 
     }
 
@@ -241,7 +246,7 @@ public class blindEnemyController : MonoBehaviour
         }
         else
         {
-            agent.speed = 7;
+            agent.speed = speed;
             attack = false;
             spawnHitbox = false;
 
