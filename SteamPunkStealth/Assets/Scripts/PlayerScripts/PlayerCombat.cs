@@ -301,7 +301,7 @@ public class PlayerCombat : MonoBehaviour
                 enemyScript.Parried();
                 spark1.Play();
                 spark2.Play();
-
+                manager.Play("SwordClash");
 
             }
             else
