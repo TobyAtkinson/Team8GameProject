@@ -35,7 +35,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField]
     private GameObject skullUi;
 
-
+    int timerStab = 0;
 
     float viewThreshhold = 1;
 
@@ -163,6 +163,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
+        manager.Play("Stab");
         currentHealth -= damageAmount;
         healthText.text = ("Health: " + currentHealth);
         if (currentHealth <= 0 && !isDead)
@@ -331,9 +332,11 @@ public class PlayerCombat : MonoBehaviour
     {
         if(currentSwordState == swordState.Executing)
         {
+            
             manager.Play("GuardDeath");
         }
 
+        
      
         if (isDead == true)
         {
@@ -401,22 +404,34 @@ public class PlayerCombat : MonoBehaviour
 
             if (currentSwordState == swordState.Idle)
             {
+                
                 if (ableToExecute == true)
                 {
+                    
                     if (playerMovementScript.isCrouched == false)
                     {
+                       
                         bool isplayerahead = enemyToExecute.isPlayerAhead(this.gameObject);
                         if (isplayerahead == true)
                         {
+                            timerStab++;
+                           
                             enemyToExecute.isMovementLocked = true;
                             playerMovementScript.movementLocked = true;
                             cameraScript.turningLocked = true;
                             currentSwordState = swordState.Executing;
                             ableToExecute = false;
+                            
                             StartCoroutine(Execute());
+                            
+                                
+                                
+                            
+
                         }
                         else
                         {
+                            manager.Play("Stab");
                             enemyToExecute.isMovementLocked = true;
                             playerMovementScript.movementLocked = true;
                             cameraScript.turningLocked = true;
@@ -532,10 +547,11 @@ public class PlayerCombat : MonoBehaviour
     IEnumerator Execute()
     {
         swordAnim.Play("SwordExecute");
+        
         yield return new WaitForSeconds(0.75f);
         // execute
         enemyToExecute.TakeDamage(500f);
-
+        manager.Play("Stab");
         yield return new WaitForSeconds(0.75f);
         currentSwordState = swordState.Idle;
         playerMovementScript.movementLocked = false;
@@ -545,7 +561,7 @@ public class PlayerCombat : MonoBehaviour
         // 1.5 overall
 
     }
-
+   
     IEnumerator BehindExecute()
     {
         behindExecuteSword.SetActive(true);

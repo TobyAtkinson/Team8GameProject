@@ -69,6 +69,7 @@ public class Enemy : MonoBehaviour {
     public AudioClip clip;
     public AudioClip deathSound;
     AudioSource source;
+    AudioManager manager;
 
     bool playsoundD = true;
 
@@ -190,6 +191,7 @@ public class Enemy : MonoBehaviour {
         currentCombatState = enemyState.Ready;
         currentHealth = maxiumunHealth;
         source = GetComponent<AudioSource>();
+      
     }
 
     public bool isPlayerAhead(GameObject player)
@@ -222,6 +224,7 @@ public class Enemy : MonoBehaviour {
     public void TakeDamage(float damageAmount)
     {
         currentHealth -= damageAmount;
+       
         if (currentHealth <= 0 && !isDead)
         {
             isDead = true;
@@ -233,6 +236,8 @@ public class Enemy : MonoBehaviour {
         else
         {
             bloodSplat.Play();
+            
+
         }
     }
 
